@@ -1,0 +1,108 @@
+--- 
+title: "Quantitative Population Ethology"
+author: "Brian Yandell"
+date: "`r Sys.Date()`"
+site: bookdown::bookdown_site
+output: bookdown::gitbook
+documentclass: book
+bibliography: [book.bib, packages.bib]
+biblio-style: apalike
+link-citations: yes
+github-repo: byandell/ewing_book
+description: "This is a bookdown version of Quantitative Population Ethology inspired by writing of Bland Ewing. The output format for this example is bookdown::gitbook."
+---
+
+# Preface
+
+The work contained in this monograph represents the contributions of
+Bland Ewing to a field he originally described as `population
+ethology'. The original unpublished manuscripts are all over 25 years
+old. Nevertheless, the ideas fit nicely with current theories about
+population dynamics, with the present strong interest in Markov chain
+Monte Carlo methods for simulation, with today's fast desktop
+computing environments, and with efforts in many areas of
+ecology to construct individual-based models of behavior in small
+populations.
+
+Professor Evert Schlinger played a key role in getting Bland Ewing to
+UC Berkeley in the late 1960s. Bland worked under Professor David
+L. Wood, who ultimately introduced us to Ewing's work in the context
+of the western pine beetle project.
+
+Most of this work developed during the early 1970s. This was Yandell's
+first introduction to bridging ecology, mathematics and computers, and
+has had an indelible imprint on his career. Finally the material can
+be published in enhanced form for others to share. The purpose of this
+document is to honor Bland Ewing, and to make it possible for myself
+and others to benefit from his ideas and perspective.
+
+This monograph is developing out of a collaboration of four scientists
+who worked together in the 1970s when these ideas were young.
+The core material was to be Bland Ewing's dissertation, but for a
+variety of reasons that never materialized.
+
+At the time, we felt the ideas were 25 years ahead of their time.
+Now, hindsight suggests that we might have been correct. While
+individual-based ecological models are now regularly published in the
+literature, they are almost exclusively time-driven, greatly limiting
+their capacity to expand to study large populations.
+
+Bland's underlying aim was to design a simulation system directly
+useable by field biologists, relying direcly on field measurements to
+examine ethological questions about populations of interacting
+individuals. Such questions do not have answers in dynamical systems
+models, but rather in emergent properties that may be counter-intuitive.
+
+The authors would like to thank Dr. David L. Wood for his continual
+and unwavering encouragement over the long haul. We would like to
+thank David Baasch and Dr. William Waters for the contributions and
+encouragement they have provided in this effort, and Dr. Peter
+A. Rauch for his early efforts to organize this material. The authors
+would like to thank Drs. C. Huffaker, R. Smith, and J. Knox for their
+support in the development of this modeling technique. We would like
+to particularly thank Ms. Floy Worden who typed original manuscripts
+quickly and accurately in the 1970s, and Ms. Karen Denk who retyped
+these into a modern word-processor in the 1990s.
+
+This work was performed in part under the auspices of the
+U.S. Department of Energy and supported in part by a National Science
+Foundation grant (NSF GB-34718) to the University of California; the
+Environmental Protection Agency through an interagency agreement
+(EPA-IAG-COV-4) with the Lawrence Livermore National Laboratory; the
+"Huffacker Project" Grant (DEB 75-04223) which combined funds from the
+National Science Foundation and the Environmental Protection
+Administration, NSF Grant BSR 86-1304-01;  grants from NSF, USDA,
+UC-IPM and the Citrus Board; and the University of Wisconsin-Madison
+College of Agricultural and Life Sciences. The U. S. Forest Service
+supported Ewing in the initial phase of this effect. The findings,
+opinions and recommendations expressed herein are those of the authors
+and not necessarily those of the University of California, the
+National Science Foundation, the Environmental Protection Agency, the
+U. S. Forest Service, the Atomic Energy Commission or the Lawrence
+Livermore Laboratory. This paper contains part of the intended
+Doctoral Dissertation of Bland Ewing.
+
+```
+Bland Ewing, Paradise, CA
+Brian S.~ Yandell, University of Wisconsin--Madison, WI
+James F.~Barbieri, Advanced Systems Development, NAWC-WPNS, China
+Lake, CA
+Robert F. Luck, University of California, Riverside, CA
+Lisa D. Forster, University of California, Riverside, CA
+11 Dec 2001
+```
+
+
+Bland Ewing$^1$, Brian S. Yandell$^2$, James F. Barbieri$^{3,4}$, Robert
+F. Luck$^3$ and Lisa D. Forster$^3$
+
+$^1$Scientist, Paradise, CA
+
+$^2$Statistics Department,
+University of Wisconsin--Madison, Madison, WI
+
+$^3$Department of Entomology, University of California, Riverside, CA
+
+$^4$Advanced Systems Development, NAWC-WPNS, China Lake, CA
+
+Copyright 2001 BS Yandell

@@ -1,0 +1,43 @@
+# Summary and Conclusion {#fini}
+
+This report presents a new and different approach to modeling the
+structure and dynamics of interacting populations. The philosophy
+behind the technique has one guiding principle, that the biology
+imbedded in the data collected by the field researcher should drive
+the model. Both data and model have implicit resolution and span. The
+keys to this approach are the integrity of data, their relevance to
+the ecological questions, and faithful modelling of their dynamics in
+the simulation. For example, if the model assumes a random search for
+prey but the organism displays a very sophisticated search technique,
+then the model may produce questionable results. In addition, the
+researcher needs some idea of the various parameters that drive the
+system, such as temperature and possibly humidity for red scale.
+
+We examined the effects of temperature variation on the dynamics of
+Aphytis with respect to red scale. As expected, simulations with many
+Aphytis showed a rapid drop in the red scale population. Further, red
+scale is rarely driven to "extinction" while Aphytis is more likely to
+disappear, perhaps because Aphytis and red scale operate under
+different constraints. The development of red scale is essentially
+temperature dependent, whereas parasitism by Aphytis is a time
+dependent phenomenon.
+
+The structure of our model system allows easy implementation of
+modular event algorithms as they become available. We readily admit
+that the present implementation simplifies the migration pattern for
+red scale and search strategies for Aphytis. We are developing more
+realistic search and migration algorithms that are fast to compute. In
+addition to Aphytis, other parasites such as Encarsia perniciosi,
+Comperiella bifasciata contribute to red scale mortality (Forster et
+al. 1995). Our simulation system can handle multiple species, and we
+are investigating these complex interactions.
+
+Analysis of these simulations could proceed using methods developed
+for stochastic Petri nets (Ajmone Marsan et al. 1995; Lindemann 1998;
+Bobbio et al. 2000), except these methods cannot handle simulations
+with more multiple non-exponential delay times. Instead we propose to
+design experiments (Latin hypercubes and response surface methods) by
+adjusting simulation components and to evaluate model performance
+using Bayesian approaches to uncertainty analysis (cf. Kennedy and
+O'Hagan 2001 and references therein).
+

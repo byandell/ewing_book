@@ -1,0 +1,79 @@
+# Validation and Sensitivity Testing {#valid}
+
+## Criteria for Model Development
+
+As mentioned above, large numbers of models are developed and examined
+for their relevance. When selecting our `best' model (and guideline
+variables), we follow a set of general `rules'. These rules are
+based on the researcher's judgement and skill, which is not
+quantifiable; however reflect years of experience.  They are critical
+to the model development process. The following list describes a few
+of the important rules.
+
+### Explained Variation $R^2$
+
+$R^2$ is the amount of variance accounted for by the model
+equation. In physical modelling, it is desirable to have a high $R^2$
+($>0.70$, or even $>0.95$ in some cases). However, biological systems
+have so much variability that a lower level ($>0.30$) may be quite
+acceptable. This criterion must be balanced with the other criteria
+discussed below.
+
+### Attribute inclusion/exclusion significance level
+
+Primarily, but not exclusively, we use a stepwise modeling
+procedure. Among other things, this procedure allows the researcher to
+select the significance level for including and excluding variables in
+the model. During the early exploration phases of model development
+the inclusion/exclusion significance criterion is set high (p = 0.15 -
+0.20), allowing examination of less significant variables. The final
+model typically includes only attributes that have been added at a
+high (p = 0.05 or less) significance level.
+
+### Linear and non-linear equations
+
+Initially all attributes are examined for non-linearity relative to
+acceptance. Linear equations are preferred due to their greater
+stability and simplicity of use. Non-linear equations are used when
+there is compelling evidence (i.e., if they add significantly improved
+stability, predictive ability, or substantially more important
+information) for their selection.
+
+
+### Parsimony
+
+Parsimony in modeling refers to selecting a simple model over a
+complex model when the complex model offers little model
+improvement. All else being equal, a 3 variable model with an R2 =
+0.92 is more parsimonious, and therefore more preferred, than a 6 (or
+more) variable model with an R2 = 0.97. The researcher should avoid
+models having a high R2 obtained from an `over-fitted' or an
+unnecessarily complex set of variables (e.g., non-linear variables).
+
+## Model diagnostic tests
+
+The `best' model selected typically does better at satisfying a
+variety of residual diagnostic tests, including those for
+multicollinearity and influence.
+
+As stated above, the researcher's judgement and skill applying the
+rules is a critical element in the model development process.
+
+Finally, it is appropriate to keep in mind that all analyses (uni- and
+multi-variate) are imperfect; they provide a view of information that
+is usually not readily apparent from the individual. The more complex
+(or elegant, if you prefer) the analyses, the greater the potential
+for a statistically significant solution that may not adequately
+reflect the behavior of any individual in the test. Hence, the
+researcher must always think about the application of a model and
+concern themselves less with significance criteria.
+
+Analysis of these simulations could proceed using methods developed
+for stochastic Petri nets (Ajmone Marsan et al. 1995; Lindemann 1998;
+Bobbio et al. 2000), except these methods cannot handle simulations
+with more multiple non-exponential delay times. Instead we propose to
+design experiments (Latin hypercubes and response surface methods) by
+adjusting simulation components and to evaluate model performance
+using Bayesian approaches to uncertainty analysis ({\em cf}. Kennedy
+and O'Hagan 2001 and references therein, including Sacks {\em et
+al}. 1989).

@@ -1,0 +1,452 @@
+# Data Integration {#data}
+
+## Sample splitter to count insects
+Sample Splitter
+
+Some of the designs that I first set up with some of the first things,
+but the Forest Service used --- reverse sequential sampling to drop
+things out, but in a reverse --- see the guy that was eventually, what
+was the guy, the other fellow that was the heavy hitter for the Forest
+Service?  He eventually came on the department later on.  I can't
+think of his name.
+
+*Who was at the Forest Service?
+
+Yeah.
+
+*Bill Bedard, CJ?
+
+No.
+
+*Fields Cobb?  Carl Huffaker?
+
+He ended up being the head of the department there for a while.
+
+*Bill Waters?
+
+Yeah, Bill Waters, yeah.  So Bill Waters back in --- was some of the
+first cuts out of putting a sequential sampling, see if you could
+reduce the amount of labor put into the sampling aspect actually,
+interestingly enough.  So he was more than interested in reverse
+sequential sampling --- at the time and then with the layout that was
+symmetric, that maybe analysis of the experiment ever so much easier.
+
+14.1
+
+I'm really curious about what you dug up in terms of bits and pieces
+of the work that was going on in the modeling effort, especially for
+Dave Wood and the group.
+
+*Well, I haven't been able to get too much.  What I got, I got the
+sample splitter stuff so I've got all the papers related to the sample
+splitter, including a copy of Ken Lindahl's thesis.
+
+Let me ask a question at this point.  Does the sample splitter include
+the stuff  -- statistics, and I also as I remember ran some tests on
+them to make sure that the sample splitter was working correctly, and
+even though the tests were not significant with the normal
+distribution test, they were with the -- statistic.  And this was
+something that happened a number of other times when we looked at
+fields called the data for a whole bunch of things, especially --.  So
+is that data available, and is that what you found?
+
+*Yeah, I've got all that data.  It's all on sheets so it's all on
+ paper.
+
+Were the plots, did they still have the plots?
+
+*Yes.
+
+Wonderful.
+
+*Yeah, so I've got all the plots and I've got all of Paul Tilden's
+stuff, Fields Cobb, whatever the data analysis.  Now there's a lot of
+it to sort through.  There's huge, you know, a big format blue binders
+with the 11 x 17 paper, computer paper.  It's all dusty but I've got
+it.  So the data is there and then the work that Ken Lindahl did on
+the sample and the bias and the sample splitter is all there in his
+thesis.  That's the main stuff that I've been able to pull together.
+Don Dahlsten allegedly has some other material and Bob Luck is
+supposed to contact him but I haven't heard anything directly on that
+yet.  So that's still in limbo, and that may be where the Bayesian
+stuff is, in Don Dahlsten's office.
+
+Yeah, may very well be.  Well that's very encouraging.
+
+*Yeah, Dave Wood sent me about 75 pounds of stuff.
+
+Wonderful.  So maybe his final statement at the end of that
+application and the data will be analyzed will finally come true.
+
+*And he would like that, he would like that.  So I'll probably look at
+the sample splitter stuff this summer.  I've got it all in one place.
+
+Well then I really have to, two pieces of the, the sample splitter
+stuff, and part of that it seemed to me I was beginning to do the work
+that the first estimate said that the math likelihood estimator of the
+reverse sampling technique was just a simple ratio.
+
+*Right.
+
+But if you went to a traditional type of mean and variance type of
+estimator, the one -- direct, it was a messy expression that I was in
+the first part of unraveling the plots on the APL work on the
+plotter.  Did that ever show, did that stuff show up?
+
+*Yeah.  The plots, well I think that's there.  There are certainly
+plots that I did that, they're sort of wavy lines that show that the
+bias is largest right near to the end.  I recognize some plots that I
+did over 20 years ago.
+
+Wonderful.  Then my other question, it seemed that there were some
+pieces of Ken Lindall's work that were used finishing up his
+dissertation.  That work, Dave also sent me copies of that, but I had
+the impression that that piece had gone back to pure -- theory with no
+number type of -- relationship.  Am I right on that?
+
+*I think you're right on that.  I started to look through Ken's thesis
+but it's real hard to go through it because he's got titles like
+Introduction, Methods, Theory.  I mean it's hard to tell what section
+is what, so I just sort of flipped through it.
+
+As far as you could tell right off the top, it was -- theory, --
+theory with no --.  Even say a log normal which we were using --
+estimator.  Now what am I trying to remember?  The -- and it's a
+generalization that the --- quotient is a multivariate.  Is that
+right?  Am I pulling that out of the -- OK?
+
+*That sounds right.
+
+And with the multivariate, then it was basically sort of an exact
+counting function for numbers that would run between 0 and N, with N
+being a very finite number in mathematical things, and minus numbers
+being total garbage in terms of making sense in terms of that.  So
+although the physical systems sometimes -- make sense, in this
+particular case it made no sense at all, and also because of the
+number of pieces involved, they were being sampled by Don Dahlsten and
+you got some incredible number of zeroes.  By far the most common
+value that you would get would be zero.  Is that all -- seem
+reasonable?  -- 20 years ago with the first --?
+
+*Yeah, I mean it's, you know, talking about counting processes where
+you have lots of zeroes, I mean it's familiar to me in a general way.
+I'm not familiar with the specifics because I wasn't involved
+specifically with the counts and with Don Dahlsten.  I was involved
+more with the.
+
+14.4
+
+My question was that it seems when we were trying to design ways of
+gathering data, counting data across many, many different species,
+with highly variable numbers, both off traps and off of other
+equipment, it seemed like no matter if the samples were bored out of
+trees and reared, it was all over the map. -- also.  So no matter
+where I looked, a number of species highly variable and in some cases
+like the counting stuff or the traps, the numbers could be gigantic
+sometimes.  Huge numbers in the traps because of the size and
+effectiveness and at other times they caught very little and it could
+be all over the map, say -- hosts of the tree or related insects say
+that Don Dahlsten was studying.
+
+At the time we looked at just some sort of -- for sequential sampling
+technique to cut back on the work.  It turned out it was far easier to
+subdivide things until everything had gone to zero or some arbitrary
+number of times.  It was a higher power that would assure that the
+remaining -- would be --.  With the two underlying assumptions, and
+then it would --.
+
+At that time, I think I -- one professor and a few of his students
+were doing reverse sequential sampling 20 years ago.  That was what I
+was going to try to see if I could get any help from him to get things
+up and going but pretty much, and yet at that time who was the person
+that was, the name won't pop into my head right now.  He was the head
+of the whole program there at the Forest Service and then he moved
+over to the college of natural resources later as a department head,
+Waters.
+
+*Yeah, Bill Waters.
+
+Bill Waters, thank you, Bill Waters.  Some days I have a very hard
+time pulling these back.  As I remember Bill Waters, oddly enough his
+specialty was sequential sampling and its application to forest
+service problems.  So here was this reverse sequential sampling
+technique, so my other question is where has that gone?  Has anybody
+picked up on reverse sequential sampling?  Is it a big deal, a huge
+deal, or what kind of thing?
+
+*I haven't checked the literature.  I know that.
+
+Or is that stuff that he did pretty much unique?  And it still hasn't
+followed up?
+
+*Yeah, the one thing that I can think that's related that I know of is
+a dilution plating where people are looking for bacteria and they'll
+take 10-fold dilutions and then draw up plates and they'll have a
+series of different series on a 10-fold dilution.  It's related but
+it's not the same thing.
+
+Yeah, and I could imagine that, looking under a stereo microscope or a
+-- microscope, to estimate the area of growth of different things.
+The area estimation problem and mechanic problem underneath it.  Thank
+you very much for picking that one up, but I'm quite curious.
+
+*Yeah, they now have Petri dishes that have covers which have etched
+into them grids and the grids have different scales. There will be a
+large grid and then a part of it will be made as a small grid so you
+can count depending on the kind of problem.  So that's used in certain
+fields.  I haven't actually looked at that literature yet but I know
+people who can help me find that out.
+
+OK, so that's why I wanted to throw some things out that way because
+the follow-up on this is that the basically the thing for Dave's stuff
+was all based on reverse sequential sampling techniques in terms of
+gathering the data and then setting up for data analysis.  And we also
+read into some problems right at the first, with the sample not being
+ideally distributed and we were pretty fortunate that we ran a lot of
+test samples initially courtesy of, who's the fellow there that did so
+much of the mechanical design?  Can you think of his name?
+
+*At the forest service?
+
+No, he worked pretty much directly for Dave and Don Dahlsten designing
+equipment?
+
+*Not Paul Tilden?
+
+No, somebody else.  He was not a help person, no he was a person
+involved in mechanical stuff.  He was the one that did all the drawing
+of the decreasing stuff after my suggestion of using decreasing
+technique that was used industrial decreasing parts of stuff.  It
+turned out that it did solve the problem and after that it didn't tear
+things apart like blowing, high temperature, high pressure kerosene on
+the stuff to clean it which really shredded stuff.  You came out the
+other side without being able to tell which piece was what.
+
+*Count the number of legs.
+
+Yeah.  I can just see you trying to pair up the right head with the
+thorax with the right abdomen, huh?  It was incredible.  So there had
+to be some way of doing that that was a lot gentler and yet would get
+at the incredible design into stickiness and stick-to-it-tiveness of
+that, what do they call that -- you did today?  Making these trails of
+stuff that -- because it was so sticky and so insoluble.
+
+*Stick-em?  I don't remember.
+
+Any way, at any rate, so we ended up with kind of a bear of a problem
+to solve there.  It took a lot of testing.  They had to go on also to
+resolve techniques that would really work correctly.  There was a lot
+of other testing that was done on natural subsampling and other things
+by hand-picking area and then going back.  Those were the ones that
+Don Dahlsten worked with because that area, he was interested in --
+species -- samples that weren't good enough.  Actually put them into
+-- collection of that stuff.  So that was a little more tidbit of
+history.  The math was interacting with experimental design.  I guess
+that those are the big hanging ones that I was curious about.  It also
+-- 20 years ago.
+
+18.1
+
+It's neat to see you and it's neat to go on to this stuff again and am
+really intrigued about a number of things that I've been thinking
+about.  First of all, did you ever -- at Ken Lindahl's work which I
+thought was just pure linear theory with no use of easier quad
+summation to -- like the -- normal or gamma function.
+
+*I have the material but I have not had a chance to look at it yet.
+
+But this is a really quick cursory glance, you didn't, it looked like
+just classic normal.
+
+*Yeah.
+
+And no simplifying or computer simplifying assumptions that would make
+it easier to computer, a real life computer.
+
+*No.
+
+20.11
+
+Ok, another question.  Did you ever go back in Ken Lindahl's paper,
+and is it straight linear theory with no gamma function or -- normal
+in it?
+
+*I haven't gone back to that.  I have it but I haven't gone back to
+ it.
+
+In the word process these days, couldn't you just reverse it?  Isn't
+that in a hardware form?  I mean word processing form you could get
+from Dave?
+
+*Oh, I have a copy of it.
+
+Yeah, but I mean as an electronic copy.
+
+*No, just paper.
+
+Whoa.  Get an electronic copy.  Do you realize how fast you could do
+the job with an electronic copy?
+
+*Yeah.
+
+And you're still not sure?  What you need is an electronic copy.  It
+would just save you all kinds of time.
+
+*Well, I'll see if I can get that.
+
+So why don't you get an electronic copy of Ken Lindahl's dissertation?
+It's interesting I like to file things in the --.  Use that as your
+basis to do all further work.  And that way you can use a word
+processor the whole damn thing in a few moments --.  How many hits do
+you get per normal distribution?  How many hits do you get -- and so
+on.  And you get -- at all for -- normal, you're going to have to
+allow for gamma functions.  I'd be very curious.
+
+But don't do a thing until you got an electronic copy.  Also this
+would be another illustration of -- chance to use it, society's going
+to go to electronic eventually.  So that's another matter.
+
+-- what he thought should be done and where he should go and I
+basically said that, I remembered this -- what I just described to you
+and as a result also -- the data and the data because the maximum in
+most of these levels were small, very small or zero.  Lots of zero
+over all the -- sample on the things, on the different traps and stuff
+-- traps and all that junk. Lots of zeroes -- small so the maximum --
+probably is the most reasonable estimator and that was just a part
+from the thing as I remember for the reverse sampling system that we
+were using.
+
+So as I remember, for that reverse sequential sampling system that
+oddly enough -- always picked up on easier it looks like, weirdly
+enough.  Not to any degree, because a certain --, whole lot easier
+than to just do, force the other direction.  And the thing is that --
+as I remember, maximum likelihood estimator just dropped way off of
+the simple proportions.  Is that right?
+
+*Yeah.  But then it's biased and then it's a biased direction.
+
+If you want the first and second moment.
+
+*Yeah, then you could do some biased direction.
+
+And that's what I was trying to calculate there with -- with the
+biased -- for that.  That was the last program I was working on in APL
+too.
+
+*Yeah, the biased correction is in Ken's thesis.
+
+Oh, good.
+
+*So he did that.
+
+*When we first started using that.
+
+20.13
+
+And the thing is that Dave should have scanned anyway.  If it hasn't
+been done, have him scan it.  It's become trivial now.  Have him scan
+it.  Also the whole statistic society is going to have to face a
+little bit of this too very soon.  You -- on the problem of this sort
+of thing on the internet --.  But you might very well ask Dave to, if
+you don't have an electronic one.  Please ask him if he has an
+electronic form of Ken Lindahl's thesis.  And if he doesn't, please to
+have it scanned because he always has the resources to do that because
+that thesis work was his own direction now.  But it should be
+electronically scanned and that costs zip money these days.  The only
+one niche, it will cost you about \$50 for any -- version of things to
+make your computer to be able to listen to you and transcribe stuff by
+just having you talk.  So it's only -- for not having -- in the other
+direction --.  But again, please contact Dave.
+
+*I'll do that.
+
+About that Ken Lindahl thesis.  Have him send you the electronic copy
+of it before you do anything.
+
+*Yeah.
+
+And if he doesn't have one available -- you need to be in that form
+anyway.  How's he going to manipulate it -- publish -- paper, there's
+no way that he can't have an electronic form.  You don't type things
+from scratch.
+
+*I'm sure Ken has an electronic copy somewhere so I can go back to Ken
+on that.
+
+So that's what I would.  So find an electronic copy from Ken or Dave
+Wood.
+
+*So other stuff bubbling up here on that modeling.
+
+Well, it really struck me that -- the other core pieces of this thing
+-- method that we were going to use was unbiased and wouldn't skew
+results in way or another, and to the -- I dug into, it seemed -- is
+we had valid number generators and everything like that that would
+--.  The transformations that were bearing on the mathematics weren't
+screwed up because we did find some bug in the thing.  Then we had to
+go back and refix only to find that Los -- has a serious bug in their
+random number generators they have never fixed to this day.  --
+remember that graphic program?
+
+*Yeah.
+
+So that's the impression of the, that's the amount of politicking you
+need to -- idea because the whole system, you don't need much -- and
+the Monte Carlo converts it incredibly fast initially -- doesn't
+diverge for shit, if you want 5 positions, ok?  But boy, does it
+convert fast at first, so the very kind of place that we need fast
+convergence, it's ideal for imprecise systems.  So it seemed to me
+that that turned out to also be on bias -- which he hadn't -- and all
+this type of -- describing like -- random number generated out for
+underpinning it and that was how you'd biased it.
+
+You're going to assume that certain mathematics --, mathematics is
+indeed --, you can't put in bad -- and somehow have it --.  And so of
+course that's the one we kept having to go back and look --.  Gee,
+will this work, will that work?  I'd -- because it's, but on the other
+hand it seems that it's a rapidly conversion, estimator, but boy if
+you -- two decimals, but if you need three positions, position, third
+place for your --, you're also doing heavy duty computation.  And if
+you need 6 or 7 places, whoa.  You're going to have a super computer
+going all through the --.  So it seems to me also that -- was
+absolutely ideally suited for our purpose, our system was inherently
+imprecise.  Ok, that was another thing I wanted to throw out.
+
+*Yeah, I don't think we had talked about that before.
+
+But also, I also want to throw out some examples of places that we had
+looked a long time ago and in turn there were some real problems and
+they had never corrected them.  -- that problem still is on the random
+number generator, what 25 years later?
+
+*At least.  Yeah, it was almost exactly 25 years ago.
+
+Quarter of a century ago.
+
+*Yeah, right.
+
+Quarter of a century -- point it out to them?  Nope.  It's still on
+after a quarter of a century.  So that is another issue --.
+
+21.2
+
+Again, please -- for electronic version on Ken Lindahl's thesis.  It
+doesn't exactly -- today.
+
+*Well, that can be arranged.  That can be arranged.
+
+But at any rate, please, please, please do that first before you even
+think of -- out. Otherwise it's a waste of your time.
+
+*Oh yeah, I'm not going to just type it in.
+
+You've already taken the first couple of --.
+
+## Organization of data in relational database
+
+### Access, PostgresQL
+
+### Beyond: H5(?) used for satellite images, microarray data
+
+## Tying data to events
+

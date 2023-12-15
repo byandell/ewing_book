@@ -1,0 +1,334 @@
+# Reusable, Extensible Simulation Code {#code}
+
+## Tabular data
+
+Biologists want intimate control of simulation details to incorporate
+realism. Typically this involves events, that is significant
+biological changes that can be marked and counted. The events
+themselves can often be laid out in tables, which we can then use as
+raw inputs to simulations. These tables not only describe the life
+events, but they also identify the organisms, units, and other
+features, allowing the simulation software itself to be free of
+specific reference to any one system. At present these files all
+reside in library(ewing) in the data folder.
+
+### Organism Features
+
+The simulation code has no organism information per se. All organism
+information is designed by the scientist in tables as ordinary text
+files that can be incorporated into our internal structure, which is
+appropriately called Organism. This internal structure contains
+simulation features, schedules for future events, and process
+information for interactions among organisms. For our prototype
+simulation, the primary organisms are Red Scale, Aphytis, Encarsia,
+Comperiella and a greatly simplified orange tree as a substrate. Here,
+orange is actually a static substrate with certain properties that are
+important for the life histories of the other organisms.  The "master"
+information on these organisms is in the organism.features.txt file:
+
+\begin{verbatim}
+	units	offspring	attack	substrate	deplete	subclass	parasite	move
+redscale	DD	10	NA	orange	100	host	NA	crawler
+aphytis	hr	redscale	redscale	orange	24	adult	ecto	adult
+encarsia	hr	redscale	redscale	orange	12	adult	endo	adult
+comperiella hr	redscale	redscale	orange	12	adult	endo	adult
+orange	NA	NA	NA	NA	NA	NA	NA	NA
+\end{verbatim}
+
+Notice that the orange "organism" has missing values (NA) for the
+features since it is considered static.  In addition, redscale
+(Californai Red Scale) has no attack feature, as it is only a host for
+aphytis (Aphytis sp.), Encarsia (Encarsia sp.), Comperiella and other
+parasitoids.  Some features such as offspring may have either a number
+or the name another organism.  The number signifies a mean value,
+while the name of an organism signifies that there is some interaction
+for this feature.  For instance, Red Scale have on average 10
+offspring, but the number of Aphytis offspring depends on the
+condition of its Red Scale host.  Units of "biological time" may
+differ among organisms; Red Scale is temperature sensitive and grows
+by degree-days (DD), while Aphytis is diurnal, dependent on hours
+(hr). Other columns have to do with other features of the simulation:
+
+\begin{verbatim}
+units	biological time units (DD=degree-days, hr=hours)
+offspring	mean number of offspring, or name of host
+attack	name of host to be attacked
+substrate	substrate on which organism lives
+deplete	time in units to energy depletion worth 1 offspring
+subclass	age class of life stages to be plotted by substrate
+parasite	type of parasite or parasitoid
+move	life stage that can move
+\end{verbatim}
+
+Note that we may have to model species differently in different
+environments. This could be done in a variety of ways. For instance,
+we could include another column for environment in the above table,
+with corresponding changes in code.
+
+
+### Organism Future Events
+
+An organism may have many potential future events, many of which
+correspond to stages of its life history. Other events, such as sex
+determination, feeding, starvation and death can be included as
+well. For instance, here are the future event schedules and other
+information by life stages for Red Scale, in object
+future.redscale.txt:
+
+\begin{verbatim}
+        current       future fid DD pch     color ageclass  event init
+1       crawler first.instar   2 55   0     brown  crawler future   10
+2  first.instar   first.molt   3 92   1     green     host future    4
+3    first.molt     second.1   4 48   1     green     host future    4
+4      second.1     second.2   5 30   2 turquoise     host future    1
+5      second.2     second.3   6 30   2 turquoise     host future    1
+6      second.3       female   8 52   2 turquoise     host future    1
+7      second.3         male   9 52   2 turquoise     host future    1
+8        female  second.molt  10  0   2 turquoise     host future    0
+9          male        death  16  0   2 turquoise     host  death    0
+10  second.molt      third.1  11 48   2 turquoise     host future    1
+11      third.1      third.2  12 55   3      blue     host future    1
+12      third.2      third.3  13 55   3      blue     host future    1
+13      third.3       virgin  14 95   3      blue     host future    1
+14       virgin       gravid  15 90   V    violet     host future    1
+15       gravid       gravid  15 10   G     black   gravid  birth    0
+16        death        death  16  0   D       red       NA  death    0
+17      starved        death  16  0   D       red   gravid future    0
+\end{verbatim}
+
+The times here are the mean number of degree-days (DD) to the
+event. The time to a scheduled future event, say from third.1 to
+third.2 would be a random draw T from the future event distribution,
+in this case F(t) = 1-exp(-M(t/55)). The mean value function M(t) is
+assumed to be the identity unless it is otherwise provided (see the
+next section). The future events for Aphytis, future.aphytis.txt, are
+similar with some notable exceptions:
+
+\begin{verbatim}
+    current   future fid  hr pch     color ageclass   event init
+1       egg   larvae   2  48   E     brown    young  future   10
+2    larvae prepupae   3  60   L     green    young  future    5
+3  prepupae    pupae   4  24   p turquoise    young  future    3
+4     pupae    adult   5 144   P      blue    young  future    2
+5     adult     feed   7  12   F    orange    adult  future    1
+6     adult     ovip   8  12   H    purple    adult  future    0
+7      feed    adult   5  12   F    orange    adult  attack    0
+8      ovip    adult   5  12   H    purple    adult  attack    0
+9     death    death   9   0   D       red       NA   death    0
+10     male    death   9   0   D       red    adult   death    0
+11  starved    death   9   0   D       red    adult   death    0
+\end{verbatim}
+
+Here the adult Aphytis may either feed or oviposit (ovip) on its
+host. Future events 5 and 6 are competing risks, which in this case
+are sorted out in the simulation code based on the size of the
+selected host. [This is one part that is still particular to this
+host-parasitoid system.] The event column identifies the type of
+event; either future event, birth or death (both immediate events); or
+attack (another immediate event that involves interaction with other
+individuals). The "fid" column simplifies some coding when relating
+current to future stages. The last column specifies the initial
+relative abundance of life stages: both species are weighted heavily
+toward young organisms.
+
+The other columns for both Red Scale and Aphytis are used for
+plotting. The pch and color are used when plotting the spatial
+arrangement (temporarily disconnected), while the ageclass specifies
+how the life events are to be summarized. Recall that Red Scale "host"
+and Aphytis "adult" ageclasses are to be plotted by substrate
+according to the organism feature file.
+
+### Interactions among Organisms
+
+The third type of spreadsheet concerns interactions among
+organisms. While this could be encoded directly into subroutines, such
+a table can provide more generality to the simulation modeling
+system. Here is redscale.aphytis.txt, including information about
+Aphytis can use various stages of Red Scale:
+
+\begin{verbatim}
+              ovip feed offspring male
+crawler          0    0       0.0   NA
+first.instar     0    5       0.0    5
+first.molt       0    2       0.0    5
+second.1         0    5       0.0    5
+second.2         3    2       0.0    5
+second.3         4    1       0.0    5
+second.molt      2    0       0.0    4
+third.1          3    0       1.3    2
+third.2          5    0       1.3    1
+third.3          5    0       1.3    1
+virgin           2    0       2.7    0
+gravid           0    0       0.0   NA
+death            0    0       0.0   NA
+parasite         0    0       0.0   NA
+male             0    0       0.0   NA
+female           0    0       0.0   NA
+\end{verbatim}
+
+Most columns have a 0-5 scale which serve as individual host weights
+during sampling. That is, if there are 10 hosts in the area, Aphytis
+will chose one based on the weights associated with their life
+stage. Thus, Red Scale prefers to oviposit on second and third
+instars, and is more likely to produce male offspring for smaller Red
+Scale. It will feed if the Red Scale is very small. The mean number of
+Aphytis eggs that an emerging Aphytis would have ready to lay is
+dependent on Red Scale stage as well.
+
+The following type of interaction, orange.aphytis.txt, indicates how a
+species interacts with its substrate. In this case, Aphytis can move
+around the orange. Our prototype orange consists of a two-sided leaf,
+a 20-sided orange (icosohedron), and a twig connecting the two. Again,
+a 0-5 scale is employed. This file really only has information about
+movement among fruit-twig-leaf, while a second file, not shown, has
+topological information about movement within each of these
+(e.g. movement on icosohedron is restricted to the three adjacent
+triangles).
+
+\begin{verbatim}
+      substrate side find move fruit twig leaf init
+fr1   fruit        1    5    1     3    2    1    1
+fr2   fruit        2    5    1     3    2    1    1
+fr3   fruit        3    5    1     3    2    1    1
+fr4   fruit        4    5    1     3    2    1    1
+fr5   fruit        5    5    1     3    2    1    1
+fr6   fruit        6    5    1     3    2    1    1
+fr7   fruit        7    5    1     3    2    1    1
+fr8   fruit        8    5    1     3    2    1    1
+fr9   fruit        9    5    1     3    2    1    1
+fr10  fruit       10    5    1     3    2    1    1
+fr11  fruit       11    5    1     3    2    1    1
+fr12  fruit       12    5    1     3    2    1    1
+fr13  fruit       13    5    1     3    2    1    1
+fr14  fruit       14    5    1     3    2    1    1
+fr15  fruit       15    5    1     3    2    1    1
+fr16  fruit       16    5    1     3    2    1    1
+fr17  fruit       17    5    1     3    2    1    1
+fr18  fruit       18    5    1     3    2    1    1
+fr19  fruit       19    5    1     3    2    1    1
+fr20  fruit       20    5    1     3    2    1    1
+twig  twig        NA    1    5     3    1    2    1
+lftop leaf       top    3    3     3    2    1    5
+lfbot leaf    bottom    2    4     3    1    2    0
+\end{verbatim}
+
+Notice that Aphytis is more likely to find fruit than leaf top, and
+twig has the lowest probability.  Also, Aphytis tends to move short
+distances if on a fruit, and long distances if on a twig. Perhaps we
+need only rely on probabilities to transfer between orange components.
+A similar file exists for orange.redscale.txt, with perhaps slightly
+different values.
+
+We are not completely settled on this system, but it provides a
+convenient starting point for spatial simulation. Fine detail movement
+is based on triangular grid system and is introduced in Section 5.
+
+### Organism profiles
+
+### Species life histories
+
+### Interaction processes
+
+### Spatial movement on icosohedron, large substrate structures
+
+## Event subroutines
+
+Once the various organism files discussed in the previous section have
+been constructed and placed in the appropriate location, the
+simulation is ready to be initialized.  The simulation is initialized
+with the command:
+
+\begin{verbatim}
+	init.simulation ( myrun, c("redscale","aphytis") )
+\end{verbatim}
+
+In this example, this command reads in the appropriate information for
+both Red Scale and Aphytis, and any dependent organisms identified in
+the organism.features.txt file (in this case, orange), and it prompts
+the user for the number of organisms, and initializes the
+populations. It also initializes other simulation features, such as
+the temperature regime (see Section 5). Once the simulation is
+initialized, the simulation is executed by using the command
+
+\begin{verbatim}
+	step.future(myrun,1000)
+\end{verbatim}
+
+This command executes 1000 future events of reproduction, death,
+parasitization and aging through the various life stages. The summary
+plot changes with each 50 events.  In this de novo use, the time to
+next event is drawn from an exponential with the mean time to event
+given by the "future.redscale.txt " file as explained in the previous
+section.  During a simulation, as currently implemented, there are two
+graphical time summaries for each species.  These show number of
+organisms by age class (left) and number of organisms by spatial
+location (right).  For instance, Red Scale is counted by crawler,
+host, and gravid (host is all stages that can be parasitized by
+Aphytis), while Aphytis is counted by young and adult. The three
+spatial locations are leaf, twig and fruit.
+
+<<Figure 1 here>>
+
+Summary tables are provided at the end of the run indicating timing
+results and, if desired, age distributions before, during and after
+the simulation.
+
+Changing the number of either species, or the relative timing of
+future events, can lead to an exponential growth or decay in the Red
+Scale population. The simulation displayed in Figure 1 is far from
+equilibrium.  Because the system is inherently nonlinear, it is
+extremely hard to predict behavior. It is challenging to adjust the
+number of each species, time to events, movement and number of
+offspring to balance the population.
+
+### Competing Risk Structure
+
+The simulation sorts all events such that the next future event has
+minimal time. This sort technique typically only involves rearranging
+one or two events, and is very fast.  Essentially we are reordering a
+priority queue in such a way that the top of queue contains the next
+event to be processed (see Section 6.2 for details).  That event is
+processed by setting the current event to the future event, processing
+any immediate events (e.g. scheduling birth of crawlers for gravid
+females), and then proceeding to the next event.  Death is treated in
+this way as an immediate event.  At the time of death, the individual
+is removed from the simulation.  Competing risks arise when there are
+more than one possible future events following a given current event.
+
+The competing risk structure has been described in a companion paper
+(Ewing et al. 2001) and is only briefly referred to here. The
+important steps in the current implementation are
+
+(1)	efficient computation of M(?) and M-1(?) using forward and backward splines
+
+(2)	static lists of individual characteristics that do not change over the span
+
+(3)	interaction among species
+
+In a future development of the simulation, we plan to incorporate more
+realistic settings and feedbacks.  Currently the competing risk
+structure for Aphytis allows for a choice between feeding and
+ovipositing, as shown in the future event structure of the previous
+section. Aphytis proceeds from egg to larvae to prepupae to pupae to
+adult with mean future event times in DD as indicated
+earlier. However, in the adult stage, Aphytis may either feed or
+oviposit.  After each feed or oviposit, the adult has a number of
+choices.  Feeding sustains the insect, allowing it to potentially
+oviposit more offspring at a later time, while ovipositing depletes
+resources, but contributes to survival of the species.  The choice
+Aphytis makes depends on a number of environmental factors including
+the number of eggs it has in reserve, the last time ovipositing took
+place, the availability of hosts, and the condition of the Aphytis in
+question.  The decision to oviposit is also determined by the size of
+the scale and the number of Aphytis eggs previously oviposited. Many
+but not all of these features have been implemented.
+
+### Birth, death
+
+### Life stages
+
+### Search, feed
+
+## Bayesian logic programming
+
+### Combining Bayesian networks and ProLog

@@ -1,0 +1,285 @@
+# Probabilistic Nature of Individual Behavior {#prob}
+
+The intricacies of a biological system emerge at the individual
+level. What properties should simulations possess to capture the
+structure and dynamics of a population of individuals? While a
+biological system has a complete state description across all
+individuals at any instant, individuals only have partial knowledge
+and must make probabilistic choices about future behavior. Each
+individual is partially oblivious to the `optimal' sequence favored by
+the biological system to improve its quality of life.
+
+Each individual has a biased view of its environment, and operates
+with information that is subjective, incomplete and at times
+erroneous. The system is stochastic or `fuzzy' (Zadeh 1973) since
+future events for an individual are subject to random decisions based
+on imperfect system knowledge. Each individual has instincts, or
+strategies, that evolved as species characteristics. In addition, it
+possesses certain morphological and ethological features based on its
+unique heredity that may improve species, but not necessarily
+individual, survival. Some `primitive' entities can have reasonably
+constant instincts during their lifespan. Highly developed individuals
+experience periods of learning that transform their ability to exploit
+the environment. 
+
+Holling (1966) analyzed the functional response of the praying mantis
+(Hierodula crossa, Giglio-Tos.) to a population of houseflies (Musca
+domestica) finding that hunting behavior is intrinsically
+probabilistic. Holling decomposed mantid predation into three basic
+components:
+
+1.	Rate of successful search, depending on (a) reactive distance
+  of the predator to prey, (b) proportion of prey successfully
+  attacked, and movement speed of the (c) predator and (d) prey.
+
+2.	Time prey are exposed to predator, depending on activities (a)
+  related and (b) not related to prey feeding.
+
+3.	Time spent handling each prey, including (a) pursuing and
+  subduing, (b) eating, and (c) digesting afterward.
+
+Holling's analysis suggests that predator-prey interactions are
+sequences of events involving individuals, not densities. They occur
+only under certain conditions that depend on the morphological and
+ethological characteristics of both predator and prey. A predator-prey
+interaction event depends on many conditional probabilities that in
+turn depend upon the states of a particular pair of predator and prey.
+
+Since an interaction is inherently probabilistic, uniquely dependent
+upon the individuals involved, how can we transform these
+discontinuous, heterogeneous, probabilistic data into piecewise
+continuous predator-prey models? Analytical solutions surely
+fail. Simulations tend to judiciously ignore as many variables as
+possible to reduce dimensionality. This introduces uncertainty by
+sampling the state space, making the system more probabilistic.
+
+The usefulness of any model depends on its ability to suggest clearer
+understanding of the data collected. Conversely, modeling of a
+biological system is intrinsically dependent on what is measured and
+how individuals are sampled. Sparse sampling `quantizes' a biological
+system, restricting what facets of an individual are studied, leading
+to incomplete descriptions of the dynamics of each organism. The
+researcher observes certain individuals and assigns them to a sequence
+of quantifiable states. Unobserved individuals have unknown states,
+leading to a probabilistic projection of the whole population onto the
+states of those that are observed. Thus the measurement process chosen
+by the biologist limits the class of models for the structure and
+dynamics of the biological system. Further, the process of measurement
+and understanding of that system evolves over weeks or years of
+investigation.
+
+## Properties of an individual
+
+Since individuals are paramount to our approach, we explore more
+thoroughly what an individual is in this section. An individual is so
+complex that any attempt to simulate that organism and its dynamics is
+extremely difficult. Modeling the dynamics of a population at the
+individual level requires defining properties of an individual at an
+arbitrary operational level. The following twelve properties define an
+individual as a higher level living system. They are by no means
+complete, but they limit the type of modeling effort that would be
+acceptable:
+
+ 1.	An organism is inexhaustibly complex.
+ 2.	Its state cannot be completely determined.
+ 3.	It has no natural state-space representation.
+ 4.	It is unique relative to all other organisms.
+ 5.	It changes continuously and irreversibly.
+ 6.	It is unique relative to its own entire past and future.
+ 7.	It is highly organized internally.
+ 8.	It is sharply differentiated from its environment.
+ 9.	It exchanges mass, energy, and information with its environment.
+10.	Its perception of its environment is incomplete, abstract, and
+specialized.
+11.	It has memory of its past that modifies its present behavior.
+12.	It responds to its environment as a discrete integrated unit.
+
+Properties 1, 2, 3, and 7 are related. The internal system of an
+individual is operationally indefinable. A particular organism can be
+partially described in terms of its constituent parts, for instance
+its nervous system. The dynamics of neural systems helps unravel the
+mechanism for transmitting information, but may not be sufficient to
+study memory, which further involves the dynamics of RNA. Under normal
+conditions an organism receives stimuli from hundreds of sources,
+processing based on its unique memory and physiological capacity in a
+nonlinear, non-equilibrium and non-decomposable fashion. A `complete'
+understanding of these internal dynamics would involve a hopelessly
+nonlinear system with hierarchical structure.
+
+Properties 4, 6, 8, 11, and 12 claim that organisms function as
+unique, complete individuals. Each behaves as a unit under a set of
+stimuli able to react uniquely depending upon its present state and
+partial memory of past events. Properties 5 and 9 imply that an
+organism converts mass, energy and information, obeying entropy, but
+is never at equilibrium until it dies. Property 10 says that each
+organism has finite memory, cannot recall all sensed stimuli, and can
+respond to only a few available stimuli.
+
+## Interactions among individuals in community
+
+## Field sampling process
+
+## Quantization of events/states
+
+## Quantization of time/space
+
+## Heisenberg uncertainty principle
+
+We have approached the concept of a `measurement' from a
+mathematical point of view, and not from the point of view of a field
+biologist. The quality of what is called measurement is similar to the
+concept of a decomposition of a Hilbert space in which the measurement
+process and the observer is in some sense an active contributor to the
+determination of the understanding of the system being studied.  We
+are not proposing the existence of some sort of Heisenberg uncertainty
+principle of canonical variables.  Rather we suggest that knowledge of
+the structure and dynamics of a particular system is uniquely
+determined by the measurement that a field biologist performs.
+Further the process of measurement and understanding of that system is
+itself a dynamic process.  For the field biologist, the usefulness of
+any modeling technique is directly related to its ability to suggest
+clearer understanding of the data collected.
+
+## Games of Skill and Chance
+
+Games imitates life. How do the properties of common games reflect
+aspects of a biological system that might be relevant for simulation
+modelling? In the development of Ewing's approach certain properties
+of the biological system--when viewed at the level of resolution of
+the individual--became apparent.  These properties are examined in
+the next three subsections.
+
+### Backgammon
+
+Backgammon is an extremely old game which has been played for
+centuries.  The game has three interesting properties.  First, at any
+given time t, there exists a complete description of the state of the
+game.  Second, all moves are inherently probabilistic, that is, all
+moves are made by the toss of a pair of dice.  Third, given an
+acceptable structure, there exist certain strategies which will
+minimize the chances of `success'.  Certain strategies are preferred
+because the randomizing process is repeated a large number of times
+over the acceptable structure.  The game itself is a true game of
+chance since at any point in the game, the next step is essentially
+random.
+
+The biological situation is similar if we resolve a given population
+to the level of the individuals.  Ewing et al. (1974) asserted
+that from this level of resolution any individual is characterized by
+twelve operational properties, listed below:
+
+\begin{enumerate}
+\item	An organism is inexhaustively complex.
+\item	Its state cannot be completely determined.
+\item	It has no natural state-space representation.
+\item	It is unique relative to all other organisms.
+\item	It changes continuously and irreversibly.
+\item	It is unique relative to its own entire past and future.
+\item	It is highly organized internally.
+\item	It is sharply differentiated from its environment.
+\item	It exchanges mass, energy, and information with its environment.
+\item	Its perception of its environment is incomplete, abstract, and
+specialized.
+\item	It has memory of its past which modifies its present behavior.
+\item	It responds to its environment as a discrete integrated unit.
+\end{enumerate}
+
+From these properties, it is apparent that any individual is so
+complex that, at any given instant in time, the behavior of the
+individual is probabilistic relative to any subset of events which
+are sampled.  Furthermore, the probabilities at a given instant
+will change as a function of the events which occur to that
+individual.  The probabilities themselves have a system of
+probabilistic feedback loops.
+
+At any one instant, the randomizing process essentially forces a
+quasi-equal probability onto the system; that is - complete chaos.
+However, over a large number of events, the structure inherent in
+the biological system become less opaque.  It is this structure
+that favors certain strategies.  An individual's ability to apply
+these strategies to his situation in the system determines his
+ultimate success or failure in the system.
+
+### Bridge
+ 
+Bridge is the second game whose properties we wish to examine.  Unlike
+backgammon, bridge has a randomizing process which is performed once.
+At the beginning of each hand, a certain participant randomizes
+(shuffles) a deck containing fifty-two cards and the cards are dealt
+to each participant.  A complex sequence of bidding occurs in which
+part of the structure of each of the participant's cards are
+revealed.  At some point in the game the bidding stops and an exchange
+of cards takes place.  With each exchange, the structure of each of
+the players hand becomes more apparent, and each player attempts to
+exploit his understanding of the particular structure inherent in the
+game.  Each player is, in essence, operating with incomplete
+information.  Further, it's his understanding of that information
+which determines his tactics--not the actual information.
+In the analogous biological situation, each individual operates with
+information which is subjective and incomplete.  An individual has
+revealed to it, at any given moment in time, only a pat of the
+environment in which it exists.  That individual is operating on the
+basis of incomplete and, at times, erroneous information -- i.e., the
+information is `fuzzy' (Zedah, 1973).  In a realistic biological
+system, an individual has a biased view of his environment.  Through
+the individual's evolutionary processes, it possesses certain
+instincts which are characteristic of its species and through its
+unique hereditary chain it possesses certain morphological and
+ethological characteristics.  In extremely primitive entities the
+initial instincts may be constant for its total lifespan.  For more
+highly developed individuals, long periods of learning can take place
+in which the individual's ability to exploit its environment changes
+as its awareness of the structure of its environment changes, and as
+the actual environment changes.
+ 
+As in backgammon, the individual must exploit its view of its local
+environment.  The researcher must be aware of the individuals
+incomplete understanding of its environment, but that his own
+subjective understanding of the biological system is also incomplete.
+In some senses the researcher is an observer to the game in which he
+is not allowed access to all the rules nor can he look completely at
+any one player's hand, yet he must predict the outcome of the game.
+He has, therefore, an intrinsically different understanding of the
+system.  His view of the system determines his measurement of that
+system (how does he choose to look at a given participant's cards).
+The measurement process is intimately connected to the researcher's
+view of the biological system in question and together they determine
+his predictions.  The researcher is again faced with a probabilistic
+view of a given population which is resolved to the level of
+description of the individual.  The probabilistic approach is
+necessary to handle the problem of incomplete information.
+
+### Chess
+
+Chess is a game of skill played by two players.  Chess is, in
+principle, deterministic. There exists a full set of rules with
+which both players are familiar. At any instant, the complete state
+of the game is, in principle, available to both players, and that
+state space is finite.  
+Why then, is chess considered a complex game?  If one wished to
+examine each possible move for each player for the whole game, i.e.,
+determines each trajectory through the state space for the whole game;
+one is faced with an enormous decision tree.  For a complete game
+there is on the order of 10100 to 10200 possible paths through the
+state space.  Therefore, even though the game of chess is, in
+principle, deterministic and finite; it is, from a practical  or
+operational standpoint, inexhaustively complex.  Because of the
+inherent complexity, it is highly unlikely that any direct numerical
+analog of the game is possible.  It is also obvious that analytic
+solutions are impossible.  By necessity, the game is played
+heuristically.  Due to the high dimensionality of chess, any statement
+of how the game progresses, is operationally a probabilistic
+statement.
+ 
+Suppose that is possible to define a biological situation -- at the
+level of description of the individual -- which is finite and
+deterministic.  Ewing (Ewing, et al., 1974) has shown that even for
+descriptions with an extremely small number of individuals, the
+possibility of numerical solutions becomes operationally impossible
+rather rapidly.  In such situations, there exists the time-honored
+technique of judiciously ignoring as many variables as is possible.
+By ignoring a certain subset of variables, a deterministic system
+becomes a probabilistic system.  Because of the problem of high
+dimensionality in population biology, it becomes necessary to
+subsample the biological state space and the description of that
+population is necessarily probabilistic.

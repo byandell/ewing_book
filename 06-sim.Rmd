@@ -1,0 +1,2138 @@
+# Simulation Mechanics {#sim}
+
+Ideas have been presented elsewhere on a framework for quantitative
+population ethology using event-driven competing risks. In today's
+climate, it is not enough to have an idea--one must have an
+implementation of the idea. To that end, we present the beginnings of
+such a system built on a public domain, statistical system called
+R. We use spline-based graphical tools to craft the mean value
+functions of the competing risk structure, based either on data or on
+prior belief. Spatial location of individuals is developed on a
+hexagonal grid at the resolution of the model, with a triangular
+coordinate system used to reduce computation time for calculation of
+distances. The components can be quickly developed and tested in R,
+and later translated to C for more efficient coding of the most highly
+used loops. We also discuss some of the design requirements that
+affect the development of an efficient competing risk model of large
+problems.
+
+In a previous paper (Ewing et al. 2001) we described an innovative
+modeling technique that allows one to model population dynamics at the
+level of resolution of individual members of a population.  In that
+paper we describe the stochastic framework for such a model, but the
+simulation techniques were not discussed.  The purpose of this paper
+is to discuss a prototype model simulation system and to outline a
+plan for more advanced model development.
+
+Section 2 discusses the choice of software modeling system, namely
+R. Section 3 presents our scheme for conveying information about
+organisms, including species features, life stage events, movement and
+interactions among organisms. Future event scheduling is presented in
+Section 4, showing the competing risk structure and a sample
+simulation run as well as a graphical tool to design curves for
+scheduling future events. Span and resolution in space and time are
+discussed in Section 5. Here triangles form the building blocks for
+spatial relationships, leading to great time savings with little loss
+of precision. Further, the graphical mapping of hours to degree-days
+is presented. Further considerations, including some technical details
+and future plans, are sketched in Section 6.
+
+## Choice of Modeling System
+
+petri nets
+swarms
+stella
+
+The model is being developed in R, one of the S family of statistical
+languages (Venables and Ripley 2000).  This system is in the public
+domain, is easy to learn, and includes standard statistical tools.  In
+addition, it was designed from the start as an object-oriented
+language with device-independent graphical engines.  Its chief
+drawback in this venture is that execution of loops can be slow.  This
+is important since our model is executed serially rather than in
+parallel.  This drawback can be overcome by "hardening" the code for
+efficient computation, by rewriting inner loops in C++, once the basic
+fabric of the operations has stabilized.
+
+We are developing a library of routines specific to the Event-Driven
+Competing Risk modeling effort (Ewing et al. 2001). Assuming one has
+installed the R system and has it running, the library is invoked by
+typing (after the `{\tt >}' prompt):
+
+\begin{verbatim}
+	> library(ewing)
+\end{verbatim}
+
+This attaches a library of objects--data, functions, and possibly C or
+Fortran dynamically linked libraries.
+
+The S system is a flexible and powerful environment for implementing
+statistical ideas that was developed at AT\&T Bell Laboratories by Rick
+Becker, John Chambers and Allan Wilks. This system allows quick
+implementation of ideas, with easy-to-use graphical display tools that
+provide publication quality figures. The S system is available in a
+commercial form as S-plus from MathSoft (www.mathsoft.com) with GUI
+pull-down menus and dialogs. The book by Venables and Ripley (1999) is
+an excellent introduction to S, with comprehensive overview of basic
+and advanced features.
+
+Recently, R has emerged as a public domain implementation "not
+entirely unlike" S, initially developed by Ross Ihaka and Robert
+Gentleman and now maintained by an informal, international team of
+volunteers known as the R Project (www.r-project.org). While it does
+not have all the features of S or S-plus, such as Trellis graphics and
+pull-down menus, it has a solid base and a rapidly growing library of
+contributed routines. Venables and Ripley (2000) has more technical
+detail on programming in the various flavors of S and R.
+
+R is closely aligned with a large effort known as the Omega Project
+(www.omegahat.org) which will eventually provide an open-source
+development framework for statistical applications, interfacing with
+statistical manipulation environments, database systems and graphical
+display technologies using CORBA. This system has been under
+development since July 1998 using Java in a web-based setting. We
+anticipate migrating to Omega in the future, which should be easy
+since the R group are heavily involved in this development.
+
+## Cubic splines
+
+The major theme of this work in quantitative population ethology is
+the development of a modeling system that captures the essential
+features observed by field ecologists within a sound mathematical
+framework, presented with intuitive graphical tools. To accomplish
+this, it is essential to have graphical design of the mean value
+functions M(?) that are used throughout the modeling process to
+schedule future events. At present, we use the R implementation (due
+to Bates and Venables) of forward and backward cubic splines in a
+graphical setting where the user can select knots to create the shape
+needed.
+
+One of the beauties of quantitative population ethology is the ability
+for a scientist to design mean value curves for each future event
+based on data and experience.  In order to do this, we have developed
+an interactive system to craft such curves, which are then made
+available to the simulation.  The underpinning of this system is a set
+of forward and backward interpolating splines as implemented in R by
+Bates and Venables in library(splines).  The back-spline is not
+actually a spline, but it functions much the same.  The routines are
+simple to use:
+
+\begin{verbatim}
+	> library(splines)
+	> meanvalue <- interpSpline( data$x, data$y )
+	> invmvalue <- backSpline( meanvalue )
+\end{verbatim}
+
+Here the data are columns "x" and "y" of the data frame "data".  These
+resultant structures include the spline knots and coefficients, and
+are readily understood by R for plotting.  One could for instance
+design the mean value curve for the future event of "virgin" by
+invoking the ewing library routine:
+
+\begin{verbatim}
+	> init.meanvalue( redscale, "virgin" )
+\end{verbatim}
+
+This opens a graphics window with a side bar. The default is a
+constant rate of 1, leading to a linear mean value curve with slope
+1. In this example, the mean value is plotted from 1 to 5 time units,
+as the probability for an event beyond 5 units with this rate is less
+than .01.  Notice that "replace" and "mean value" are both active, as
+indicated by their green color.  That is, the shape of the curve can
+be modified using the cursor and clicking to move one or more nodes. 
+
+<<Figure 2 here>>
+
+Figure 2(a) has three nodes moved upward to yield a slight curve. The
+blue line is the forward spline, while the red line is the backward
+spline.  Notice that in this case they do not quite agree at the upper
+end.  Further, if the forward spline is not monotonic, the backspline
+will not work and is not plotted.  There is a certain art in designing
+cubic spline curves, especially when using back-splines. Here it might
+be useful to add a point at the upper end to bring the blue and red
+lines together.
+
+The "rescale" button allows you to enter new limits for "time" and
+"mean value" (you have to switch over to the command screen). The
+"shrink to 1" button is important.  This command attempts to shrink
+the curve toward a mean of 1 event over [0,8). This standardization of
+the mean value curve is needed for the future event simulations. Note
+that the curve is extrapolated linearly past the upper time limit.
+
+It is also possible to work on the curve as a cumulative probability
+by clicking the word "probability" (Figure 2(b)). The vertical axes
+switch sides, but you can still move nodes around. Here the math is
+operating on the mean value curve, although you are viewing the
+cumulative probability. Here the discrepancy at the upper tail between
+the forward and backward spline is not noticeable.  Hence, one might
+choose to ignore it for design purposes.
+
+The rate, or derivative of the mean value function, can be plotted
+(Figure 3), but one cannot redesign this curve at present.  The rate
+is a quadratic spline, an exact derivative of the mean value function.
+Similar comments apply to the density, and to the derivative of
+probability.
+
+<<Figure 3 here>>
+
+The Kolmogorov-Smirov statistic can provide error bounds for data
+driven cumulative probability and cumulative hazard curves.  For
+instance, one can put curves above and below for realizations that
+almost always deviate from the true (10\% in blue), exceed half the
+time (50\% in green), and almost never are crossed (90\% in red). The
+width of these bands depends on the inverse of square root of sample
+size.  This could be done as bands around an empirical curve or as
+bands around estimated curves.  For instance, one can notice that
+several different curves would fit any particular set of data. This is
+implemented with a new "data" button, but is not shown here.
+
+The advantage of such a system is that one can in some situations
+begin with data and then adjust the curve based on other information.
+If there are many data, then the confidence limits would be tight and
+the curve well determined from the start.  However, the data may be
+obtained from an indirect measure of the process, or may be rather
+imprecise.  Small data sets would have wide confidence limits,
+highlighting how little one really knows about their shape. One might
+then feel justified in playing with the shape, which would allow an
+investigation of sensitivity.
+Splines and Bayesian Statistics
+
+Splines
+
+9.12
+
+OK, what I did is after we had covered most of the stuff last time.  I
+had sat down last time and reread the entire report and it blew my
+mind the stuff that's in there --- and there's even a bunch of notes
+at the very end where, that were never transcribed.  They had all the
+notes though, I was wondering if anybody got ---.  There was even
+that.  Those notes were there.  The only thing that's missing is some
+of the --- stuff where I chose some much nicer --- to work ---.  ---
+with, you say hey, what do you call them?  Escalating functions ---
+they go exactly through data point.  Is that right?
+
+*Interpolating.
+
+Interpolating functions, OK.  Interpolating, thank you, interpolating
+functions, they go exactly through data points are really a whole lot
+--- that I would work, was working, insist that your data move exactly
+through your own data point.  It was crucial to them that the data
+points that they had measured on their own stuff was that the point
+--- had interpolated went exactly through their data points and these
+interpolating functions then, be they polynomials, that was
+traditionally used at that time, whatever --- you needed to get a
+degrees of freedom, but go through the points.
+
+But that sort of ---, first find out about --- unstable polynomials
+because you could get a sudden 7 or 8 degree or 10 degree polynomial
+to --- or log the function or ---, try to use the same function on
+biological data and ---.  And that's, I had already gotten into using
+APL has laid down, most APL --- and some script --- my dissertation
+and it turned out while I was writing with it, and why --- figured
+that I could just do the, you know try --- type of interpolation on
+piecewise smooth, third degree equations.
+
+And it was, I almost thought I had something publishable and now it
+turns out that 100 years ago --- came out with --- because somebody
+finally dug out of the literature.  So --- were the same, they were
+describing --- or also interpolating functions.  But the smoothness
+properties are really important and some of the other --- like that is
+really important and the thing, if you, I --- the, had calculated the
+statistics for what made sense if you let the functionalism up a
+little bit and --- in terms of the ---.
+
+*Common Graf.
+
+Statistic.  Then it said it much better.  And that was your real
+distribution free method, or figuring out how to bring your data
+points --- so using that --- type of function for doing the fitting, I
+found that I could get a better --- using, well at times they were
+called B spline and also under those circumstances I could then have a
+very --- metric ways that a biologist could easily understand it cuz
+they're both visual, need to view the data, because the B spline you
+--- Koppel or coincidence points and there was a spot --- points ---
+without having the functions ---.
+
+But the B spline, that actually frees up the direction so if you got
+--- that you really can't do it, and yet you --- that you know from
+the data, or the nature of --- the direction --- or maybe the --- the
+distribution --- so what you need to do is just put one extra point in
+the direction you want to go.
+
+And also you don't have to be fooling around, I absolutely, I hated,
+hated this busy --- because they have all these nasty properties, I
+don't know how you have to line points and do internal things and
+point things internal to the points --- very natural thing I just
+described.  And that's why I had gone there, I had such a fantastic
+argument --- the fact that he was insisting on using a basic building
+block and postscript but --- been using the --- in terms of using ---
+that wasn't technical and I was already onto that point, on to ---
+which --- already described.
+
+And it looks like that research paper ---, nailed it perfectly on
+where --- should be --- of B spline and if you don't have --- computer
+graphics, --- be the way to go.  But on the other hand, --- overkill
+for them.  So B spline seemed to be just the right combination, which
+--- lightly so it didn't have to exactly interpolate the data points
+because that made no sense in the statistical ---
+
+We were describing anyway, in spite of people's beliefs to the
+contrary, and it also gave you the ways of working the control,
+additional control --- in a very natural geometric way that biologists
+can quickly understand.  And I also ran some --- and it's relationship
+to the --- statistic or the ---, what is that?
+
+*Well the common Graf statistic.
+
+OK, that particular one, OK, you know Common Graf statistic.  And the
+other thing is that I had been looking at the truly blew my mind ---
+and had --- and the techniques related to --- statistics, am I saying
+that right?
+
+*Uh huh.
+
+--- statistics, and percentages of all the sample based on the order
+of  statistics, you have --- totally distribution free --- where you
+hadn't given --- sensitivity.  ---- as the absolute best and most
+fabulous normal distribution when you have an exact normal
+distribution or a completely linear system, or complete normal system,
+what can I say.  You see even, ---  plus the sensitivity if I remember
+it, of the task.  They don't take much contamination to totally screw
+up the normal distribution, is that right?
+
+*That's right.
+
+So on the one hand, here I was finding everywhere I was looking in the
+real ---- mind boggling and --- I just realized the piece I wanted to
+say something on, because it involved generating normal distributions
+later on.  We can come back to that, I won't forget it.  So anyway,
+the normal distribution even was a --- contamination, you end up ---
+that for sensitivity with --- normal, and yet these other say
+perfectly --- and they, as I, that statistic I just described would
+totally --- you didn't give up anything on fractal.  It could be a
+pure fractal distribution --- and the --- the sensitivity of a normal
+distribution with no contamination.  Is that right?
+
+*Yeah.
+
+But just, cuz you see, all I'm trying to do is yank some of that ---
+there at Cal Berkeley, OK?  And the stuff that never got into the
+notes because of that.  But they're like I say, notes of the point
+where we got on track further into the older statistic stuff but ---
+binomial technique of searching for the next, for the false value, or
+--- statistic for, no, whatever, anyway it was the one that got in
+the.
+
+*Bisection.
+
+Yeah, right.
+
+*Bisection.
+
+It was an ---, just one niche away of making it so you have a really
+good --- way of looking for the smallest value in the set.  Less
+history, less history, here's a diagram ---, less history,  I want to
+cry.
+
+*Volume 2 I believe.
+
+It was less history.  It gave you a log, order log ---.  You get an
+arbitrarily large sample and get --- just mind boggling.  At the same
+time if you had just a few --- then the directed rings they were using
+turned out to be ---.  All that work had already been done, the ---
+the work, how that worked out ---.  If you had a small sample, a small
+population, or small dimensionality, the --- that --- for the minimum,
+the minimal of the set.  If you had a thousand, ten thousand, a
+hundred thousand, a million, you could push a billion population and
+not have it nailed on that one because it's so in a --- function. 
+
+Anyway, so Knuth did them again.  What was all to blame on mine, right
+in that very last time when I was sorting through the --- up there,
+the math department, the computer science department, their ---.  I
+thought I'd just describe them to you.  From the way you're nodding
+your head it looks like that's sort of the way that the long-term
+things had actually held together.
+
+You know sometimes people will claim or try something.  Then there is
+a mistake or it had very limited range of value to work in.  At any
+rate, the B-splines so because you see the --- their data must be
+exact or has to have an interpolating function to --- and I guess,
+you're thinking about it in terms of, like a --- system in --- Robert
+May?
+
+*Robert May.
+
+So --- I just, OK, I could see why the people with that kind of an
+orientation --- would indeed insist on interpolating function.  In
+view of things measured --- exact, all you need is just the
+differential equations --- describing population -- population, rates
+of --- and blah blah blah.  Had population parameter played --- this
+is exact.
+
+*But you need to know it exact all the way up.  Not exact to three
+decimal places.
+
+I guess that's part of the reason why I was sort of  --- go back to
+interpolating functions for any of the data that I had to do the
+experimenters with on the program.  It didn't seem to matter what the
+program ---.  But it turns out, then in terms of a completely --- that
+doesn't give you as a good a fit and the B-splines actually work
+better.  And all that junk as distribution --- each level.  Blows your
+mind.  You could probably --- because --- you couldn't --- gee it
+works so maybe I'm, where is the other tenth percentile or --- tenth
+percentile, so is that right?  Is that?
+
+10.1
+
+*You were talking about interpolating splines and that you do much
+better if you don't interpolate.   You were talking in terms of
+evaluating using a Kolmogorov statistic and how biologists wanted to
+have curves that went right through their data points, but you did
+much better if you didn't interpolate.
+
+Yeah, and it turned out that I could get a better bound by using the
+distribution. OK, and the thing is that so, the underlying statistic
+was the ideal statistic for, it was the ideal statistic for
+characterizing bounds on the thing.  Then the interpolating function.
+The hermite spline which is, one reason it didn't do as good a job as
+the B spline.  To say nothing of the fact that, and the B spline had
+the other qualities I already described in terms of laying it out in a
+manner that would be geometrically intuitive easy for say a biologist
+to make use of.
+
+11.8
+
+As I've said before, and it's interesting that Jim remembers also my
+getting up, running, or adding, before you get together ---.  What do
+you call, the cubic spline?
+
+*Yeah.
+
+And the interesting other side though is what I remember, I tried a
+variety of things at different times.  It turns out if you start
+moving into a higher degree equation, but of course trying to invert
+now is expensive and sometimes it doesn't even work because you reach
+unstable things in the process trying to calculate orthogonal
+polynomials, for example.
+
+And was it Bellman, who was the numerical --- I think of AT\&T's ---.
+Was it Bellman?  I can't remember.  But at any rate, he came up with
+the idea of approximately --- function.  He noticed what the process
+was doing was to space or --- out ---.  He could do almost the same
+thing by assigning fractions to the roots that were easy to calculate
+and that also in ---.  He had almost a ---.  That was good enough so
+it wouldn't explode in the calculation, which is also sort of an
+intriguing idea.
+
+Interesting but still what do you do when you got 20 items, 20 animals
+in the population?  It gets a bit cumbersome again, so there's this
+problem of bridging to the ---.  The cubic spline seemed to have the
+best properties that I can see and it doesn't seem to blow up anyway
+with the larger numbers of samples.  
+
+*And there's been a lot done with cubic splines.  There's a lot of
+nice theory and it's been used in a lot of different settings very
+effectively.  So it's very adaptable.
+
+Nice to work with.
+
+*Yeah, it's a nice system to work with.  Good code.  I actually worked
+on cubic splines in Madison.  I have a couple papers on splines.
+
+18.11
+
+-- engineering shouldn't be all the -- to factor in some that maybe
+your pluses or other thing -- and should be put aside for some case
+--.  Cuz when you get out there and you're finally in the, and you're
+looking -- mathematician you find you almost never do -- proofs.  You
+almost always do it the contradiction of applying -- with the middle.
+Am I right there?  Boy am I -- which maybe be totally fallacious.  But
+as I remember, that one of the things that made it because of the --
+you could set up a contradictory condition so you yourself wouldn't be
+-- and then move through the steps of a proof that would then you
+would prove the thing out because of the --.  Once you start to
+include an e in the single piece in the middle, you'd then have to do
+a bunch more general constructed proofs and you would be surprised all
+the mathematics done in a constructive way.  That's another just
+off-the-wall sort of thing.  But it's a problem.
+
+Somehow you got to factor in the appropriate levels of -- you're
+really looking at and -- you've got a big -- for a log function.  So
+what we had already done was the transfer, a pre-transfer of this
+variable from, the -- statistics approximated was a smoothing type of
+interpolation to get a metric, a triple, what is it?  A triple?
+What's the spline function? Spline function.  We were basically
+interpolating these things then with a spline function that had a
+smoothing property.  -- these things were a bitch in terms of
+crookedness.  Basically if you plotted and just arbitrarily -- and yet
+all that -- and you'd look at it -- doing an underlying process or see
+a complete -- process as compared to -- for a year, for births and
+deaths of people that --, that's very jagged.  You accumulate tens of
+thousands or even millions of people, it's a pretty small function.
+So -- is also using the appropriate type of order statistics across
+things that are like the statistical techniques that are safe, used in
+demographics.  Demographics, that's right, isn't it?
+
+*Yeah.
+
+So that's another fragment that's supposed to be in there but it also
+was a way of -- parts of that so you wouldn't have -- some reasonable
+way.  And then what you did is you took the spline function, you
+plotted this, you took the logging of data or the exponential, I mean
+the exponential of the data, and that's the one that you'd actually
+compute with.  So -- wasn't even hard to compute a log or exponential
+function in the process of running the model.
+
+By the time you had transferred into this low -- dimension, high multi
+dimensional, 32 byte integer across all dimensions that you needed,
+you'd use the right amount for biological reality.  You'd then hop
+across the things like gangbusters because you're doing computations
+that were really fast, they were the simple additions.
+
+20.17
+
+Lot of history.  And -- very important piece of the modeling technique
+but how to tie the detailed information where we put out that one
+example say of the depth of the -- what was this thing?  It was on the
+-- problem from biology.  It's in there.
+
+*You're not talking about the flour beetles?
+
+No, the flour beetles are another whole issue.   Not what I meant was.
+
+*No, that's not it then.
+
+Because the flour beetles were another whole direction.  The name --
+people they all thought we were wrong.  They really disagreed very
+strongly with the -- the fact that the direction we -- biology.
+
+*Elegant mathematics.
+
+Elegant math, yeah.  And -- tricks just really made them go like gang
+busters.  Also very, it seemed to me to be very particular.
+
+*Are you talking about the bark beetle problem?
+
+No, what I'm saying is that we -- an example for the cubic B spline
+from classic data from biology.  But at any rate, there's a whole
+issue is the thing that we also need to -- .  It's easy for people to
+use the kind of data that -- collected for the bark beetle.  It's just
+mind boggling how numerical and -- check -- just incredible.
+Cross-disciplinary data collection.  Something that's never done. Some
+-- on the same system.
+
+So we had -- structure, we had data, we had -- behavior, we had--, we
+had maps of the forest and their distribution and on and on, -- goes
+on forever.  Part of the thing is how can you have this detail, a
+beautifully done study, with all of the numerical stuff and yet have
+the --.  If I put these two trees -- close together in our spacing, I
+would expect an increase in the rate of the root disease to move
+between the roots.  Or if I had this increase in the population I
+would expect a kind of death of trees unless I'm down in an area --
+where you have -- pollution -- so thin that it destroys the beetles so
+they can't go to healthy --.
+
+How do you then factor in the direction and problems like that?  That
+was -- was aimed at also.  You see very often you have some pretty
+good ideas of the general shape of birth rates and death rates, you
+know, of some animal -- boy it won't be very young before it's born.
+It won't be very young after he dies.  Very often things -- have a
+tendency to obscure that kind of information because of the way --
+time on top.
+
+*Yeah, it's collapsed across space and time.
+
+And the way that, because it was, the way it was collapsing stuff, it
+was -- data from two totally different times and spaces -- animal --
+history, -- the age and -- with and egg and pupa -- if I remember.  Is
+that right?
+
+*Yes, that's right.
+
+Just off the wall remember -- long time ago.
+
+*Yeah, cuz the eggs and the pupa don't move.
+
+-- together and larva, adults do move so -- together.  You totally
+combine the egg structure --. If you were a person that did statistics
+on people, what's the study of that stuff, demography?
+
+*Yes.
+
+For example, and you were collecting all different kinds of birth
+data, death data, and so on for human population, and then you,
+somebody did something like that to your data, would you --?  Would
+you --?  How about the whole -- totally?
+
+*Right.  Yeah, but it's hard to do anything analytical unless you make
+those kind of simplified assumptions.  Then you need to go to some
+sort of Monte Carlo method because you can't really do the analytical
+work if you build in a sufficient amount of biology. 
+
+Yeah, at the very minimum you're going to need a Monte Carlo.
+
+*Yeah, unless you're just looking at physical properties of the
+environment.  Soil properties.
+
+And all of a sudden that turns out to not be simple either, has it?
+
+*Yeah, that's true.
+
+Has that turned out to be so simple?
+
+*No.  I have a geology thesis in my car that I'm reading on this
+trip.  No, it's very complicated.
+
+And when you get off on that part of the world, circles are not exact
+circles any more.  They are maybe a -- sort of round and may be
+centered on the system. You may be very interested in say how far you
+are from the -- of a tree to tell you how likely they are to pass on
+disease onto some --, right?  Or how far you are from a given tree in
+terms of behavior, both disease and behavior say for the bark beetles
+attacking and so on.  Then once they've -- the tree -- rising.  
+
+Boy is that structured.  And structure on a system indeed is sort of a
+polar system.  It is a polar system.  But it sure is not an exact
+polar system.  And the trouble is if you try to move over and it's
+just like that normal distribution, is a real pain in the tail to
+structure exactly.  You can -- pain in the butt to try to connect
+exactly.  And the more precision you need, the more hit you get on
+trying to calculate them.  So to be very exact mathematics, boy it
+costs you dearly -- machine -- you're going to need to make things
+work.
+
+That's a whole other issue but also is a very important one in terms
+of what's reasonable and --.  Not only a mathematician -- but the
+biology ought to figure out what they're doing too. -- modeling effort
+in a reasonable way and then -- runs be able to look say at the Monte
+Carlo run and say oh gee, this combination with these other ones --
+where this other combination hardly hit any trees at all.  And if --
+air pollution -- gee that's -- bark beetle -- food resource, and so
+on.  So -- linear problems to deal with --.
+
+Bayesian Statistics
+
+11.9
+
+So that is my general inclination there, OK?  From what I've seen,
+that I can remember and the other thing is anything --- supposed to be
+doing is getting some reality checks on your actual data.  It's
+supposed to be, the way that you're supposed to be plotting the data,
+you're going to need an interactive system that can also plot the ---
+or that data.  And then you're going to need to factor in deviant type
+statistics to then weight it and ---.
+
+*Yeah, it is either heads or tails.
+
+What?
+
+*It actually is either heads or tails.  There's no chance about it.
+
+Well it's a, --- write about the --- distribution ---, if you're not,
+if you don't take the days in assumption and you let a classical
+approach, which is really ---, I am right that it's a U-shaped
+distribution for the ---.
+
+*I think that's right, yeah.
+
+So anyway.
+
+*You know I didn't get much training in Bayesian methods and I've been
+learning it, learning by doing and learning from students over the
+last 4 or 5 years about Bayesian methods so I've gone into some
+problems in genetics where Bayesian approaches seem to be the natural
+approaches to take in a lot of them --- technology, so.
+
+Cuz you have both, in the genetic thing you have both.  Sometimes you
+can have larger amounts of experimental data already collected
+available to you.  And you also have some --- ways --- combine genetic
+rules.
+
+*Right.
+
+So how do you put the two together in a reasonable way?  --- classical
+--- are great for that.  I don'' think.  It's been a long time, you
+know, you're going to have to see.  Case by case.
+
+*There's some things that you can do readily and some, but then more
+complicated things get tricky.  It depends on who you talk to.  So
+I've been learning about those kinds of approaches and I sure hope
+that we can find your code on the recent implementation and from what
+Dave Wood said, it's quite possible that Don Dahlsten has the stuff
+because he said Don Dahlsten has all the population dynamics stuff, so
+he may have it in some box down in Giltrect so that would be nice.
+
+But at any rate, those together --- meet the end there, because
+somehow you have, it seems if you're going to look at a possibility of
+a woman having a child and know when she might have it and given that
+she --- you know the distribution for children, all the kinds of
+stuff, where --- statistics have been collected on that stuff, you
+know, for years.
+
+So how do you factor in a reasonable way, that kind of --- information
+to a particular set of problems?  I couldn't think of any other way
+other than Bayesian statistics to do it.  It also was the, so are you
+going to be --- to draw and --- and in some cases --- draw points out
+because the simplified --- mix of other earlier data for that ---
+situation and the --- you've done because the --- and that was
+actually drawn on a particular type --- interaction ---.  If you'd
+drawn that same thing on the same statistical --- at least --- assumes
+you sure wouldn't expect ---.
+
+And it's amazing how many biologists seem to think that you should,
+but how far is it reasonable to move and what kind of writings does it
+use and how do you use it.  So I think there's a whole area of sort
+of, it's a graphical approach that would just sort of --- being able
+to be done 20 years ago but now it's easy to do on a computer like I
+have there in the other room which is a --- we could buy at that time.
+
+Small model, lower speed, it just wasn't --- memory, and that's it.
+But we completely had --- to do ---.  And so, so that sort of approach
+needs to be factored into it and --- distribution ---.  You can split
+the data some rather than following it slavishly because that problem
+just isn't --- so that's sort of where it's at ---.  Is there anything
+else?
+
+*I can't think of anything at this point.  I think we've covered a lot
+of ground and I think it's perfectly fine to stop right here and pick
+this up at a later time. I was describing to him the things that had
+gone wrong with our computing.  First the original ---, after they
+screwed everything up telling me --- none of the stuff could be
+changed.
+
+13.15
+
+*I think Don Dahlsten has that data.  He has all the population.
+
++Is Don still alive?
+
+*Yeah, he's still at Gill Tract.
+
+Just some pieces are in there, of some pieces that I consider what
+needed those things --- and those are almost the last work I did on
+pieces, on a single piece.
+
++Well, we'll just have to reconstruct it.  There's enough talent here
+to do that.  It's all sitting right there.  I'm sorry Bland.
+
+If I do a coin flip, what's the probability of, what's the prior
+distribution for coin flips?  You both got something in mind?  Do you
+have something in mind?  
+
+*Yeah.
+
+OK, tell me what your's is in your mind?
+
++The prior distribution.
+
+*Well, 50-50, heads or tails.
+
+OK, 50-50 and what kind of ---?  50-50.  What's your prior
+distribution?
+
++Bland, I don't have a prior distribution.  I don't have a prior
+distribution.
+
+Same as his?
+
++Yeah.
+
+What's interesting --- you are both Bayesian statistics, did you know
+that?  You just gave it away, Bayesian statistics.  You just applied
+Bayesian, interestingly enough.  One of the other things is that the
+prior distribution is a classical theory looks like a --- U --- goes
+to infinity at zero.  Infinity --- and the thing is you're essentially
+assuming that --- is a totally dishonest --- that means that half the
+time you're going to be --- a two-headed coin or half the time you're
+going to be --- a two-tails coin, like the gamblers like to use.  This
+is the way that ---.  Do I remember that piece right?  Do I?  I'm
+curious.
+
++Yes, you do.
+
+OK, what I'm trying to say --- to set up prior distribution to do the
+next level adjusting all that stuff I had done has vanished, and do
+you realize how important I consider it by the game I just played with
+you?  Because I also always considered myself a --- I've go this ---
+population data, the death rate, birth rate, and I don't use it to
+influence the way that we work between sample distributions and what
+we've got going is madness, madness, pure madness, so the next
+iteration on interacting and --- with the computer was to factor ---
+into everything.
+
+*I wasn't around.
+
++Yes you were.
+
+Pieces of it.  I just wanted to throw that out there because it's so
+crucially important and it's all vanished.
+
++Yes, that was part of the stuff that went south for the winter.
+
+-How did it disappear?
+
+*It might be in Dave Wood's log cabin.  That's one possibility.
+
+Now I --- exactly the two pieces.  One was --- and the other --- stuff
+for weighting things.
+
++I'm going to start building the Blodgett stuff.
+
+*I've got it on tape here.
+
++I'm going to start building the Blodgett ---. If I say it loud
+enough, it will ---.
+
+-Better give the day's date.
+
++It's actually going to be, you know, taking a look at this stuff that
+I have now, and this is going to be really valuable.  I think I can
+probably.
+
+Do you realize how well --- statistics --- you're ---.
+
+20.14
+
+*I tried to find your notes on the Bayesian stuff, the Bayesian
+ modeling.
+
+That would really be neat to have.
+
+*I couldn't find it.
+
+That's too bad.
+
+*Yeah, so.
+
+Because you see I -- only half --.  Sometimes I'm on pure Bayesian if
+I've got a very small sample and I've got one that's supposed to be --
+random.  -- cases it's about the last --.  But as I remember, what I
+had -- was the Bayesian equivalent to the curves that we were
+estimating so you could look at a Bayes -- the graph and curves of
+that B spline. I had moved on to B spline stuff --.
+
+Once you need, if you're going to -- do a projection in space, and
+then you have to recalculate.  You can calculate -- your one time and
+-- stay in place -- B splines --.  But B splines really are much more
+appropriate for the type of thing we were doing for kind of scale and
+also for time to -- the kind of triple type of things that we were
+using to estimate -- that won't pop into my head either.  What's the
+triple three things that we were putting spline, or the triple, the
+spline functions for triple things?  Having -- things together.  Do
+you remember?
+
+*Triple things?
+
+These things we were using for the degree of smoothing we needed.
+
+*Cubic spline?
+
+Cubic spline, thank you.  Some days these will come and sometimes the
+other will not.  So somehow you've got -- cubic splines that were
+typed as the data and B splines that were typed to -- information and
+the harder -- information -- Bayesian method.  That's what I was
+thinking.  That's where it's supposed to fit in.
+
+*That's mainly where it fits in, ok.
+
+That's where it's supposed to fit in.
+
+*Ok, I can reconstruct that I think. Jim knows some of that stuff?
+Was Jim involved at all?
+
+Yeah, discussing some of that with him, and we also had the first cut
+of -- adding groups of normal, of straight places together to get our
+single hunt function.  That was radically faster than -- distribution
+--.  He was helping me with that and we got some of that up and
+running too. In fact -- nurbs, norm uniform rational B splines.  Does
+that sound right?
+
+*Yeah, well you introduced me to that.
+
+NURBS.  So anyway, and indeed the first paper appearing on it was a
+research paper from IBM while we were right smack in the middle of
+doing this modeling work.  NURBS not only were stable into
+transformation, rotation scaling, rotational -- but they were even
+stable under projection that you would do for, in 3 dimensions, say
+projecting something, and you didn't have to recalculate everything.
+But the other thing that was remarkable, it also let you do circles
+and ellipses and hyperbolas and parabolas, exactly, not as an
+approximation.  So those fundamental shapes were exact, not
+approximate.
+
+So all of a sudden, now you're talking about a line machine out there
+that's supposed to -- to the umpteenth detail.  You're trying to
+describe numerically in a machine so you can do the -- control, or
+you're doing architecture on a building where on the one hand you want
+down to the last rivet and yet at the same time you've got a building
+of significance.  Guess what?  You can't, even single precision
+probably isn't enough to hang onto that kind of detail onto that large
+a system. So all of a sudden you're going to find notes and double
+precision under those circumstances for many -- in architecture and
+numerical control.
+
+They do a beautiful job of giving you fundamental shapes if you want,
+and not of approximations -- undergoing even production without having
+to recalculate anything.  So -- go with those, it's overkill because
+how exact of a circle around the tree, how exact a circle are the root
+pattern(?), how exact a circle are the beetles flying, how exact a
+circle is the trunk -- of the tree?  Is it an exact circle?  Or is it
+even an exact ellipse?
+
+Or you even look at the fine structure -- yellow pine right out my
+window here, doesn't seem to have many kinds of structuring --.  The
+bark and everything else.  Basic shape is -- but sort of like an
+ellipse, the bark is a lot of other things too.  But it's not an exact
+circle by a long shot.  On the one hand the kind of mathematics is
+very appropriate and necessary for architecture, numerical control of
+devices which are going to become more and more common because
+computers driving everything is going to be --, computer everything,
+because it's so cheap and so dependable.  People get tired, computers
+grind on day and night without getting tired, which is to some degree
+an advantage.
+
+At the same time, it probably makes sense to have at least B spline
+--.  Again this whole thing of precision means again the factoring in
+the hexagonal system and -- by into the hexagonal system with just
+simple -- in order to make a very fast program for the computers,
+bottom level.  This means that somebody's got to -- program at the
+bottom level make word processing.  Make all these pieces work right
+too.
+
+At the same time this world out here is splitting a lot of different
+directions because people's needs are radically different.  An
+architect tends to lay down a very precise system of a building or so
+on, trying to get very exact numerical controls.  I guess all these
+generations of computer design, no paper at all, zero paper into his
+design.  So in a computer abstract objects worked on.  No paper.
+Remember the reams and reams of paper that used to have to be done to
+build a plant?  And so on.
+
+*It's complicated to do it by paper.
+
+I know, and slow, and clumsy.  And imprecise to say a few things like
+that.  That's why -- paper too eventually.  Forgive me for -- why not.
+
+*That's all right.
+
+Give a little --.
+
+*I agree.  It's a very conservative organization.
+
+With a lot of history.
+
+*Yeah.
+
+### Time to event based on data or intuition
+
+#### Mean value function and its inverse
+
+### Translating time to degree-days and back
+
+How do we relate time to degree-days?  Computationally, trigonometric
+functions are expensive and rather crude. In this simulation we model
+temperature (degrees) as a ramped step function.  Below is a sketch
+where the nighttime temp falls below the threshold of biological
+activity, but exceeds it as the temperature increases during the
+daylight hours.  The beauty of this technique is three-fold.  First,
+it is simple to construct.  Second, we can use the same spline
+functions that are already in place for designing probability to event
+curves.  Notice that the degree-day curve is the integral of the
+temperature, which in this case is a quadratic spline.  Finally, we
+can replace artificial constructs such as the one above with real data
+by producing a spline fit to the actual data. 
+
+<<Figure 4 here>>
+
+generalize this part; brag a bit!
+
+The temperature/degree-day translation is incorporated into the
+simulation now. However, the tools to design them are still
+primitive. The routine initTemp() creates an arbitrary scenario that
+can be edited by hand for he changes over a day (Figure 4). The
+routine spline.temp() is a graphical tool much like the mean-value
+curve that allows one to modify the daily high and low temperatures
+(Figure 5). Below are the commands
+
+\begin{verbatim}
+	> initTemp()	# set up Figure 4
+	> spline.temp()	# modify Figure 5
+	> temp.plot()	# show Figure 6
+	> temp.plot(derivative = TRUE)
+\end{verbatim}
+
+<<Figure 5 here>>
+
+In the current simulation, degree-days are the units ultimately used
+to calibrate the development of the various individuals within the
+simulation. However, parasitism is inherently a diurnal process. It
+appears that neither Aphytis nor Encarsia are active at night. There
+is evidence that in the summer season Red Scale may be able to pass
+though its various developmental stages during a particularly warm
+summer evening. In such warm circumstances, parasitism may not
+occur. Figure 6 shows cumulative degree-days incorporating the daily
+and high/low temperature curves together.
+
+<<Figure 6 here>>
+
+## Spatial components
+
+### Tridiagonal coordinate system
+
+For any ecological system in which one desires to simulate the
+dynamics of individuals, one must be able to calculate the distance
+between individuals and features of their environment, including other
+individuals. Since the distances and directions between objects must
+be computed a large number of times, an efficient computing algorithm
+is a necessity. We have simplified that on a coarse scale above using
+triangular faces on an orange. When it is necessary to locate
+organisms more finely, we propose a triangular coordinate system that
+is accurate to about 6% while providing fast computation.
+
+Given the Cartesian coordinates $p=(x_p,y_p)$ of objects in
+two-dimensional space, the standard method for distance between two
+points $p$ and $q$ is simply to take the square root of the sum of the
+squares $d=[(x_p-x_q)^2+(y_p-y_q)^2]^{1/2}$\,. The angular position,
+relative to the origin is calculated as
+$\theta=\tan^{-1}[(y_p-y_q)/(x_p-x_q)]$\,.
+The inverse calculation relative to the origin is
+$(x,y) = (\cos(\theta),\sin(\theta))$\,.
+Computationally, the arithmetic operations used are extensive. A
+triangular coordinate system with a hexagon overlay has been developed
+to reduce the cost with a modest loss of precision. The properties of
+the triangular coordinate system are as follows (Figure 8):
+
+i.	3 axes, 120 degrees to one another.
+
+ii.	The address (triplet) of any point on the grid sums to zero.
+Therefore only two of the three coordinates is stored as the third can
+be calculated by subtraction.
+
+iii.	Any point can be considered the origin of the coordinate
+system--this implies the geometry of distances and direction relative
+to any given point.
+
+iv.	The origin of the triangular coordinate system can be
+translated to any arbitrary point by simple subtraction.
+
+To calculate the distance between any two points $p$ and $q$ with
+coordinates
+$(a_p, b_p, c_p)$ and $(a_q, b_q, c_q)$,
+one simply computes 
+$d = \max\{\vert a_p-a_q\vert, \vert b_p-b_q\vert, \vert
+c_p-c_q\vert\}$\,.
+Using this technique one need only perform three subtractions, three
+absolute values and a maximization to obtain the distance.  This
+calculation is accurate to within 7.5\% (see Figure 8).  This appears
+to be an acceptable error when compared to other uncertainties in both
+the input data and to the assumptions made in the simulation.
+
+To calculate the direction from $p$ to $q$ one constructs a hexagon
+centered on $p$ in the triangular coordinate system.  Then by a series
+of comparisons of the relative values of $a_p-a_q, b_p-b_q, c_p-c_q$
+and their absolute values one can determine direction down to one of
+the 12 half-sectors.  This is accurate to within 15 degrees, or 4.2\%
+(Figure 7).
+
+Figure 7: Cumulative Degree Days and Simulating random dispersion from
+some origin is straightforward. Begin by selecting a distance $d$ from
+the origin according to some distribution. Then select a sign ($-$ or +)
+and major axis ($a$, $b$ or $c$) and set that axis, say $c$, to
+$\pm d$. Then select a second axis, say $b$, and sample uniformly
+between 0 and $-c$. The third axis, $a$, is computed as the difference
+$a = -(b+c)$. Thus one needs to only compute one distance $d$ and pick
+one of the 12 half-sectors $(\pm a, \pm b,\pm c)$ for primary axis,
+plus the secondary axis). With Cartesian coordinates, one would choose
+a distance $d$ and a direction $\theta$, and then convert back to
+$(x,y)$ using multiplication and trigonometric functions
+$\sin(\theta)$ and $\cos(\theta)$.
+
+The triangular coordinate method, though not as precise as the
+standard method, is significantly more efficient. The conversion from
+the Cartesian coordinate system to the triangular coordinate system is
+also straightforward.  To convert from the Cartesian coordinate system
+to the triangular coordinate system one need only to solve the
+following equations:
+$$
+a=\left(\frac{2+\sqrt{3}}{4}\right)x-\left(\frac{2+\sqrt{3}}{12}\right)y~,~~
+b=-\left(\frac{2+\sqrt{3}}{4}\right)x-\left(\frac{2+\sqrt{3}}{12}\right)y~,    
+$$
+and $c=-(a+b)$, where $(a,b,c)$ are the coordinate triplets in the
+triangular coordinate system and $(x,y)$ are the coordinate pairs in
+the Cartesian system.  To convert from the triangular coordinate system
+one need only to solve the following equations:
+$$
+x=\left(\frac{2}{2+\sqrt{3}}\right)(a-b)~,~~
+y=-\left(\frac{6}{2+\sqrt{3}}\right)(a+b)~.
+$$     
+Once a hexagon structure of some suitable size is selected, it becomes
+possible to overly the whole study area with a honeycomb of hexagons
+that are related to the underlying triangular coordinate system. The
+location of any adjacent hexagon can be found by simple arithmetic
+(Figure 1) providing direct access to all trees in that hexagon
+through a linked data structure.
+
+The appropriate computer algorithms for the triangular coordinate
+system with hexagon overlay have been written and tested using R.
+
+<<Figure 7 here>>
+
+C.S. Holling
+
+9.2
+
+*There was one time you went out to UBC and you talked to Holling and
+his crew.
+
+Yeah, Holling---  told me to talk about some of the stuff I was
+working on.  I thought they wanted me to do more for --- analytical
+presentation.  I said I would be utterly delighted to do the technical
+presentation.  It would be kind of neat and --- but for the general
+one I had some real things ---.  The technical underpinning at this
+point doesn't make a whole lot of sense, that's my feeling.  Later on
+it turned out that --- got caught ---.  I was --- what happened was
+--- and the popular meaning was ---.  It wasn't bad.  It wasn't real
+great either, but the technical --- was a blast.  It turned out that a
+whole host of --- like how you do calculations.  They were running a
+--- how can you do calculation and direction and distance and ---
+because that movement of --- 
+
+So I told them --- try to form the system using hexagons, like another
+way of walking --- would --- their machines could handle that.  So I
+said --- right in the middle --- when they --- power and the
+difficulty dealing with spatial information.
+
+It turns out --- exactly a bitch to do.  It turns out it doesn't make
+any sense --- distribution --- of the system.  You always have moments
+of  ---.  You don't need that kind of ---.  You need that kind of
+precision if they're going to try to separate say a specter of two
+distant stars that are double star, they are coming in on the --- from
+a different view of earth.  200 light years away or something.
+
+You find that you --- perhaps separate the double. Boy, does that
+comparable point of view not make a whole lot of sense --- sense ---
+so tend not to --- happen --- one of his problems.  Some of the others
+felt also that they were --- but not with the kind of --- echo I kept
+having.  Here I would be ---.  Gee, this piece is in the side that we
+did, to be able to solve this problem having --- solve the problem.
+That's what happened there.  I found that --- or that --- we can do
+sort of things ---.
+
+Programming Style
+
+Except he was --- world's worst program I have ever seen in my entire
+life.
+
+*Holling?
+
+Yeah, Holling.  You know these thousand line programs or two thousand
+line programs without a single break in them.  It really is work.
+They weren't very efficient ---.  They work you know sort of by guess
+and by golly.  --- until you finally get them to do something that you
+want them to do but the --- biology.  But from the point of view
+professional program, they're a bit of ---.
+
+The problem is that reading most professional programs is that date
+we're doing the same ---.  How could you blame him for doing something
+all --- professional program is doing anyway?  Just about the ---
+who's the guy who was saying old --- shouldn't, you shouldn't have
+thousand line programs, more than a thousand line programs ---.
+
+*Dykstra?
+
+Yeah, right, Dykstra came in and pointed out some real problem in
+trying to manage --- what happened, I --- after he came out with it.
+What's a --- taking a program and every thousand lines they're
+chopping to pieces. --- solid block --- lines means ---, ABC, and then
+A there would have all kinds of ---.  But in B they would have all
+kinds of --- to A and C, OK.
+
+That's the way they dealt with Holling's, the rules --- letter, but
+somehow not quite entertaining the spirit of that.  That was having
+---.  How can you blame Holling from doing something sort of similar,
+--- his machine.  It seems awfully hard to read to make any sense out
+of.  He was done by --- in the position -- now.  It's sort of like
+taking -- sort of --- paragraphs.  The --- came to the ---.  So that
+was how that went.  That was sort of our interaction.  
+
+Basically I felt the work he was trying to do, his efforts to ---
+biology and --- and trying to get computering to the process is one of
+the first --- interestingly enough.  The --- he called 1430 machine. I
+went back and --- exact --- so there's a 1430 that I made it --- an
+APL terminal.  The 13 was the hardware APL --- interestingly enough
+so, but --- too so --- England, they abolished --- out of the country
+where he used to live and work on, take some of his buddies and he
+used --- there ---.  When he then returned, he --- but it really ---
+that much --- give away, you know come ---.
+
+*And then he gave it to you?
+
+Yeah.  He gave me the first APL terminal that we used then to make a
+--- emulation, even down to his most detailed hardware plugs.  That's
+one of our --- guarantees, it runs this.  We even emulated its
+hardware plugs exactly.  So it was --- 12 which was just a regular
+half-piece storage type thing.  The 13 had the APL graphics inside it
+on an APL keyboard, and a storage tube.  Holling had the first
+graphics up running for population data ---.  --- APL.
+
+*He didn't have a thousand line code of APL?
+
+He never used APL.
+
+*But he used that machine?
+
+Yeah.
+
+*Oh, OK.  So what about this.
+
+What did he, I think he used FORTRAN but I'm not sure.  I just can't
+even remember.  No, it wouldn't have made sense to have --- he
+couldn't read it.  Can you imagine a thousand line?  ---.
+
+*It's hard to read 5 lines of APL.
+
+So I don't think --- cuz they're so wildly unreasonable, OK?  I think
+it was FORTRAN.
+
+13.13
+
+Just like the ---, what's the --- hexagonal way of doing, that was his
+favorite piece in the whole paper.
+
++Yeah.
+
+But -- in both directions and area ---.
+
+Hexagonal Grid
+
+13.13
+
++That's an interesting aside.  The hexagonal technique that we used is
+now very, very common in doing nearest neighbor calculations to within
+10% when you really don't have to be exact.  As opposed to calculating
+  % the square and the square roots of something to get the
+  % Pythagorean distance, you just add and subtract.  On a computer
+  % that's an incredible savings in time.  I've used that.
+
+The other thing is you see --- graphic --- tense --- up to 45 and then
+--- see you get by reflecting --- is that you can't --- octagonal
+shape.  You can't --- because there's no easy relationship between ---
+based on --- even though you may --- in terms of directions.
+Something that approximates the octagon --- better than a hexagon.
+The crucial thing is that we had put together is to --- get areas too
+really ---. 
+
++One of the reasons that you took a look at hexagonal --- system is
+it's very, very easy to do the nearest neighbor sort of thing.  It's
+probably the most biologically efficient system to do nearest
+neighbors that we've ever had.
+
+Like a honeybee.  A honeybee is ---.
+
+-Yeah, that's true.
+
+*There's a database being set up, a national database on endangered
+species using gap analysis.  Have you heard that?  That's all set up
+on a hexagonal base.
+
+I didn't realize that.
+
+*Database across the whole United States on a hexagonal base.
+Landscape and environmental parameters to try to use as a database for
+endangered species.
+
++See the problem is that if you take the normal (Cartesian) coordinate
+systems, you'd have a really bad problem with nearest neighbors.  You
+really don't get nearest neighbors.  You get nearest neighbors and
+second nearest neighbors and third nearest neighbors but they're
+really not.
+
+*It's very unstable.
+
++Yeah, it's very unstable, exactly.  Take a look at the standard
+geographic databases that you have now.  I know this because this is
+one of the things I'm working with.  You can put things into a
+hexagonal structure, whether it be a vegetation definition or
+something like that.  The idea of what is a nearest neighbor now
+becomes trivial. Using Bland's technique you don't do a calculation.
+You just basically count the numbers.  You don't have to do square
+roots or anything like that and that is really important.
+
++I've been talking to --- Walker.  We've been trying to convert from
+the topological databases that we get from the government, no
+topographical databases, into hexagonal structure.  Otherwise we're 
+dead meat.  We lose too much time doing the computation of what's
+downstream.  Downstream, in Bland's case, if you were accurate to 6\%
+you were close enough. 
+
++In most of the cases that were of atmospheric importance, if you're
+within 10\%, you're home, you're close enough for government work.  We
+don't need to know down to the last inch where we are.  We only need
+to know that we're somewhere in the ballpark. When the cell resolution
+is a half a kilometer, we don't need it to a half  a kilometer plus or
+minus 12 centimeters.  We waste a lot of time doing that computation.
+That's just another product of something that Bland came up with for
+the Blodgett study.
+
++Incidentally, I think that Blodgett data is really important so when
+you see Dave Wood-
+
+Really good illustration.
+
+Computation and Biological Issues
+
+18.5
+
+What I found was the 32 byte was just about the ideal dynamic range.
+By the time that -- work, it -- made more sense to split the problem
+into more dimensions.  Consider for example a bark beetle flying
+between trees in the forest.  Let's say you are finding one 32-byte
+integer for -- dimension, another 32-byte integer for a wide
+dimension.  Guess what?  -- but when you look at that particular
+problem you see the -- very different from the two-dimensional --.
+
+It makes a -- the actual biology, where the trees are spaced -- the
+beetles were flying out of diseased, moving between the roots and --.
+Consequently it made all sorts of sense to start adding other
+dimensions.  32-byte set --.  For example, in that case you would be
+adding a 32-byte number -- X -- Y --.  Many things would be
+approximate directions or approximate areas that you would need to be
+able to resolve.
+
+It turned out that a better way of making use of that was simply to --
+decide hexagonal system that was fit to be by biologists or the
+geologists or whatever.  It was picked by them to be appropriate.  You
+always -- well did they really need to be that small.  -- the
+precision in this direction or that direction and then you finally
+arrive at a reasonable value because -- they'll say oh gee, a
+millimeter when it could have been a square meter.  There's a big
+difference between a square millimeter and a square meter.  Man, do
+you have to do a lot of other calculations to -- what that does to the
+computer load.  This is again part of a value -- modeling and the
+person that is actually -- experience with problems in the real field,
+as a real biologist or a real geologist or a real chemist.  Real one.
+Not theory ones.
+
+What you want to do then is use the -- just picking approximate.  This
+is just by the -- technique that we work off.  You can't just tell it
+any old thing.  There are only certain things that biology do --
+format -- and so that -- it's almost a circle.  It's -- circle than a
+square is and -- circles so then -- see where the roots are running
+underneath the tree.  Now -- of a circle than the damn roots are.  So
+again, it's a choice.  Trying to get the maximum kickback in value in
+terms of ease of computation but in a very interactive process with
+actual biologists running real problems and with -- had a problem to
+come up in -- probably were different but could be attacked in a
+similar way. The same class of -- the problem down there than there
+was up here -- Mt. Shasta.  That's the point I want to make very
+clear.  It's very general in its approach.
+
+18.11
+
+Myself in loops like that -- still have to get through -- and so on.
+Along these lines was the fact that there was an incredibly large --
+metric -- numerical process on our machine.  That's why I got into the
+hexagons for approximate direction by just comparing magnitude which
+machines could do incredibly fast, even simple machines can do them
+incredibly fast.
+
+Holling
+
+18.11
+
+That was also why Holling was so interested in that technique because
+he was just dying to have -- the process of trying to actually move
+real animals in real world.  From taking a hit, it was just
+incredible.  The -- was really interested because it was hitting him
+the hardest right about instant in time.  It really is important on
+the one hand there would be some computational simplification to
+machine -- like that and yet tied into inaccuracy -- that's really
+there in the real model.  It wasn't until -- and other people like him
+came along much later.  That stuff was really neat, the fact that he
+began to look at the problem.
+
+21.7
+
+We were -- by culling which again kills -- his detailed model that
+talks of the model of organisms.  As soon as he tried -- animals
+moving in real space, boy, and he was using trigonometric type
+functions -- and then plotting the results back onto a a 42 --
+Tektronic storage tube.  Using APL to help him program some -- 4013
+--.
+
+*4013 or 4015?
+
+13--it was a smaller scale, not a big one.  That was already
+outrageously expensive enough for him at first -- of any graphics.
+That was a small screen 13.  I was watching some of the grass grow.
+As far as plots, that was really the first -- to actually try and
+model the actual movement -- behavior.  It was killing him.  That was
+sort of amusing.  Of all the pieces of model I -- the one that really
+appealed to him was the one with hexagonal -- approximation.  -- was
+very expensive and just a few simple addition, direction to
+comparison.  He didn't need any more precision than we did.  Here --
+having idea of -- open-ended -- mathematics, took me about --
+functions.  He didn't need that sort of precision any more than we did
+for the bark beetle thing.
+
+*I'd be curious to find out if he's still using that now.
+
+Oh he never got involved in any, using it.  He was -- himself.
+
+*Oh, I thought you said he was using the hexagonal.
+
+No, he wanted to.
+
+*Oh, he wanted to.
+
+He wanted to because he was being killed too much by that regular
+thing -- costing -- algorithms actually running on some of the stuff.
+No, he never moved out of the --.  Sort of like all the people that
+haven't moved on from a normal distribution.  In some of the parts
+where I was describing --.  They were doing -- curves that just had
+sort of a bump in it.  Didn't go to --, didn't go to, especially
+didn't go to, -- plus and minus --.  There might be a bump from 0 to
+10 or something.  At Riverside for a map --.  The problem -- generates
+that kind so fast --.
+
+Oh, another comment.  All this stuff at different times have been put
+on just about any machine in any computer language that was ever
+around, just any high level language -- to science and numerical type
+things.
+
+### Sierpinski gasket
+
+One of the more fascinating attributes of this modeling scheme is the
+ability to simulate the activities of individuals localized in both
+time and space. Of those activities none is more intriguing than the
+search techniques of an individual parasite as it tries to locate a
+viable host while attempting to avoid predators that are likewise
+looking for it. Aphytis is not a particularly adept flier and hunts
+only during daylight hours. At night, Aphytis tends to stay near the
+interior of the citrus tree in an apparent attempt to avoid predators
+such as spiders. During the day it will search individual twigs,
+leaves and fruit for available Red Scale, concentrating mainly on
+fruit.  Other parasitoids such as Encarsia seem to display a
+preference for hosts residing on twigs and leaves (Yu and Luck
+1988). One of the key questions concerning both predation and
+parasitism is how does a particular parasite optimize a search
+strategy? Clearly random searching may not be the optimal way for a
+given individual to find an available host. In the case of the Red
+Scale/Aphytis complex, it appears that the substrate may emit a
+chemical that attracts parasites to a particular area of active Red
+Scale. 
+
+In the current simulation, we have been using a simple random movement
+and search algorithms with mixed success. It may be advantageous to
+use a modified Sierpinski gasket algorithm to determine the migration
+patterns of individual Red Scale and search patterns of Aphytis.
+
+We are developing a search algorithm based on the Sierpinski gasket
+(see Wirth 1968), a recursive curve that exhibit a fractal quality.
+In the simulation we define a local area to be searched and select the
+order of the Sierpinski search (Figure 9) based on the number of hosts
+in the area. Essentially, the order determines the amount of time that
+a given individual spends in a given local area, which translates into
+the intensity that a given area is searched.  As the order of search
+algorithm is increases the resolution of the basic search pattern
+increases.  By using an explicit order the organism's search is
+guaranteed to terminate, at which point the organism must select
+another behavior, such as leaving the area. 
+
+<<Figure 8 here>>
+
+### Icosohedron/triangular cylinder for objects
+
+First let us acknowledge that we don't really know how these insects
+move around the surface of an orange. We believe that they may move to
+someplace "close" or someplace "far away", but we may have little data
+to develop this.   For example, Red Scale moves longer distances if it
+is on a twig substrate, but settles rather rapidly on the fruit
+substrate, and Aphytis, is known to be a reasonably poor flier, hence
+one might expect its search techniques to be compact, walking quickly
+from one Red Scale to another.  It appears unlikely for Aphytis to
+routinely fly between distance branches. Since there is a risk of
+building artificial relationships by pushing too hard on a fine
+mechanistic model of movement, we are keeping this simple for
+now. However, we have implemented a finer scale triangular coordinate
+system that can be used for more precise movements (Section 6).
+
+We have postponed development of the fine scale triangular grid
+described below for now. Consider instead a 20-sided polygonoid, an
+icosohedron with triangular faces.  Red Scale, for instance, might
+reside on one of these 20 faces. In fact, there may be a modest
+population of red scale on a single face.  We keep track of which face
+the insect resides on, but ignore fine detail of exact position.  We
+could incorporate some density-dependent feedback, say on the chance
+that a crawler successfully settles on a given face.  Migration would
+be between faces on an orange, and on or off the orange via the green
+twig.
+
+Weighting of movement of adjacent triangles: 5 and 2 and 0
+
+### Smooth integration between triangles
+
+#### Extending to finer scaled triangular grids
+
+## Priority queues
+
+In most biological systems, one is generally impressed with the rich
+structure even the simplest of biological organism displays, and when
+one studies interrelationships in small groups of complex individuals
+one perceives a complex mosaic of their possible interactions.  It has
+also become apparent that the advancement in computer technology has
+been very beneficial in aiding the tasks faced by most biologists.
+What may not be as apparent is that computers, particularly computer
+languages and operating systems also possess an intricate structure
+that can, in some cases be extremely efficient in solving certain
+types of problems, and totally inappropriate in other applications. In
+constructing a computer simulation of a problem in population biology,
+there are significant advantages to be gained if a given computer
+system, including its implemented languages, can efficiently handle
+the dynamics of a structured biological system.
+
+In this section, we explore the general structure of a biological
+system in the context of a structure common to nearly all
+computers. However, no attempt will be made to describe any one
+computer or system of computers.  The discussion of the modeling
+technique in terms of a particular computer language, in this case, R
+was described above.  
+
+For any biological system, there are myriad different biological
+structures that can be analyzed in many different ways.  There is a
+temporal structure of interacting individuals and there is a also a
+spatial distribution of that individuals may change as a function of
+time.  In addition there is the inherent structure of the organism
+itself, and there is a hierarchical structure in which that organism
+is imbedded.  
+
+In the computer implementation envisioned here, each individual
+organism is represented by a block of computer storage called a
+cell. This cell can be further subdivided into three partitions:
+unique attributes such as sex, age, location, and health; a membership
+method to relate the organism to other members of the population; an
+event structure with the events that can occur to that organism
+(Figure 9).
+
+<<Figure 9 here>>
+
+Given this basic structure, we can now consider a structure that is
+comprised of a number of individuals as shown in Figure 10. We
+consider the group called species "A' to be a list of individuals that
+comprise that species. There may be empty cells in the list. Further,
+each cell has pointers that multiply connected to other cells within
+the list, and possibly to other species. The property of being
+multiply connected defines a ring structure.
+
+<<Figure 10 here>>
+
+It is now possible to connect various species or list by defining a
+pointer structure F, that locates the first individual of that
+species, and a second pointer structure that locates the first empty
+location in each species table or list, where the empty locations are
+crosshatched (Figure 11).
+
+<<Figure 11 here>>
+
+This ring structure can further be decomposed into multiple
+substructures.  There is the possibility of connecting individuals
+with common characteristics.  In the case of the Red Scale/Aphytis
+simulation one might wish to group Red Scale on a twig as one subgroup
+and Red Scale on the fruit as a separate subgroup.  For larger
+simulations, one might wish to group branches that are comprised of
+stems, twigs, fruit and leaves as a subgroup.  We shall define a set
+as the links that join individuals in terms of common, and we shall
+refer to a group as a specialized set that defines any sub-population.
+It is clear that we can combine the ring structure into extremely
+complicated family of structures such that it is possible to mimic the
+structure of a population that has been resolved to each individual in
+the system (Figure 12).
+
+
+<<Figure 12 here>>
+
+
+7.3 Competing Risk Structure and Priority Queues
+
+In the absence of mathematical or statistical indicators suggesting a
+preferred method for defining the competing risk structure, any method
+is acceptable. However, the choice of a particular method can
+determine the simulations ability to run efficiently.  The competing
+risk structure is complicated hierarchical structure containing of all
+of the events in the simulation.  Those events can be placed into
+three broad categories: (1) system events, (2) species-specific events
+(birth, death, etc), and (3) interaction events (parasite/host or
+predator/prey). At the system level there are essentially four types
+of events: (a) start/stop events, (b) edit events, (c) graphics and
+statistics gathering events, and (d) a priority queue.
+
+Knuth (1968) defines a simple queue as having a "first in-first out"
+behavior in the sense that every deletion from the lists removes the
+oldest item. The competing risk structure described above has a
+"smallest in - first out" behavior in which every deletion removes the
+item with the smallest key from the list. (The key, in our case time,
+governs the sort of the queue.) Such a list is defined to be a
+priority queue. In the context of our simulation, the priority queue
+contains all of the events for each individual in the list.
+
+Crane (1971) represents priority queues as linked binary trees.  His
+method requires two linked fields and a small count field in every
+record, and has the following advantage over other methods:
+
+i.	When the priority queue is treated as a stack (Knuth 1968) the
+insertion and deletion operations are very efficient, taking a fixed
+amount of time independent of queue size.
+
+ii.	The records never move; only the pointers change.
+
+iii.	Two disjoint priority queues having a total of $\nind$ elements can
+be merged into a single priority queue in only $O(\log \nind)$ steps.
+
+Crane's original example is a special kind of binary tree called a
+leftist tree structure (see Knuth (1971) for properties and
+appropriate search and sort algorithms). The algorithm to merge two or
+more ordered leftist trees can be used to insert or delete a single
+element from a leftist tree. For the simulation discussed here, the
+leftist tree structure is dynamic, with each element containing the
+time of the next future event and required pointers.  The occurrence
+of an event for an individual leads to scheduling its next future
+event, changing its position on the priority queue through a
+combination of deletion and re-insertion. This event may cause changes
+for other individuals, resulting in other deletions or insertions as
+well.  Clearly this dynamic priority queue changes in both size and
+content as a function of the sequence of events.
+
+As a prototype, computer codes were written to sort both leftist trees
+and doubly linked rings to determine their ability to perform a set of
+desired tasks and their efficiency. Figure 13 shows the time required
+to search both a doubly linked ring and a leftist tree that contains n
+items. When n is small, a ring search is more efficient. However, with
+more than 70 elements in the priority queue, a leftist tree search
+becomes much more efficient. Figure 5 suggests that the efficiency of
+the simulation is inversely proportional to the number of events in
+the priority queue.  Because of this relationship, it appears that
+some sort of efficient method of allocating and de-allocating storage
+as events occur is extremely important.  In the next section we
+discuss some of the properties of the dynamic storage allocation (DSA)
+routine.
+
+
+### Partial ordering of individuals based on next future event
+
+#### Triply linked leftist trees
+
+### Dynamic storage allocation
+
+Note that much of the DSA material is probably dated. In particular, R
+uses state-of-the-art memory management systems that include many of
+these features. We include this here because the ideas were fresh at
+the time, and they may provide some added insights to current
+implementations. 
+
+Dynamic storage allocation is defined as the allocation and
+de-allocation of blocks of storage in which the block of storage may
+vary in size. Various DSA techniques are describe in Knuth (1968). We
+focus on the requirements that influence the design of DSA for
+simulations using a priority queue such as that discussed
+above. Ewing, et al, (2001) discussed a typical problem in which two
+hundred individuals with ten attributes were followed for five
+generations.  The dimensionality foe such a simulation is on the order
+of 104.  If each individual is resolve into ten states then the state
+space for the simulation is on the order of 1010,000. Such a problem
+is intractable unless there is some way to reduce the size of the
+state space. It is critical that the only those events in the active
+event list or priority queue actually occupy storage.  For this class
+of simulations to be effective the DSA must be able to efficiently
+allocate storage for those tasks entering the event queue and
+de-allocate storage for those event deleted from the event queue.  
+
+Unfortunately most traditional DSA techniques are designed to allocate
+or de-allocate large blocks rather infrequently. That is, they are not
+designed to operate in the tightest loops of the simulation.  Such DSA
+routines cannot search large numbers of small elements of storage to
+obtain the required blocks of storage to process.  Our simulation
+requires precisely those features that traditional DSA techniques are
+not designed to handle.  Specifically our simulations requires a DSA
+procedure that can:
+
+i.	allocate and de-allocate storage of a highly dynamic system; 
+
+ii.	coalesce unused storage as soon as possible;
+
+iii.	operate at the innermost simulation loops and allocate very
+small amounts of storage (on the order of five words); and
+
+iv.	minimize search time for available storage.
+
+The process of joining adjacent blocks of storage can result in a high
+percentage of fragmentation. There will be a large number of small
+blocks of storage, as opposed to a few large blocks, and an efficient
+method for minimizing search time is highly desired. With these
+requirements in mind, a dynamic storage allocation procedure was
+developed in which a rather complex pointer routine was devised to
+minimize search times.  The procedures that were developed were:
+
+1.	CREATE(ADDRESS,SIZE): Given a request for a block of storage
+  of length SIZE, return the location of available storage in ADDRESS,
+  if available.  This requires the following procedures:
+
+a.	LEAVE(ADDRESS,SIZE): Remove a block of storage of length SIZE
+from the head of the junk ring, returning the location of the storage
+in ADDRESS.
+
+b.	APPORTION(ADDFREE,ADDLOC,REMAINS): Split a free block
+designated by ADDFREE into a free block of length REMAINS and a
+allocated block.  The location of the allocated block is stored in
+ADDLOC, and the size of the allocated block was determined by the
+external variable SIZE.
+
+c.	JOIN(ADDRESS,SIZE): Add a small block of length SIZE located
+at ADDRESS to the tail of the junk ring
+
+2.	DESTROY(ADDRESS): De-allocate the block of storage located at
+  ADDRESS.  The size of the block is determined by its last use. This
+  requires additional procedures:
+
+a.	ENTER(ADDRESS): Insert a large block of freed storage at
+ADDRESS into an appropriate place in the junk ring. 
+
+b.	DELETE(ADDRESS): Remove a free block located at ADDRESS from
+its junk ring.
+
+In addition to the above procedures, we need two computer specific
+procedures generically called ACQUIRE and RELEASE. ACQUIRE(SIZE) can
+acquire additional storage from the operating system-controlled DSA
+system.  This routine is only used when there is no storage available
+in the user-controlled stack. RELEASE(ADDRESS) returns free storage to
+the system DSA controlled stack.  Everything "above" ADDRESS is
+released and is no longer available to the simulation without a call
+to ACQUIRE.
+
+In the current simulation using R, we have not made an effort to
+optimize the dynamic storage allocation of priority queue using the
+procedures describe above.  In order to effectively implement these
+procedures, we may need to rewrite the R procedure is amore flexible
+language such as C++.  However, it may be that improvements in R with
+version 1.2 will significantly improve memory management such that DSA
+considerations can be postponed. 
+
+#### Ragged list of discarded individuals
+
+#### R system with SV4 memory management
+
+## Pseudo-Randomization
+
+
+17.4
+
+Going back a ways to the Berkeley days, one of the critical things was
+the quality of the random number generators we used.  We spent a lot
+of time investigating random number generators.
+
+*I spent a lot of time investigating.
+
+OK, well, a lot of time was spent investigating random number
+generators and boy I remember we found some scary stuff.
+
+*Like the Lawrence Livermore Lab one?
+
+Yeah, like the Lawrence Livermore Lab random number generator that was
+marginally the worst we discovered anywhere except for a couple of the
+algorithms Knuth had for random number generator that converged on a
+single number in three cycles.
+
+*Yeah, but Knuth knew that already.
+
+Yeah, but he actually investigated and found that out.  He didn't just
+use it arbitrarily.
+
+*Yeah, right.
+
+Yeah, that was some interesting work and I've talked to people about
+that since then and most of them sort of go, Huh?
+
+*Yeah, we never published that stuff.  Actually most of this stuff was
+never published.
+
+That stuff I think is still publishable.
+
+*I think so too.
+
+I bet if you went out today, I mean if nobody said anything, I mean
+random number generators are like spread sheets, you know, computers.
+You plug this stuff in, you believe the number you get out of it.
+There's a function, and it says it's a sine function.  You expect to
+get back the real value of it.  When was the last time you checked the
+accuracy of the sine function coming out of your Pentium processor or
+your Power PC or you know your SPSS package.  You don't check these
+things.  When was the last time you actually went and verified the
+numbers that came out of one of your statistical packages?  You don't
+have time to.
+
+*I do graphical checks.
+
+Yeah, well you learned that from doing.  I mean at least you can look
+at it and say does this make sense, and you have some feel for it.
+But things like the random number generators you can't do that.
+
+*Bland taught me about looking at a number of points that are near
+each other and see what's the next point generated from there which is
+really a smart way to do it because it's not so much the series that
+gets developed.  It's whether, if you end up near, if you end up in
+some region, how predictable is the next point?  Yeah, do you get
+dispersion from there?  Which it didn't with the Livermore.
+
+Yeah, well it ends up in a stripe, a very narrow stripe.
+
+*17 stripes actually, 17 bands exactly, and they were not very far
+ apart.
+
+Yeah, and we were predicting, I mean they're using something this bad
+to predict.
+
+*Fallout.
+
+Fallout, or actually internals and nuclear reactions.  Do I believe
+the results of this?  And nobody has ever questioned it.  I'm not sure
+anybody really wanted to know the answer but that may be a different
+problem.  Fortunately we've never had to test most of these I guess,
+but I mean that kind of stuff would just.  He looked into everything.
+
+*Yeah, sometimes it seems like he looked in, like he was too much of a
+perfectionist on this stuff.
+
+Yeah, except that for the kind of modeling he wanted to do.
+
+*Well, you needed to have a large number.
+
+You needed to know that that was going to work.  I mean really all he
+was doing was sensitivity analysis on his models.
+
+*That's true.
+
+I mean he was smart enough to ask, is my model sensitive to the
+quality of the random number generator?  You know, what does that
+mean?  What is a good one?  What isn't a good one?  Because it would
+have been very sensitive to that.
+
+*Yeah, and you wouldn't know it.
+
+And now it may well be that for, you know, Lawrence Berkeley Labs or
+for other people, their model isn't sensitive to that, so it shouldn't
+be somewhere you spend a lot of time on.  On the other hand, it was so
+easy to make it good that it's like why don't you make it good and
+then you don't have to worry?  You know what I mean?
+
+*But then they couldn't repeat the same stuff they'd done before.
+
+Yeah, but if it wasn't done right, why would you want, yeah I know, I
+know.  I have a few books in my library that I'm proud of that were,
+that I basically took from Bland.  This is one of them.  It's good.
+You may not be able to find it.
+
+*If I can't find it, I'll let you know.
+
+But it's certainly an interesting tome.  I actually had a couple of
+books on numerical algorithms and some other stuff that I had around
+for years when I was still programming.  I ended up passing on to
+Powells or whomever.
+
+*Nice book.
+
+Stereo Pairs
+
+5.5
+
+*Yeah.  I remember you had some code to do stereo pairs in APL.
+Remember that?  It was about 10 lines of code, maybe 15, to do stereo
+pairs.  Completely general.
+
+Yeah, and it took the data and bend it around and made it into a
+three-dimensional display and then you look under the --- magnifying
+mirrors and it logged in three dimensions.  Just like their own, so it
+did.  And that's where I found that it made a difference --- true you
+know problems and errors in the mathematics and things --- on a single
+--- or doing this on --- that have --- same program and why did the
+projection all along's a curve and they would, depending on their
+orientation, the ones that were vert, near vertical hardly curved at
+all and the ones that were horizontal would curve terribly.
+
+And so it turned out that, it turned out that the plotter actually was
+on a speck and one of the --- was bent and because it was bent it was
+drawing curves rather than straight lines, and because of the fineness
+of the perception you'd never know that if it wasn't in the midst of a
+three-dimensional deal, a two-dimensional data using the stereoscopic
+ability of the human eye and brain, which are only now being
+unravelled in any degree at all.  It was absolutely incredible to see
+this Rover thing up there.  This guy wearing these goggles so he could
+see it all in 3-D ---.
+
+*That's pretty wild.
+
+So there were things like that also that you look back into and
+actually --- innocence, just a few lines of code if you get the right
+-- and the right math could do incredible things for you, and almost
+all the program was preprocessing data to get it from the old
+Hollerist cards that everything was punched on at that time into a
+form that could be ---, the actual transformation as I remember it was
+a single line of APL code and that had to be modified to rescale and
+then it finally had to be reworked so it talked into the language of a
+Hewlett Packard printer, to the outside world.  Those are the last
+lines.  So maybe the testing lines a codal --- but only --- did the
+transformation.  So one way --- half a dozen lines, to get the
+forestry type data form from the Hollerist cards in and what would be
+read on the super computer and others from Hollerist cards and they're
+key punched up, which all of the --- data was recorded and perhaps 10
+lines to control the plotter on the outside.  That was it.
+
+*Very elegant.
+
+But so, those were also the kind of echoes that had ---.  Can you stop
+the recorder for just a moment?
+
+(interruption)
+
+*So it's on now.
+
+The thing is that these little scales that were necessary to
+recalibrate the tension of the cables that were in the plotter, they
+were curved, and all of the curves going, if you look at the data just
+--- or its isolated data, was absolutely fine.  It was only just a
+little bit off back because --- Hewlett-Packard made the changes for
+free but those I would need to be able to correct myself, all the
+changes inside the plotter -- right so the lines looked straight and
+they did, and everything worked perfectly afterwards.  If you remember
+that that -- groups of data like something that was floating inside a
+cube faced, you know, it was just like two random things yet the stuff
+was, the problems went away.  So Peter sent me that ---.
+
+*Peter Rausch?
+
+Yeah, because he said nobody else is going to be using this stuff, and
+we're dumping all the last, the very last of the stuff, from that
+project in --, that was ---. What was the name of the Blodgett Forest
+research area, partly?
+
+*Pacific Southwest.  The PSW, Pacific Southwest Forest Service.
+
+Yeah, this is all the stuff I did for the forest service.
+
+17.5
+
+Now he went off on a lot of tangents.  He did in terms of data
+representation.  I mean he was always amazing me with what he was
+trying to do.  I had never seen stereo photography before.  He used
+stereo glasses to look at aerial imaging and played with that.
+
+17.5
+
+Given that I went off into computing directly and got out of biology,
+that was a whole different very good tangent for me.  Bland was doing
+things like taking stereo imaging, taking these aerial photographs,
+looking at them with stereo viewers and then figuring out how to take
+experimental data and plot it as bar graphs but they're
+three-dimensional.  Positioning the images as overlays so you could
+look through the stereo glasses and see the data for a site growing
+out of the location where the site was as an overlay.
+
+This was, I was absolutely boggled.  I mean intellectually I could
+say, yeah, you can do this computation.  But of course Bland was doing
+his three lines of APL or something like that.
+
+*Yeah, I wish I could find that APL.  I think it's lost.
+
+The amazing thing about it to me is he's the only person I ever knew
+that thought in APL.  All the other languages were a challenge for him
+because they just wasn't the way he worked on the world.  He probably
+thought in something better, actually a lot cleaner than APL but that
+was the closest anybody's ever come to a notation that he worked
+with.  I'd taken an APL class or two before that but he was really the
+first one that ever demonstrated to me the relevance or the power of
+it.  Now I don't have APL on my Mac now.  I believe it's available but
+I think that's one of those languages, one of those notations that can
+be used effectively by a hundredth of a percent of the people in the
+world because they're the only ones that think that way.  And for them
+there's nothing better.
+
+17.7
+
+It was actually a complicated process of getting the stereo images,
+being able to digitize the locations on them to the point where you
+could put the data down in the right spot and then overlay it
+appropriately.  Digitizing the images even just to get an XY
+coordinate for the location was a mess.  All in all it was a great
+idea and it was feasible.  It just didn't pan out because of logistics
+is my guess. I don't even know who else would have seen it except for
+people in Wood's lab.
+
+*Yeah, it didn't get a whole lot of press.
+
+It didn't get any press within the integrated pest management stuff,
+especially with the bark beetle stuff.  I'm sure that even in that
+group it didn't get much press.
+
+*I saw it and you saw it.
+
+### Generalized feedback shift registers
+
+### Exponential random values
+
+### Sierpinski gasket: order, direction
+
+### Fractal nature of spatial search algorithms
+
+## Curse of Dimensionality
+
+### Calculations linear in number of individuals * ave. number of life events
+
+### Ramping up from hundreds to millions
+
+### Quasi-parallel computation
+
+### Efficient use of supercomputer clusters
+
+With the advent of sophisticated multiprocessor systems, such as the
+32 Silicon Graphics (SGI) ONYX, the possibility of simulating complex
+interconnected process become possible.  For example it should be
+feasible to simulate thirty-two branches of a citrus tree using each
+processor to simulate a complex branch containing fruit, twigs, and
+leaves at some level of resolution. Each processor simulates a branch
+under possibly different environmental conditions.  Since Red Scale
+are relatively sedentary, each branch can be treated as being
+quasi-independent.  Aphytis and Encarsia appear to move randomly from
+branch to branch searching for hosts. However, those events are rare,
+as both parasitoids have a tendency to remain in the local area.  
+
+In the context of a multiprocessor system such as the Onyx System a
+branch would be handled by a single processor called a node, and
+information concerning the relationship between various nodes is
+handled using the Inter-process Communication Protocol (IPC).  The IPC
+allows processes to coordinate the use of both shared data objects and
+processors.  In our example, a single processor is capable of updating
+the node stored in memory without interfering with its neighboring
+processors, unless directed to do so.  Alternatively, a process is
+capable of making data available to its neighbor process.  The network
+is capable of either operating synchronously or asynchronously and
+processors may be dynamically added to or deleted from the simulation.
+In our application any one processor has direct communication with
+only it's nearest neighbors.  Communication between any two connected
+processors is accomplished by creating a segment of storage that is
+mapped into the address space for the neighboring processors.  Such
+connections establish signals, which allow notification of a software
+and/or hardware event asynchronously, and semaphores that coordinate
+access to various resources.  
+
+Hope: going directly to R and C++ structured languages with smart
+compilers, we can avoid writing much code that is specific to a
+multiprocessor implementation. Need some attention to interrupt-driven
+operations and indirection.
+
+<<Figure 14 here>>
+
+The IPC functions require the use of a shared arena, which is the
+segment of memory that is mapped into the address space of multiple
+processes.  The shared arena is identified with a file that acts as
+backup storage for arena memory and communicating processes gain
+access to the arena by specifying its filename.  This implementation
+makes it relatively easy for "unrelated" processes to communicate.
+The data stored in any one of the node processors is specific to the
+branch being simulated.  All other information resides in the fusion
+processor.  On the SGI ONYX, we shall use thirty-one node processors
+to update thirty-one branches in shared memory.  Since each
+multi-processor can operate asynchronously, we shall assign one
+additional node the task of monitoring progress of all the other
+nodes. This processor performs bookkeeping and graphics function in
+addition to scheduling the inter-processor events. In addition to the
+inter-processor events, this processor will also monitor any global
+"events" and calculate the change in global parameters such as diurnal
+and degree-day events.  Those events may be calculated using various
+"continuous time simulation and then sent to a particular processor or
+groups of processors as modified piecewise continuous functions.
+Essentially this processor acts a "fusion processor" to monitor the
+entire simulation, and monitor the system level events.
+
+The modeling technique described here is inherently nonlinear, and the
+simulation attempts to model processes that are far from equilibrium.
+One very important study involves placing identical versions of the
+simulation on each of the processors and then running each processor
+independently of its neighbors. However, each processor would use a
+different starting seed for the random number generator.  Essentially,
+the HPCF would be used to perform a large number of independent runs
+in order to explore the properties of this highly non-linear
+simulation.  Such Monte Carlo studies require a significant amount of
+computer time if performed sequentially, however such problems should
+be extremely efficient on the HPCF.  In order to use the HPCF
+effectively, all graphical routines would be performed after the
+simulations were completed. 
+
+We have learned that the R system has been successfully installed on
+an SGI ONYX machine. Thus, while efficiencies can be gained by
+converting R code to a multiprocessor compatible version of C++, this
+may not be crucial at the present time.  We are currently developing
+an effective and flexible method for parallelizing the program for use
+on the HPCF. 
+
+### Loosely connected communities
+
+## Future Considerations
+
+At present, we have developed a protype simulation which relies on
+implementations implicit in R of the items listed below. This works in
+practice for hundreds or thousands of individuals over thousands of
+future events. However, in order to simulate systems with millions of
+individuals and events, it will be necessary to carefully consider how
+to optimize speed and use of dynamic storage.  Some of the concerns
+that must be address in a more comprehensive simulation are: 
+
+(1)	pseudo-random number generation
+(2)	methods to organize future event scheduling (priority queues
+and leftist trees) 
+(3)	dynamic storage allocation to handle the changing population
+(4)	garbage collection
+(5)	Hilbert and Sierpinski Curves
+
+There are, however, reasons to postpone (1) and (3).  The newest
+versions of S (version 4) and R (version 1.2) have very efficient
+memory management, and may obviate the need for implementation of our
+own DSA scheme as outlined below.  In the next few section we shall
+discuss a bit of the "philosophy" inherent in the design of a
+simulation based on the dynamics of individuals with the population.
+
+7.1 Deepening the Simulation
+
+Bland Ewing continues to have ideas about how to deepen the realism of
+such simulations. He offered another level of environmental
+"indirection" which might be useful later.  Consider that each of the
+20 faces on an orange might be classified in terms of its
+micro-environment, say shady (1), partial shade (2) or sunny
+(3). These might affect how insects behave on the face, etc.
+
+Since we are considering a fruit as a 20-element structure, and
+similarly a leaf as a 2-element structure (top and bottom, ignoring
+actual spatial location), we have in some senses a compartment model,
+with 20 fruit faces, one twig and 2 leaf sides connected in a graph.
+It is not much of a effort to add more leaves down the twig, making a
+more realistic branch.  However, we do not really need to use the
+physical geometry of the branch explicitly.  Instead, we have
+probabilities of moving among objects (fruit face, leaf top, etc.).
+Extending this, there is a small probability that a crawler could
+eventually move, perhaps over several generations, to another fruit.
+It is much more probable that Aphytis move between various substrates.
+
+The possibilities are endless. There is the very real possibility that
+a model of an entire tree could be performed on today's multiprocessor
+computer system.  Such a simulation might be extended to a simulation
+of an entire grove.  However, we should step back and consider the
+span and resolution.  It is highly unlikely that there will be much
+movement between one tree and another over a month for a Red Scale
+crawler.
+
+On another front, the triangular system can be extended to arbitrary
+three-dimensional surfaces. The icosohedron being used to simulate an
+orange can be tiled with triangular systems on each surface that
+perfectly match with adjacent triangles. Further, additional cylinders
+each of 10 triangles can be inserted in the middle of the "orange" to
+turn it into a "banana". Modern image processing uses triangular
+meshes to capture arbitrarily complex objects, and there is no reason
+that our system could not be similarly extended.
+

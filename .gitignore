@@ -47,3 +47,12 @@ po/*~
 
 # RStudio Connect folder
 rsconnect/
+
+# Added
+_book
+_bookdown_files
+*.Rproj
+_SOURCE
+bookdown-demo_files/
+*.html
+

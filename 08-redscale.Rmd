@@ -1,0 +1,372 @@
+# Biology of Red Scale and its Parasitoids {# redscale}
+
+In California, red scale, Aonidiella aurantii (Maskell) (Diaspididae:
+Homoptera) is a major insect pest of citrus, especially in
+California's San Joaquin Valley where most of the State's citrus in
+now grown. At moderate densities, the scale infests the fruit, while
+at higher densities they cause leaf and twig death, which can reduce
+fruit production. Dense scale populations can kill branches or
+portions of the tree with the subsequent loss of all or part of the
+crop. California's citrus is marketed as fresh fruit. Fruit with scale
+are downgraded or culled and most culled fruit are juiced, which does
+not cover production and processing costs. Thus, marketing conditions
+make cosmetic damage economic.
+
+Growers in the San Joaquin Valley traditionally suppressed scale
+infestations with broad-spectrum insecticides. Recently red scale has
+evolved resistance to these pesticides, making them ineffective
+(Grafton-Cardwell 1994). An alternative suppression tactic employs the
+release of a small wasp, Aphytis melinus DeBach (Aphelinidae:
+Hymenoptera). Aphytis parasitizes specific stages of the scale insect
+to produce its offspring, killing the scale as a consequence. When
+sufficient scales are parasitized, the scale population is suppressed
+at densities below those of economic concern. Release of this wasp in
+the absence of broad-spectrum insecticides can suppress the scale at a
+cost equal to or less than that achieved with the traditional
+insecticide program. Moreover, the quality of the fruit harvested
+under such a program is equal to or better than that harvested under
+the traditional program. (Haney et al. 1992; Luck et al. 1997).
+
+## Detailed life histories
+
+### Red Scale Life History
+
+Red scale's life cycle begins with the crawler stage, a brief mobile
+stage that allows the young scale to find a suitable location on a
+branch, leaf or fruit on which to "settle". It then inserts its
+mouthparts into the substrate and transforms into a sedentary feeding
+stage. Once settled, a female scale remains immobile for the rest of
+her life. In contrast, the male once settled remains immobile until
+its adult stage when it transforms into a winged adult and seeks a
+virgin female with which to mate. Both the male and female grows by
+molting periodically, alternating between a feeding instar and a
+non-feeding or molting stage. During the molting stage the scale sheds
+its exoskeleton and increases its size so that it can grow when it
+initiates feeding during the next instar. A female red scale has three
+feeding stages (instars) with two intervening molts. At the end of the
+third instar, it mates and transforms into a gravid female, maturing
+its eggs, and subsequently produces crawlers. The eggs develop within
+the female. Immature males have two feeding instars separated by a
+molt stage. Following the second molt the male transforms into a
+prepupa followed by a pupa, finally emerging as a winged adult. The
+winged adult locates a virgin female with whom to mate via a sex
+pheromone. This is illustrated in Figure 1.
+
+<<Figure 1 about here>>
+
+Since red scale's development is temperature dependent, the average
+time it takes the scale to complete its development during an instar
+or molt is represented in degree-days (DDo), which are approximately
+the cumulative degrees (?C) above 11?C (Yu and Luck 1988). It takes
+both female and male scales about 330 DDo to reach the end of the
+second instar. Males remain prepupae for an additional 30 DDo before
+molting to a pupa, and, after 20 DDo as a pupa, emerge as a winged
+adult. In contrast to males, second instar females, on the other hand,
+molt, which last approximately 50 DDo after which they reinsert its
+rostrella and feed as third instars. Red scale is subject to
+parasitism during the development process, until it becomes a mature
+adult. A mated female becomes attached to her scale cover and begins
+to mature her eggs. In approximately 90 DDo the mature female begins
+to produce crawlers. The cycle for a female from crawler to crawler
+producing female takes approximately 650 DDo.
+
+### Aphytis Life History
+
+Aphytis melinus is a small wasp that lays its eggs externally on the
+body of red scale (= host) but beneath the scale cover (Forster et
+al. 1995). It paralyzes the scale before it lays its egg. Normally,
+Aphytis lays its egg on a second or a third instar female or on a
+second instar male scale. Aphytis prefers instar stages to molt stages
+of red scale. During the instar stage the scale cover is free of the
+body and Aphytis can lay eggs on either or both the dorsal and ventral
+surfaces of the scale (Abdelrahman 1974; Luck et al. 1982). During the
+molt and mature female stage the cover is rigidly fused to a hardened
+body. The wasp larva hatching from the egg feeds on the paralyzed
+scale, consuming the contents of the scale, which kills it. This is
+referred to as parasitization. The food available to the developing
+Aphytis is determined by the size of the scale body at the time the
+scale is paralyzed. Aphytis passes through four immature stages during
+its development: egg, several larval stages, prepupa, and
+pupa. Generally, Aphytis allocates a male offspring on second instar
+scales and on male and female scales. About 20\% of the male scales
+are allocated a female Aphytis. About 70\% of the third instar female
+scales are allocated a female Aphytis offspring, about 25\% are
+allocated a male Aphytis offspring, and about 5\% are allocated two
+Aphytis off spring (usually a male and a female) (Luck et al. 1982;
+Luck and Podoler 1985). The two eggs are laid during the same host
+visit and represent a case of gregariousness (Luck et al 1982).
+
+Once having allocated an offspring to a host scale, the Aphytis egg or
+larva is vulnerable to usurpation of the host by a second female
+Aphytis encountering the host. A previously laid Aphytis egg or the
+first instar larva arising from it may be killed when a second female
+encounters and oviposits on the previously parasitized host (Forster
+and Luck pers obs). The second female distinguishes the scale as
+previously parasitized and, while walking on the scale cover or
+probing the scale, detects chemical cues that were left by an Aphytis
+that previously oviposited on the scale (van Lenteren and DeBach
+1981). It punctures the previously laid egg and then lays its egg on
+the host, usurping the scale as a resource for its offspring (=
+super-parasitism) (Forster and Luck pers obs). This usurpation
+increases in frequency as the ratio of unparasitized to parasitized
+scales decreases. This form of intraspecific competition can occur
+more than once on a host but, with each usurpation, the survival of
+the wasp larva arising from each newly laid egg decreases.
+
+<<Figure 2 about here>>
+
+Aphytis melinus development is also temperature dependent. At 26.70C",
+in a parasitized or super-parasitized host, a wasp egg hatches after
+about two days. The resulting larva feeds for approximately five days
+before becoming a prepupa for one day. It pupates for four to five
+days before chewing a hole through the scale cover and emerging as an
+adult Aphytis. Thus, the entire process from egg to adult takes twelve
+to thirteen days. Aphytis prefers instar stages to molt stages of red
+scale. During the instar stage the scale cover is free from the
+body. The development of Aphytis is illustrated in Figure 2, while
+parasitism is shown in Figure 3.
+
+<<Figure 3 about here>>
+
+Female Aphytis usually mature their first batch of eggs, approximately
+12\% of its lifetime egg supply, within 24 hours of emergence using
+resources from their larval stage. They produce eggs during their
+entire adult lifetime, relying on periodic feeding on body fluids of
+small, immature hosts for sustenance (Opp and Luck,1986; Heimpel and
+Rosenheim 1998; Collier 1995; Luck and Nunney 1999). Adult Aphytis
+host-feed by probing the scale body more extensively than when they
+oviposit, feeding on the body fluids that ooze from the wound. Aphytis
+feed on small hosts (scales) while searching for larger scales to
+serve as suitable hosts on which to lay eggs. Host-feeding kills a
+substantial percentage of California red scale beyond those killed
+through parasitism. Within 12 to 18 hours of host-feeding, the female
+develops approximately 1.3 eggs if it has not recently oviposited, or
+about 2.7 eggs if it has. Host feeding appears to provide resource for
+both metabolic maintenance and egg production. Collier (1995) showed
+that Aphytis that do not have access to hosts for either oviposition
+or host feeding will re-absorb about one egg per day. However, egg
+re-absorption will not supply the metabolic needs of the wasp in the
+absence of honey or other carbohydrates.
+
+Aphytis, as with most parasitoids, controls the sex of its offspring
+by optional fertilization of eggs: males normally arise from
+unfertilized eggs while females arise from fertilized eggs (Yu and
+Luck 1988; Godfray 1994). Larger scales are allocated female eggs as
+large daughters are more reproductively successful on average than
+smaller daughters. Thus scales growing on fruit are more likely to be
+parasitized due to their larger size (Luck and Podoler 1985; Hare and
+Luck 1991).
+
+## Interaction events: endo-, ecto-, hyper-parasitism
+
+## Diurnal and degree-day effects; seasonal effects
+
+## Position in tree
+
+### Orange/branch/leaf
+
+### Exterior/main trunk
+
+## Search algorithms
+
+### Parasite for host
+
+### Host for substrate
+
+### Local vs. long distance search
+
+
+### Simulations
+
+A simulation system has been developed using the event-driven
+competing risk structure outlined above. The initial implementation
+focuses on the California red scale-Aphytis system, although the
+software module has no code specific to this system except details of
+event handling. Our parameterization can dramatically reduce disk
+storage needs and run time for simulations. Calculations involve no
+integration, reducing to an exponential random variate, a pair of
+linear transformations and an evaluation of M-1. The structure of an
+individual is divided into the "static" properties, such as physical
+attributes and relationships with other individuals, and the "dynamic"
+event structure, influenced by the competing risks and other
+individuals in the community.
+
+Since red scale is temperature dependent (approximated by degree-days,
+the integral of degrees above 11?C) while Aphytis is diurnal (active
+from about 9am to 4pm), we allow the two species to operate on
+different biological clocks. Mean value functions for future events
+are by default linear in the species-specific biological clock
+(degree-day or diurnal), but can be tuned using a graphical
+interface. The software is written in the R language, which is
+graphical, extensible, and in the public domain (Venables and Ripley
+2000; see http://www.r-project.org). We compute M and M-1 and the
+hour/degree-day translation using forward and backward cubic splines
+via library(splines) in R, and efficiently generate standard
+exponential pseudo-random numbers using the R implementation of
+algorithms by Ahrens and Dieter (1974, 1988). Details of the
+simulation and access to public domain software can be found at
+http://www.stat.wisc.edu/~yandell/ewing.
+
+The simulation uses life history information from Forster et
+al. (1995) as summarize earlier in this paper. A temperature range of
+15?C to 30?C is used to represent springtime conditions in the
+interior regions of California or the San Joaquin Valley. The cool
+evenings slow development of red scale. We simulate the red
+scale-Aphytis system with varying number of individuals of each
+species. Here we present a limited set of simulations to demonstrate
+proof of concept. The orange tree is simulated as one four-sided
+orange, one two-sided leaf, and a twig connecting them. Pragmatic
+choices were made about movement among these locations for red scale
+crawlers and Aphytis adults. Initial simulations are run for up to
+10,000 events, or several generations of each species.
+
+An isolated population of red scale demonstrates, as expected, an
+exponential increase in total population over generation (not
+shown). Since the underlying orange resource is not restricted, we see
+uncontrolled growth. However, both gravid females and crawlers tend to
+show inherently discontinuous dynamics, with periods of growth and
+decline.
+
+<<Figure 7 about here>>
+
+A simulation with 200 red scale and 200 Aphytis, weighted initially
+toward immature individuals, shows the characteristic lag in response
+to parasitization (Figure 7). The number of red scale initially rises,
+and then is dramatically reduced by the emerging adult Aphytis. Both
+decline for some time, but the red scale shows evidence of recovery
+with an increased number of crawlers, and subsequent increase in
+instars that can serve as Aphytis hosts. The decline in Aphytis
+appears to be arrested late in the simulation, but there are only a
+few individuals left. The frequent vertical spikes in number of
+Aphytis young represent male offspring that are born and immediately
+removed from the simulation. This crash in parasite population may be
+due to the artificial isolation of this simulation. In a larger
+simulation, there could be immigration of new adult Aphytis from
+neighboring orange fruits as well as the emigration of males.
+
+<<Figure 8 about here>>
+
+The next example differs in having initial populations of 300 red
+scale and 50 Aphytis, and a slower depletion of adult Aphytis egg
+resources. Figure 8 shows that Aphytis can maintain its population for
+a few generations. However as the number of adult Aphytis stabilizes
+at around 35, they begin to seriously reduce the host population. The
+Aphytis population drops as well, as the adults fail to find red scale
+that are mature enough to support female Aphytis eggs. Eventually the
+remaining Aphtis adults would perish for lack of food.
+
+## Simulations from QPE Paper
+
+A simulation was developed (see www.stat.wisc.edu/~yandell/ewing) to
+implements our event-driven quantitative population ethology structure
+using the R language (www.r-project.org). The initial implementation
+focuses on the red scale/Aphytis/Encarsia dynamics, although software
+modules are not code specific to this system except for some details
+of event handling. In the next few paragraphs we discuss the input
+requirements for the simulation and then we examine some of the
+properties of an event-driven simulation.
+
+Information concerning organism life stages and their
+inter-relationships are extracted from field data and stored as
+ordinary tables. These encode system features, schedules for future
+events, and information concerning interactions among organisms. The
+simulation initializes an event structure and partially orders future
+events by species in priority queues (Knuth 19xx) such that the next
+future event has minimal time. The simulation then processes the next
+future event, updating the priority queues by rescheduling an new
+future event for  that individual. In addition, future events for
+other individuals may be rescheduled (e.g. due to interaction) or
+de-queued (e.g. due to death).
+
+### Model Span and Resolution
+
+Luck et al. (19xx) showed that relevant organisms develop from an egg
+to adult stage in roughly 2-4 weeks (red scale 24-25 days, Aphytis
+13-14 days, Encarsia 19-28 days). Oranges mature in about 8 months,
+roughly 10 or more generations for each species. Thus our simulation
+span is 240 days or 3,500 degree-days (DD, cumulative degrees
+cumulative degrees above 11?C). Resolution for the simulation is more
+difficult to determine. Yu and Luck (1988) recorded red scale life
+histories to 1-3 DD precision, while Aphytis and Encarsia data are
+recorded to 1 day precision. However, multiple events of feeding and
+ovipositing may occur during a day for adults. For simplicity, we
+consider the resolution to be approximately 1 DD or 1 hour, depending
+on species. Thus a simulation with 500 individuals at a time, roughly
+20 events per individual, and 10 generations, will process
+approximately 100,000 events.
+
+Orange fruit are mature for about 8 months.  Luck (see Yu and Luck
+1988 and references in Ewing et al. 2001) suggests that the time in
+days from egg to gravid adult for the insect species involved are
+roughly 2-4 weeks (red scale 24-25 days; Aphytis 13-14 days; Encarsia
+19-28 days).  Thus, 8 months corresponds to 10 or more generations for
+each species.  This gives us our span of roughly 240 days or 6400
+degree-days (DD), using 1 day = approximately 26.7 DD on average.
+
+Resolution is more difficult to determine.  Luck (cf. Yu and Luck
+1988) often recorded red scale life histories to the precision of 1-3
+DD, with a recognition of inherent variability.  Information on
+Aphytis and Encarsia is often recorded to the precision of 1 day.
+However, multiple events of feeding and ovipositing probably occur on
+any given day for adults.  For simplicity, we consider the resolutions
+of approximately 1 DD and 1 hour.  These are roughly equivalent on
+average.
+
+Given a particular span and resolution, what are the implications for
+the size of the simulation?  Consider roughly 500 individuals at any
+one time, with on average 20 events per individual.  We are running 10
+generations, which makes 100,000 events.  Version 3 of the software
+can handle about 3000 events per hour on a Pentium II 150Mhz system.
+Thus one simulation could be completed in a day or two.  There are
+some issues about space management that need to be redesigned to make
+this happen, however, but they are solvable.
+
+Suppose one were to use classical modeling techniques, running each
+individual a DD at a time.  Assuming there are 500 individuals, there
+would be 3,200,000 steps (500 individuals times 6400 DD), or if you
+consider cycling through say 10 types of events per individual,
+32,000,000 operations. This is a considerably more costly and
+time-consuming operation.
+
+Notice also that we do not explicitly need to set things up rounded to
+the smallest resolution.  In fact, it can be useful to have a smaller
+precision to resolve ties. Order is resolved because events are
+schedule asynchronously.  The important thing is to have a resolution
+that is relevant to the events under study, and vice versa. Note
+further that the choice of future events implicitly determines the
+resolution; coarser events correspond to coarser time resolution.
+
+### Model Results
+
+We ran simulations with a small number of events to demonstrate the
+apparent discreteness implicit in the event-driven modeling
+paradigm. Changes in spatial and temporal descriptions of red scale
+and Aphytis populations involve discrete, discontinuous changes.
+
+[New simulations here.]
+
+One reason that A. aurantii/A. melinus exhibits this type of dynamics
+may be attributed to the fact that A. melinus and A. aurantii operate
+using different constraints. The development of A. aurantii is
+essentially a temperature dependent process, whereas parasitism by
+A. melinus is a time dependent phenomenon. Note that A. melinus
+ability to adapt to changes in the structure and dynamics ultimately
+determines its ability to survive. One of the techniques used by
+A. melinus is to control the sex ratios of its offspring (Luck and
+Nunney 1999).
+
+Is this model capable of obtaining results one would expect under
+field conditions? The answer to that question is dependent on the
+fidelity of the simulation. If, for example, A. melinus uses a search
+algorithm based on possible pheremone queues and the simulation uses
+an ad-hoc search algorithm, or alternatively the migration pattern of
+A. aurantii does not account for mortality rates due to environmental
+factors, then the probability that the simulation will be realistic
+must be suspect. Perhaps this is the true value of this simulation
+philosophy. The relationship to what the researcher perceives of the
+system he or she is studying is directly related to the results the
+model produces. The model now becomes primarily a tool for rapidly
+testing various scenarios, not for discerning the global properties of
+a biological model. Implicit in this technique is the understanding of
+the role of the field biologist.
+

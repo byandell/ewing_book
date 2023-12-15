@@ -1,0 +1,2149 @@
+# Limitations of Classical Models {#classical}
+
+Stochastic models in ecology are designed to study ecological systems
+by simulating the underlying processes and then studying multiple
+realizations of a simulation model. We focus here on models of life
+history events. Interestingly, the life table approximation of
+dividing time into discrete ``quanta' migrated early into stochastic
+models in ecology. The Lotka-Volterra model is typically developed in
+this way [ref]. Modern simulation studies have advanced by considering
+smaller and smaller time increments, but within this same fixed time
+step framework [refs]. 
+
+The shortcoming of this approach is that while one must have finer
+scale time increments in order to capture more intricate events, more
+and more time is spent simulating no activity.  Alternatively, one can
+develop models based on the actual time of transitions. The difficulty
+with this shift in perspective is that events for individuals are no
+longer synchronized. Further, generations may not be synchronized,
+making life table summaries problematic. 
+
+The development below of a simulation structure for competing
+risks in a biological system is built upon the concept of potential
+lifetimes using the cumulative risks Mj(t) as a basic building
+block. This approach necessitates detailed knowledge of the ecosystem
+under study, which is precisely what we want. The purpose here is to
+provide a framework for biologists to incorporate great detail about
+known and suspected aspects of an ecosystem. Biologists inherently
+recognize that their knowledge is incomplete and may even be wrong in
+part. However, it is extremely difficult for them to test their
+hypotheses about ecosystem-level and population-level properties that
+may depend on processes that affect individuals.
+Work in complexity [ref on cellular automata] suggests that higher
+level structure can emerge from local structure. These models are
+promising, but to date suffer from the same quantization problem found
+with life-table derived methods 
+
+## Mathematical Biology
+
+18.2
+
+Another thing that was going on at the time this work was done.
+Everybody was an optimization freak.  You had to be optimizer, you had
+to optimize --.  It was a whole world that was supposed to be
+optimized.  There's no way in hell that you -- simple thing like doing
+a macro optimization.  It put -- level -- wants to behave or go down
+the tubes and the thing become more extinct because -- long term
+strategy, and so on.  The point's made.
+
+12.22
+
+Mathematical Biology
+
++The point is, when Bland was doing this work, we were basically doing
+it in the heyday of the Robert May group.
+
+*Mathematical biology.
+
++Mathematical biology.  The 40s was the first time that somebody tried
+to apply mathematical techniques to biology.  What was very
+interesting was that they didn't try to take a look at the biology.
+They took a look at the mathematics that they understood and then they
+forced the biology into the mold.
+
++OK, now we're into the situation where we're talking about a 5-pound
+box and 25 pounds of jello.  We're trying to get the 25 pounds of
+jello into the 5-pound box.  Typical of what mathematicians and
+physicists do is you chop off the corners until you got the 5-pound
+box that you wanted.  Unfortunately we threw away all of the biology.
+
+*Arms and legs go.
+
++We threw away the arms and legs, the eyeballs, the ears, all of that
+was gone.  We're back down to a skinned ameba and we're saying, ``OK,
+now we understand the biology.'
+
+*You had the guts left.
+
++Yeah, we had something like a beating heart not connected to anything
+and not being triggered by anything.  What finally happened, and what
+we realized pretty really on, was that if we were going to try to do
+what we wanted to do, we had to take a complete reversal of the ideas.
+
++We had to take a look at the biology.  They applied the appropriate
+mathematical techniques to it.  The problem was that the appropriate
+mathematical techniques didn't exist.  There wer no techniques for
+handling small populations.  There was no technique for handling the
+population of more than one.  When we got two interacting systems, we
+were screwed.
+
+*You could do some ---.
+
++Yeah, yeah.
+
+*-- time series that were correlated, but that's about it.
+
++Yeah, when creditor A at --- B, the problem was over.  But that's not
+a simple problem.  Well it is a simple problem.  It's one single
+event.  So we spent a lot of time trying to solve that particular
+problem.  We tried to come up with a mathematical technique where
+applicable.
+
+Nonlinearity and Modeling
+
+15.6
+
+What I would like to talk about is the problem of linearity and
+nonlinearity.  Models and the reality in models and it's good stuff.
+Testing models and model design, things like that, because the
+problems seem to have not gone away.  They have not been -- by time.
+The issues that were standing 20 years ago when we built our first set
+of models are still with us today.  The people that want to throw out
+their deterministic models and things like that, I want to throw a
+challenge to them.  I think I haven't pulled a chemistry book but do
+you remember what, isn't it femto-seconds, what is that?  An
+incredibly small thing that -- manage -- in certain optical systems,
+isn't that right?
+
+*That sounds right, yeah.
+
+So they developed -- basis for prediction of systems that are
+optically based and experimentally based -- into that measure.  Why
+not give the people the abilities kind of --?  Let's give them a full
+second.  Let's give them a full second to -- experimental -- into the
+--.  What I want to know to the nearest second is the time that the
+red spot on Jupiter will disappear.  Ok?  I want to know to the
+nearest second.  I factored with the kind of resolution and the kind
+of resuscitation today experimental -- just is mind-bogglingly large.
+I want them, before they give me any -- modeling and --, give me to
+the nearest second when the reddish spot on Jupiter is going to
+disappear.  Is that ok?  Is that a reasonable question?
+
+*It's a well-defined question.
+
+So does that make one point at least.  Because one problem, there's a
+quasi--- that keeps resurfacing.  The last time I went to the library
+and I actually dug through, I found the people busily working on the
+concepts for competing risk structures.  The rate for the alpha beta
+things and the modeling of the deterministic models.
+
+*The growth models?
+
+Yeah, the growth model stuff.
+
+*The r and K?
+
+15.14
+
+So that's the other aspect that needs to be considered is not only,
+that was 20 years ago, but it's true today in terms of what's
+practical to do.  Whatever time it seems that if you try to throw in
+much real biology, or real evolutionary theory, or things where people
+or animals or plants evolve in a natural system, you end up with some
+incredibly heavily high structured --.
+
+You sure won't be able to solve it.  At least the techniques for --
+and the modeling -- was in the paper from LBL. I mean the original one
+in Livermore lab was the original -- together with Forest Service and
+also Dave Wood.  At this point it seems to still be a viable
+approach.  It has the potential of creating buffer experiments on the
+one hand that used those models of that type to do some relations.  On
+the one hand you would be helping to design experiments that would be
+a better structured, more quantitative and better, by the use of the
+modeling -- and at the other end, you -- models as a predictive source
+of --.  Ok, that's a big sweep of that stuff.
+
+*Well, it seems like a lot of the modeling until very recently was
+looking at things between these nonlinear events you're talking
+about.  So you assume that they're far enough part that you can
+predictably model in the middle.  It seems that in the last-well in
+the last 5 years, less than 10 years-that people have been developing
+models-toy models-where they're interested in the properties of the
+nonlinearity and in trying to get it to structure like what you're
+talking about.  Structure the models, structure the nonlinearities,
+not trying to predict when the next tornado is going to be and where
+it's going to hit, but trying to look at the pattern of tornadoes and
+what happens under different situations.
+
+*So it seems like that kind of modeling is very much in its infancy.
+People are doing weather modeling, trying to do very sophisticated
+things with it.  I guess what I see what you're talking about is sort
+of looking at a much bigger scale.  Looking at a lot of different
+scales at the same time, all the way from what's happening in a few
+seconds to what's happening in an organism's lifetime to what's
+happening on an evolutionary scale.
+
+Yeah.
+
+*And how these are all tied together.  There may be some things that
+an organism does which don't make sense in terms of its lifetime but
+might make sense when you look at it on an evolutionary scale.  When
+it has to deal with flooding and natural disasters, it had to respond
+to that in order for the species to be here today.  It had to have the
+ability to disperse or move quickly under adverse situations.
+
+*The kind of sense I've had from reading and from thinking about how
+people think about models is that to think, `Oh well, we don't have
+the data for that,' or `You know that's too complicated.  Let me look
+at something where I can do all the pieces.'  When they get to that
+point, they often are getting to linear models or a very simple type
+of nonlinearity.  That doesn't seem to constrain your thinking.  I
+mean that's more, well let's look at what's going on. Let's look at
+what reality is, and then let's think about what makes sense in terms
+of modeling reality.  Then we can step in that and see where can we
+collect data that is going to help us model reality, where we might
+choose to do that.  I mean it doesn't make sense to try to model all
+of reality.
+
+Watt tried to model first all the country and then when he failed
+that, he went out to model the California for his deterministic model
+for all of California.  Remember him doing that?
+
+*Who is this?
+
+Watt. He was one of the early deterministic modelers that was in the
+same group with Holling and Slobodkin, that's another name.
+
+*Ok, that one I know.
+
+Slobodkin is another and so what happened is Watt looked at what
+Holling and Slobodkin were looking at and gee whiz, I will take these
+-- these model and deterministic models and model all of some county
+which I can't remember which.  And then it was a disaster.  So what
+did he do?  He applied for a grant for all of California for his
+model.  You wouldn't say that he, he didn't have any trouble of ego.
+
+*I don't know this person's work, so I'll have to look that up.
+
+I think, that's just totally off the wall, ok?
+
+*That's probably right.
+
+Whitaker
+
+Totally off the wall, but so there was also a time when everybody was
+jumping on the bandwagon and some people were doing really quite
+sophisticated both -- experiments like Slobodkin, and other people
+were -- biology like Holling.  He was more careful of biology, and
+there were other people that came along that really were very good
+biologists like Whitaker that just lived as best he could with normal
+distribution and so forth.  That's all the guy gave him.
+
+*I have an interesting story about Whitaker.  So this student from
+Vietnam that I mentioned earlier who is working on the Mekong Delta.
+He is using a package for canonical correlation and one of the
+justifications in the package is that it allows you to get away from
+linearity, from linear relationships, and to look at unimodality.
+Unimodality.  So this kind of a shape.  And thinking with linearity,
+you know if you've got a certain range, you can think of it as
+linear.  But if you look at his stack of counts, species counts, over
+the whole range it's going to be low and then high and then low again.
+
+*I was thinking this is very strange.  Where is this coming from? So I
+asked him to bring in the manual.  Well it turns out that there's a
+paper of Whitaker's from the 1950s.  He's basically talking about
+species densities over an environmental gradient, and how you're going
+to tend to have an area where the species can't really live very well,
+you get low counts, and then there's the ideal area and then it drops
+off again.  He used the normal distribution as a convenient
+approximation for this.  These people seem to have taken that idea and
+totally turned it inside out.  If you look at the math of what they're
+doing, it's totally linear, so they're claiming it's nonlinear but
+it's totally linear and behind it they're assuming normality.
+
+That's what I found in every paper that I actually fought through to
+the end.  People would always claim -- linearity, multidimensionality,
+heterogeneity.  Heterogeneity was a big paper that got thrown at me by
+the group -- Washington while we were applying for grants and
+stuff. You know I dug the paper out and there are, what are they
+called?  Without loss of generality?
+
+*WLOG.
+
+Thank you.  Without loss of generality.  After you thrash everything
+out, they would throw this thing where they threw it out all like
+having -- one dimension.  Of course it was horrendous math but ok, so
+none of the business people I ever thrashed it through --.  So it was
+-- if you were willing to dig.  -- so many times over I got very
+discouraged with that sort of thing.  I was burning up too much of my
+lifetime without meaning much.  Especially not getting any useful
+tools.
+
+*And that's fine in certain situations and over a certain range of
+conditions.  But it's when you get to those nonlinear events that it
+breaks down.  You either need to make assumptions to get around that
+or else actually build that into your model.  It seems like there are
+some of those ideas that are coming out now in some of these Markov
+chain models.  There's some models of individual behavior where people
+are actually tracking.
+
+It's ingrained, it's basically a Markov chain that I basically throw
+out as a starting point and then from that -- history and evolutionary
+information going to keep true Markov properly.  Am I right on that
+one?
+
+*You can't have arbitrary information back into the past.
+
+Right.  Yes, with living things, or --.
+
+*Yeah, you can define your past as far back as you want but at some
+point it ends.
+
+So, this modeling technique in another sense was a fix for
+Markov-Chains.  Not only -- dimension.
+
+
+Robert May et al.
+
+10.2
+
+Critical mostly makes an experiment, the whole idea behind this can
+make a situation detestable.  That was my great fit, with a group of
+people based on the stuff that Robert May used to do.  I've yet to see
+an experiment that could work, or if it did, it was some gigantic
+artificial chemostat type of experiment where you have a huge
+population, a rapidly stirred beaker or sitting for a while and it
+seemed like any time you'd try to hang on, try to hang on to one of
+those for 10 years.  Try to hang onto your chemostat for 10 years.
+Watch what happens.  You know a few people did.
+
+*Right, in England, yeah.
+
+They just want over the map because you have all sorts of weird stuff
+and awful type of genetic mutation and new strains and everything.  It
+was crazy.  So no matter how long you thought you could hang onto
+something like that, but the longer you hung onto that, there was no
+variation save.  There was supposed to be this -- failed totally.  I
+can't, can you talk of a single exception to the contrary 20-30 years.
+
+*I think people are starting now to look at some models but the stuff
+that went on in the 60s and 70s and even the early 80s.
+
+I --- enough time.
+
+*Yeah, no.  It would often be based on things that weren't
+measurable.  They made nice intuitive sense but then there was no way
+you could investigate modie.  Yeah, I don't think there's much out
+there, even at this point.
+
+OK, so how do you call that science?  How do you call what Robert May
+did science?  I thought you were supposed to be able to develop some
+theory, from the theory a hypothesis, from the hypothesis a series of
+experiments, from those experiments data, from the data, analyze the
+data and have a clue on the original theory.  Show me where they've
+done it?  Anywhere.  Find where that group has closed the loop of what
+you normally would call science.  Anybody else would insist on
+something like that for science.  Why shouldn't they be held to do
+that for science?
+
+They even taught me that in the introductory course on general science
+in high school.  They pounded that into me a hundred times over.  What
+was it, 7th 8th grade general science course pounded this into your
+being along with everybody else because  it's absolutely fundamental
+to doing science.  That's yet to be seen so that's the other side of
+some, and I would really like someone to show me the contrary
+somewhere and to the world if you're ever going to publish the thing,
+as a challenge.
+
+*I hear you.  It's a very important point.  I know one wildlife
+ecologist who is doing what he calls individual modeling.  He's trying
+to model individual behavior.  He's a wildlife ecologist, he goes out,
+he puts tags on animals and has followed them.
+
+Then I'd put him back in the same loop that we described, of
+complexity.
+
+*Right.
+
+And then how would he go from there to the next step?
+
+*Well, I want to talk to him and he's at Madison and I want to show
+him this stuff.  But he's a wildlife ecologist.
+
+Holling did really nice work and creative biology and he had a
+biological intuition. He had lots of really nice experiments and the
+problem, he was always so constrained by the fact that he felt that he
+had to come back into the same reality things like that, cuz he had no
+other tools to use as an alternative.  And we had some interesting
+discussions off to the side.  He very much wanted me to come back out.
+
+I think I already mentioned the fact that he had new problems of
+trying to have a monitoring system and it was killing his computer in
+terms of compute cycles. The thing he found most intriguing was the
+complete aside on that special method of getting away from calculating
+trigonometric functions for working out distances, say to trees or how
+would their animals and plants interact?  But also you know you could
+use his same kind of tables.
+
+He started measuring individual animals daily and other things like
+that. In every case, if you moved to measurements on individual
+animals then you came right back to the things that we were describing
+in this paper, or that Jim was describing in his illustrations using
+different games.  All the images by Jim were just beautiful. I loved
+it. I really loved it, because Jim found himself right smack in the
+middle simulation on the one hand and then a bunch of numerological
+things.  He told me he had gotten into a whole new set of them.
+
+10.4
+
+It's easy with Robert May's stuff.  All I see are gotchas.  If you try
+to take it one step forward like Holling did . . . Important people in
+my life. The stuff he was doing I thought was really neat.  
+
+10.9
+
+I wanted to say something about how it's hard not only at the
+deterministic level of Robert May and so forth.
+
+*Yes, May and MacArthur.
+
+May and MacArthur's approach, but also the fact that I wanted to
+discuss something about the people that I thought did wonderful work.  
+
+20.20
+
+*I wanted to read you something here.  This was the Royal Statistical
+Society, their newsletter, it comes once a month, and there is a
+picture on the front of Sir Robert May, who is the, he is the science
+advisor, the key science advisor for the British government.  He gave
+a talk, he first gave some much needed advice on the role of
+statistics in science and society and then launched into a highly
+stimulating and enjoyable talk on nonlinear problems in ecology,
+evolution, and immunology.
+
+Do you realize -- that we had with him in his -- students and so forth
+the time we were trying to do some nonlinear stuff?
+
+*No.  Why don't you tell me about that?
+
+Wasn't he one of the key people that was pushing for linear systems
+early on?  Early on.  Young person.  Early on.
+
+*Could be.  You know, I know that he got into bifurcations which is a
+nonlinear system, but this is before that.
+
+Yeah, before that.  And then when you start looking at systems that
+bifurcate -- there's a simple system that I could write, the simplest
+system that involves say a couple of words, it just hasn't, one has to
+-- squared, and here was this wild behavior.  That's where you -- get
+religion.  A different kind.  So many of the people thought -- systems
+were against everything and it would provide adequate, there would be
+some transformation of the kind of modeling technique that would
+provide them a way of describing natural systems in a reasonable way.
+That was really -- and then later on, pretty soon of, who's the guy at
+Cal Berkeley?
+
+*Oster?
+
+Yeah, right.  He had intriguing ideas -- and he's the one that passed
+the thing back to the other finding some wild behavior for the
+simplest fossil system they could bring up.  -- from a totally linear
+system and it, I still have that open question to you.  Is there any
+form, is it possible to form a -- that -- infinity and yet -- infinity
+of linear distance.  Is there any way you are creating the simplest
+nonlinear system like you just -- bifurcation type thing?  Ok?  Did
+you ever resolve that one?
+
+*No.
+
+I've run it by you a number of times.  Over the years.  Over the
+decades actually. -- that one worthy of a model theory prism -- small
+simple -- problems that are easy to pose, that are simple, not screwed
+up.  So why don't you hit him with that one?
+
+*It seemed that if it's going to work, it would have to be a system
+where you have some system that's not regular, where you've got
+something that's getting vanishingly small or vanishingly close to an
+end point at some rate that leads to a pathological case.  I mean you
+can get degenerate systems but that's not what you're talking about.
+You're talking about truly nonlinear systems.
+
+Yeah.
+
+*I don't know.
+
+Why don't you pass -- a friend, model stuff.  Didn't you have a friend
+who was into model stuff?
+
+*Yes.  Keisler.
+
+You had a friend who was into model theory.  Why don't you pass that
+one on to him?
+
+*Good idea.
+
+Pass it on to him.  It's been -- for my entire life.  I haven't been
+able to find a thing -- find a way to prove it otherwise either.  So
+give it to him -- keep it clean and neat and see what they say.
+Anyway May -- back and forth each time if you just niche it a little
+further or went to a little higher value or things like that or --
+whoa.  If -- find a way of --.  But does he ever get shifted in his
+points of view and realize -- biology reality.  But there was a lot of
+-- they really believe that the -- at least first approximation.  And
+-- we do even today is straight linear theory --.
+
+*Well -- approximation if you don't know anything?
+
+Not only that but there are many things that have -- a statistician
+like -- and even -- that are not going to become stable and not part
+of the plant here.  It hasn't been -- in place during their time.
+
+*Right, or over a certain range of conditions.
+
+Yeah.  However, if you want to throw something into the -- asteroid
+belt is in between Mars and Earth where the asteroid belt is, I'm sure
+you can find some there -- unstable --.  So which piece and part of
+the universe are you talking about?  And also what -- it's mind
+boggling -- shot say to Mars are, almost no correction.  Or how they
+missed satellite that didn't have a, the last part didn't fire, put it
+into an orbit that was nonfunctional and I guess eventually that would
+burn up.  What did the people do?  They -- each time make a further
+correction in it and finally get it out orbitally by -- the correction
+of the moon -- into nothing.  -- pure linear theory, isn't it?
+
+*Yeah.
+
+Pure linear theory, all that was done.  Built some incredibly clean
+and -- things like that and some things in correction for mistakes and
+other problems, you're able to come back -- all linear theory --. --
+you know -- linear approximation to occur like a linear theory,
+approximation type thing.
+
+*Yeah, local linear approximation.
+
+Whatever.  And you pretty much ignored the other third body thing out
+of that one too.
+
+*That's what I was thinking about.
+
+-- that one, you could pretty much ignore it, can't you?  For -- time
+over -- space.  Or --.
+
+*It's not solvable.
+
+That's what I mean.
+
+*You can approximate it to whatever precision you want but you can't
+get an exact -- three point problem.
+
+So really I'm throwing a bunch of things like that.
+
+*Interacting system.
+
+Because they are constantly interacting --.
+
+Jerzy Neyman and Flour Beetles
+
+10.6
+
+You have to be talking about events being the total orientation and
+time as a dependent variable, and the next moment you're telling about
+time with events coming in as a dependent variable.  Does that make
+sense?
+
+*Yes, and then it's really complicated if you try to model it in terms
+of time because then you've got all these interactions.  You have a
+whole bunch of stochastic processes that are going on at the same time
+and they're all interacting and you got to model all that jointly.
+
+And if you don't do it jointly, you lose all the biological reality.
+
+*Exactly.  And then you're back to mathematical biology.
+
+Modelling / Neyman
+
+You know it was interesting to go to, what was the incredibly neat
+statistician who pioneered a lot of use into biology.  He was up there
+at Berkeley too, in statistics, but.
+
+*Neyman.
+
+Neyman, Jerry Neyman.  I went to one of his lectures one time where he
+was showing how to model biological systems, stochastic models of a
+biological system.  So I was very intrigued because I was also looking
+into probabilistic models and here he was putting on a whole lecture
+just treating the whole issue of problems that came out.  And he was
+also doing a lot of pioneering work on calculating life data and
+things like that, statistics on life tables and stuff like that, kinds
+of thing from a sophisticated probabilistic point of view.  So I go
+there and right off he says well, the egg and the pupa are both
+inactive, they don't move, so they're stationary. Any the larva and
+the flower beetles.
+
+*Yeah, it was flower beetles.
+
+Flower beetles, wonderful.  You must know the example I'm talking
+about.
+
+*I know the paper.
+
+Well, incredibly small world.  So I went to this lecture.
+
+*I took the course and we went through the paper.  I took the course
+from him so I know the work.  He had me come to the board and work
+stuff out.
+
+And you couldn't be in his class without going to the board.  He
+nailed everybody.  He was very careful about nailing everybody with
+some amount of time, up in the front.
+
+*Right, Socratic method with a vengeance.
+
+So anyway, here he is describing first the statistics he was gathering
+from the beetle.  It was an active form and the larva was an active
+form, OK.  They both moved around.  You had to deal with spatial
+movement and other things like, and pupa and eggs didn't move out from
+under you so you're going to have to deal with them moving around in
+the system, like wherever they got laid or whatever, they stayed
+there, they didn't budge.
+
+So the thing is, here he is working on flower beetle eggs and pupae
+that don't move out from under you, they just lay and so on.  So then
+he goes on to fully develop the stochastic model, this single model
+will lump them together and since these two move (and its and larva)
+go on from there, to simplify the calculations and statistics in the
+two cases.  So that's what he did for the, anyway the lecture that I
+went to, OK?  That was the lecture.  This is a wonderful statistics,
+just terribly sophisticated and neat, he's just garbaged all the
+ethology in the system. Ethology just ate it because what he had done.
+
+The eggs, may be stationary but they have a death rate, and all sorts
+of different predation can happen on them and that predation that will
+happen to them is totally different than what happens with the pupae.
+There's a group of hyper parasites that knock pupae out that are
+totally dependent on them.  They can't live on eggs, the ones that
+take out eggs can't live with pupae.  Exactly the same situation for
+larvae and adults.
+
+And also the other thing was that it garbaged time in the model.
+They're very careful not to schedule any events.  It records the
+development time, which is very dependent on temperature and things
+like heat and humidity and things like that.  They hatch in
+circumstances that we can measure-that is all scheduling larvae.
+Larvae then goes through a series of instars, growing, requiring
+certain periods of time to the next instar.
+
+And they also have a behavior with parasites that are totally
+different from the egg.  Then you have to schedule time, the ones that
+survive.  You've got to schedule the formation of pupae, but the pupae
+though is exactly the thing I've just been describing, and so on.  The
+details of the adult can be laid out with the same ethological
+approach.
+
+*Right.
+
+So beetle statistics, but as far as I was concerned, it was garbaged
+over biology, especially the ethology of individuals.  Does this make
+sense to you?
+
+*Yes it does, and it was beautiful statistics and beautiful
+mathematics and one of the things that he was able to do by ignoring
+some of the details you just went through, was he was able to use
+moment generating functions.
+
+Linearity assumptions.
+
+*Yeah, and collapse things down and come up with a nice way to look at
+multiple individuals using generating functions.  When you have
+independent events you can multiply probabilities which means in the
+moment generating functions you're adding things, so it makes really
+nice mathematics. That was one problem I had with that material was
+that once you stepped away from those nice assumptions that he worked
+with, you couldn't use that mathematics at all.  It broke down.
+You're stuck.
+
+Am I right that this, in terms of stochastic modeling, is another
+gotcha that hopefully we're working our way across?
+
+*That's right.  That's exactly right.
+
+The stochastic literature is riddled with what I've just described.
+Am I right, does it appear at least at this point to you, you'll have
+to cogitate it more I know, but it at least appears to solve it in a
+more reasonable and biological way and yet we haven't eaten it
+mathematically, have we?
+
+*No.  The mathematics in this, in some ways is really very simple in
+your approach, from event to event.  The complication is all in the
+relationship in the scheduling of the events and in figuring out how
+to simulate it, but the structures is elegant.  I'm biased of course.
+
+That was another path I wanted to treat because I've been there a
+number of times in my life already.
+
+10.9
+
+Modelling / Neyman
+
+It was neat stuff, but it was nice that you had the same experience,
+we even walked through the thing, the paper on flower beetles, so I
+guess it puts a new dimension on the test for it, huh?
+
+*Yes.
+
+It's coming to that again.  There are so many types --- and everything
+comes all to pieces, busts it up.  But at least at the time you don't
+see, do you find that also a problem to you that the particular
+mathematical convenience that Neyman used makes for great
+mathematics.  It makes for neat statistics, and it makes for some
+interesting applied problems where it's better than nothing.  It had
+problems along the line I just described.
+
+*Yeah, and it makes progress on a problem that wasn't solvable before,
+but it's kind of sad because you can't, you can't generalize it, you
+have to go to a totally different approach to generalize it.  I
+thought about that a lot and I couldn't figure out how to generalize
+it in the time domain.  It's just too complicated and you can't use
+something like the approach he did.  It was kind of frustrating
+because he was in his late 70s probably when you talked to him. Let's
+see he died in 81 and he was about 87 I think.
+
+I also talked with him, you know, when was it?  Well the talk about
+the stuff we were doing 20 years ago.
+
+*Yes, so that was probably 5 years earlier, so he was probably in his
+early 80s at that point, late 70s or early 80s, probably his early
+80s.  Yeah, I worked for him a couple years.  I was his RA and his TA,
+yeah I was a TA in that course where he had the Socratic method.
+
+Yeah, I thought he was a wonderful teacher.
+
+*Oh yes.  One of the best teachers.  But it was frustrating because I
+couldn't see how I could use his methods on the kind of problems that
+we encountered together or that I encountered working with you, or the
+kind of problems that I encountered with ecologists that I worked
+with. Looking at predator/prey systems or plant/insect interaction is
+actually more what I was working on.  I couldn't see how to use that
+stuff and I still can't see how to use it.
+
+Because this is a way of describing why you can't.
+
+*Yeah, yeah, right.
+
+18.8
+
+This is the part where the order -- things to happen, this is the part
+when -- it was the only thing around with numerical -- at that time,
+the.
+
+*Flour beetle.
+
+Yeah, flour beetle it was called, and then -- put together active
+adults with active larvae -- because -- and the trouble is when you do
+that, you've just blown the -- everything has to take place and to
+evolve right.  In garbage everything in time.  So that's the other
+point.  You can't, you've got to, -- you've got to -- open-ended type
+of environment so real biology, you can actually happen.  And you've
+got to be able to tie to some kind of statistics that you can be
+formal about in some reasonable way also.  So that's the idea of --.
+
+Bellman (?) / Theory vs. Computation
+
+16.1
+
+They always caught it when the people are very famous and very
+talented.  Was it Bellman who was a numerical analyst at Bell Labs
+that was fantastically good at writing all sorts of very good programs
+and other things?  I think his name was Bellman.  Numerical analysis
+person at Bell Labs.
+
+*I don't know.
+
+I'm really off the wall but he had just come out with a new book and
+it had some really neat techniques and some new proofs for some new
+mathematical.  He was a very innovative sort of person, some day I'll
+get the right name and the right person.  I've garbaged his name.  But
+so what I was doing is I was sent to use one of the techniques that he
+had and it looked proofs, the proof looked great and I ran some
+numbers through it and it gave me garbage.
+
+Then I forget the name.  He was the primary numerical analysis person
+there at Cal-Berkeley at the time we were doing this work, but I can't
+think of his name.  So I went to his office and brought him the book
+and said do you see any problems with this particular proof?  I have a
+problem with it.  Can you find any problems with it?  So he sat down
+and rederived the stuff and said no, Bellman's stuff here is right on,
+perfect, no problem.
+
+The problem is that Bellman and I got in myself, all made the same
+slip on a kind of a mathematical kind of error that is easy to make
+and was wrong, and you only get garbage when you retry, put the real
+numbers into something.  So I said OK, you've just proved it by, why
+don't you put a few numbers in it?  And he said, `I'll be damned, I'll
+be damned.  Well, you know, Bellman does this often.'  Bellman --
+because he'd just been sucked in by the same one, you know, publicly
+there.  Real story.
+
+So if you think the -- you had better be real careful of that being
+really filled with -- and it also has the other point.  It's very
+much, it's really crazy, the other aspect was that they're always
+throwing around the stuff about mathematics is so exact and so precise
+and so all this good stuff, except they have, it takes real people to
+do real math.  Real people with limits.
+
+*Make real mistakes, yeah.
+
+So it's a bit like you demanded a programmer go out there and write
+lines and lines of programming and never test it.  Never run it on a
+real machine.  How well would you -- formal, equally well defined,
+equally precise, equally.  Would you believe that that would work in
+-- or do we really prefer the guy actually -- debugging software and
+test programs?
+
+*Yeah, it would be nice.
+
+So that's another whole piece of, another comment about because of
+the, and there's always this, they're always just discuss the -- for
+things that are -- approaching heter-- and yet when you find out that
+you --.  Sometimes everything is there but it's an error, so be
+careful.  You should always -- be careful.
+
+*Yeah, it's hard to teach people that though.
+
+You have to get burned a number of times to get it.
+
+## Biology vs. Physics
+
+Model Theory
+
+13.3
+
++I look back on that, I look back at the time that I spent with Bland
+up at Berkeley, the times at Giannini, as probably being the most
+golden, the most productive that I've ever had.  Not so much because
+of the papers, but because of the ideas.  They were all new.
+Everything was new, and in a sense we were sort of doomed to immediate
+failure because they were so new that they were for the most part
+reasonably unaccepted.  If we'd have been Robert May or if we'd have
+been you know somebody working --- Voltaire, we would have probably
+ended up.
+
+*It would have been published.
+
++Yeah, we would have published a thousand papers and, but we would
+have also not done the problem.
+
+*A gotcha.  We were talking about gotchas the other day.  You get so
+far with a particular approach and realize that there's some key
+assumptions which are untenable.
+
++Oh yeah.
+
+*You can't make the measurements, you got some assumption with
+independents where there isn't any independents and.
+
++Well that was another thing that we agonized over a whole lot, again
+in this paper we talked about.  What you needed to get a Poisson
+distribution, you had to make assumptions that were biologically not
+what we really wanted to make.   But the alternative was no solution
+to ---, so we made assumptions about that.
+
+Bill Hawking(?).
+
++Yeah.
+
+Sometimes they'd --- sometimes by mathematicians, sometimes by
+biologists, but mathematician and then --- way of tightly --- the two
+by doing in a time space and an event space where appropriate.  We
+could do formal math to the next event, the entire event came to a
+screeching halt.  Most of the systems untouched because most of the
+systems, we don't have to do anything with it, it's already been
+defined and prescheduled, right.  But the --- the event came --- to
+the reproduction.  No 1, 2, 3, or 5.  Just like a pregnant woman ---.
+
+*7.
+
+7, sometimes, if you take fertility drugs or something ---.
+
+21.1
+
+The point I wanted to make was that this general discussion of broad
+things like this and some of the things -- want to do interaction --
+obviously -- some of the things -- because some of the stuff is
+probably less clear why certain things were done --.  Now there's some
+fill and still -- mathematical which is unfortunate -- at least a
+little bit more into some of the first implementing -- too.  Because
+that could have been an interaction between a natural -- and the
+mathematical world and the world of -- assimilate on the computer in
+some reasonable way.
+
+Five Parameters
+
+10.1
+
+There was that other piece of the work, where we were looking at a
+different way of parameterizing the space.  I think we had 5
+parameters in that parameter space.  And they related to things like
+position and rates and all sorts of stuff like that.
+
+Like gee, 5 parameters to characterize a multidimensional system.
+Boy, are you even cutting it loose in hopes of making any sense, 5
+loose parameters arbitrarily shoved into the way that they're dealt
+with in the one non-stationery poison process.  So it would yield so
+you would think that, woah, how can that many loose things in there,
+just make any sense?  You can draw the universe with that amount of
+degrees of freedom.  But the whole idea was to pick parameters that
+were closely tied to biological meaning.  That was the idea.
+Biological meaning in a behavioral sense of what was happening in the
+rail. 
+
+You've got to talk about goals playing on those, and you've got
+certain numbers and events and other things.  This tree has got to be
+born sometime, and  it's going to die some time and has some expected
+lifetime.  But you also have bark beetles and other organisms.  They
+live and die and so on.  These parameters have to then be a bridge to
+the natural biology a person measures anyway and failed in terms of
+natural things.  At least as I just reach back, that was the idea
+behind them.  Does that make sense?
+
+*Yes it does.
+
+And that has the big potential problem that I need to bring up.  Is it
+really there because all those degrees of freedom you have to build in
+the structure of the problem and the behavior of the animal.  Partly
+structure, partly location, partly temporal stuff, partly hy-age,
+partly getting born, partly dying.  Who, people, animals, they have to
+get born, they have to live some life they have to develop, they have
+to reproduce and reproducing they don't stay around very long, and at
+some point they die and none lives forever either.  And so that's the
+idea of having parameters that are tied to things like this.  Does
+that make sense?
+
+*Yeah.
+
+So the free parameters are not free at all.  They're tied to the
+biology a person measures in their natural experiment hopefully.
+
+10.4
+
+Birth and Death
+
+You see, I remember the process and the things that let you set birth
+and death, life span, scales of time, scales of space, and things like
+that.  Now usually a reproduction of that then would schedule some
+kind of sub-event because for most higher animal's reproduction is
+just a little bit more complicated than simple cell division so you
+have to, you need a compiling procedure at that point.  For example,
+it's a scheduling of the reproduction based on the state of the system
+and the distributions that you measure and of course that's a trial of
+Monte Carlo type simulation and then it, I lost my thread, damn.
+
+*We were talking about, you were talking about birth process and the
+scheduling of birth process.
+
+Oh, thank you.  Birth process then for most animals then you got to
+figure litter size, sex distribution, maybe even, maybe they're all
+one, sometimes you get just one sex in a particular animal at any one
+time, all female or all males, or whatever.  And so that kind of
+information is crucial to factor in too.  But guess what, that biology
+is directly measurable.  This is appropriate to be factoring from
+ethology or animal behavior anyway.
+
+The whole idea of keeping, treating what happened to plants as an
+exact analogy to the way that you treat the animal, you see.  They
+have a birth, a growth process, a reproduction process and eventual
+death.  No plants live forever it turns out, and so blue-green algae
+has a different lifespan than bristlecone pine.  And so what has to be
+developed are the equivalent  statistics but again, measurable.
+
+You can measure them, like you get any other statistical data, and
+also then to tie you in some rigid way to what you were sampling from
+and you see that was the other thing that was driving them up the
+tree.  We had this big plot of Ponderosa Pine.  Here is this beetle
+interacting, now we're going to stress it with air pollution, oxidant
+air pollution, with ozone damage, how do we model this damn plant?  We
+might measure how many trees and what kind of spacing, what they ate.
+What, you can do aging by boring the tree and so.
+
+And then you follow the actual death.  The tree is alive you load the
+smog levels, all statistical and then you couple them by the actual
+beetle biology.  You find that Dendroctonus doesn't just get attracted
+to any tree and it does this only in a certain direction.  If it gets
+stuck in the phloem, it doesn't even develop because the larva starve
+for lack of food.  At some point the oxidation of pollution probably
+makes some marks susceptible to beetle damage but at some later stage
+that it stalls it by starving the larvae for lack of phloem food data,
+the food, for the parents of larva.  The parents are there and then
+the larvae don't develop apparently, I remember Dave saying.
+
+Some of the sense that we're describing here, quite measurable from
+biology, looking at it as an animal, like applying animal ethology to
+plants.  People who love plants will like that surely, the very
+thought that plants should behave more like people.  People even hug a
+few occasionally.  So, am I totally off the wall there?
+
+*One thing you're talking about is that you are looking at things at
+different scales, depending on what aspect you're looking at.  If
+you're looking at the bark beetles, you look at them on a scale of
+days and weeks and years.  If you're looking at the pine tree, you're
+going to be looking at a totally different scale, both in terms of
+space and time.  The resolution is totally different, and the span is
+totally different.
+
+I think when things actually start in real time, --- all parameters
+are there.
+
+*Yeah, I think so.
+
+Anyway, that's what I had in mind anyway, 20 years ago.
+
+Models Based on Measurements
+
+12.16
+
++The other thing that we learned and this is something that Bland
+picked up on earlier is that you can build the best model in the
+world, OK, it doesn't make any difference.  You can build the absolute
+best model in the world.  If you've collected the data wrong to drive
+the model, you're dead meat.  You're not going to go anywhere with
+that, and so from the get-go we were trying to design the database in
+such a way that it would derive the models that are in this book, in
+these articles.
+
++If we were to do it today I think we'd do it in a whole different
+way, because the tools would be so much different.  You have to
+remember back then, we were archiving data in these little cylinders,
+that they had this arm that would come out and go chunk, --- the
+cylinder dah dah dah, kachunk.  You'd read the data in and then it
+would go kachunk dah dah dah, kachunk.  It was really beautiful.
+Stupid but beautiful, you know, and archiving data.
+
+*Slow by today's standards.
+
++Yeah, archiving data was horrible, you know, where if we had, at that
+time that particular piece of equipment cost something like \$50
+million, just to archive data.  We're not doing anything with it,
+we're just going kachunk dah dah dah kachunk.  That's all we were
+doing. Now we could buy a CD Rom Writer for \$5,000, hook it up to a PC
+and we could archive the known universe, literally.  We never had that
+capability back then.  We were premature with That kind of modeling.
+The way that we would do it now is probably very amenable to a network
+based system with appropriate databases in different locations.
+
+You're right.
+
+Hilbert Spaces
+
++I should preface that.  We've never explored it and I think we're
+probably 100 years ahead of time.  In that first paper where basically
+we're taking a look at projecting out solutions to a biological system
+from some sort of a Hilbert space, an incomplete Hilbert space. But
+the idea that we have made a measurement on a system is going to tell
+us what the solution is going to be because we made the measurement,
+and if we'd made a different measurement, we may have gotten a
+different answer. In a sense it's kind of like, and again Bland and I
+spent a lot of time eating these French doughnuts over at ---, talking
+about it's kind of like a Heisenberg uncertainty principle in some
+ways as applied to biological systems.
+
++Well that brings in essentially the measurement thing that we have
+never explored and we really need to go back.  We, collective we,
+really need to go back and take a look at where that's going to take
+us at some time in the future.
+
+*Depending on what you choose to measure and how you choose to
+measure.  Examine the way the process works is going to determine what
+you actually see.
+
++That's the difference between us and population biology and the ----
+equation.  They don't measure anything.  They've got a population
+here, they got a population here, they got a coupling constant, they
+solve a differential equation and guess what, differential equation
+blows up on them.  Why does it blow up on them?  Take a look at some
+of the stuff that Bland was looking at back then.  We were taking a
+look at catastrophe theory and at fractals, and at solutions to
+NP-complete problems.  What we were finding is that the continuous
+variable techniques that were developed for population biology were
+totally inappropriate.  It's not surprising that the solution didn't
+converge.
+
+*You can't work with interacting processes.
+
++We didn't have to.  Now there's a whole field out there that does
+nothing but chaos type of stuff.  We're sitting there looking at chaos
+and we didn't have any idea what the hell we were looking at.  But we
+knew that the techniques that were being applied by May-the predator
+play parasite models which you know really are pretty.  They make
+really nice paper, didn't solve one biological problem that we were
+aware of.
+
+*Well the stuff that's going on at Santa Fe doesn't necessarily. It
+gets close.
+
++It gets closer but the point is.
+
+That coin-flipping used for.
+
+*From Feller.
+
+Feller did was --- and that, the data, and then the statistical
+analysis of that, even the expectation is unstable, infinite --- much
+less var--- so I had already been looking at chaos theory by way of
+Feller's work and I had to factoring that in all the way along,
+interestingly enough.  That was one of the things that so turned me
+off, the fact that these people are ---  precisely predict the
+biological statistics, that they were applying grants for, writing
+papers on, dah dah dah.
+
+Event-Driven Paradigm
+
+10.4
+
+*One of the things that really caught my attention was switching from
+thinking about time to thinking about events and scheduling events.
+The whole concept involves scheduled events.  Between right now and
+the next scheduled event you have a Poisson process.  At that next
+event there may no longer be a Poisson process and it may be totally
+different.  Things may go on at that event.
+
+But then you don't go back.
+
+*Right.  Then you reschedule things and take care of the bookkeeping
+and then you've got a Poisson process again.  That's brilliant.
+
+Of course that's the core of the whole thing that makes it work.
+
+*That's right.
+
+You have to be talking about events being the total orientation and
+time as a dependent variable, and the next moment you're telling about
+time with events coming in as a dependent variable.  Does that make
+sense?
+
+*Yes, and then it's really complicated if you try to model it in terms
+of time because then you've got all these interactions.  You have a
+whole bunch of stochastic processes that are going on at the same time
+and they're all interacting and you got to model all that jointly.
+
+And if you don't do it jointly, you lose all the biological reality.
+
+12.18
+
++I think one of the things that Bland did which is really important
+from a philosophical standpoint, from a philosophical and mathematical
+standpoint, is the simple fact that when we started to do this work it
+was really clear that we needed a major conceptual change.  How do I
+relate that major conceptual change?  Probably the best way to relate
+it would be that Albert Einstein in 1905 made the conjecture that time
+and space were related and that is the basis of special relativity.
+
++Bland --- the completion that the measurement and the state of the
+given small population of animals to relate it and you couldn't
+diverge the two of them, that you had to work within that arena to
+solve a problem.  If you didn't, you may be solving a problem but it
+had nothing to do with the real world.
+
+*Yeah, so you move from a time-driven paradigm to an event-driven
+ paradigm.
+
++We moved to an event-driven paradigm for a number of reasons.  One of
+them being that if we had done the time-driven solution-I mean it was
+like to the three-hundred thousands, and if you multiply that times
+the amount of compute power that we had, we'd still be doing the first
+time step.  Just for ten individuals.  So we moved to an event-driven
+domain for the very simple reason that it got rid of the time
+variable.
+
+*It also gets rid of the interacting process structure which kills you
+from an analytical point of view in the time domain.
+
++But if you think about what it does, it projects out the solution.
+You literally project out the solution that you're going to be working
+on.
+
+*That's beautiful.
+
++One of the things that Bland did was the chess and backgammon games.
+Basically we used those 3 particular analogies to define how a
+biological system worked.  Even if the system was completely
+deterministic like chess, something worse than an NP-complete problem,
+then you're dead meat.
+
+*So the --- does pretty well but, yes, having to project so many
+ pathways.
+
+13.3
+
+There had to be real biology in some way --- for measurement in a very
+direct ---.  You exercise all the complex --- and then all the link
+--- they were tied to ---.  And guess what?  You're right back to a
+purely defined currency --- stationery --- to the next event and
+parallel with 10s or 100s of thousands, even, you could even carry 10
+a thousand --- incredibly enough.  So that was the driving force
+behind everything else.
+
++That was our key.  That was our key.
+
+*That's a brilliant, that's one of the brilliant points.
+
++That was our key.  That was the key to the whole thing that we did,
+--- Poisson distribution and the idea of independent events.  We could
+treat each individual as essentially an individual until he
+interacted.   And that interaction was basically defined in the event
+space.   In fact, I remember going through that.  We looked for the
+minimum of the minimum of the minimum of all events and the next
+sucker that got it, got it.  If he died, he was erased from the rest
+of them and the whole event structure changed at that particular
+point.
+
++But we weren't tracking individual times for each one of the persons
+out there.  When I can remember going through discussions. ``Bland, is
+he doing anything yet?  No.  Let's go to the next time step.  Is he
+doing anything yet?  No, let's go to the next time step.'  And in the
+normal solution for time-based systems, that's what you would be
+doing.  Most of the time you would be just iterating until the next
+event occurred.   
+
++Think of the distinction of basically what was being done by Robert
+May and groups with basically the population biology sort of system.
+Everything was a continuous event, so things were changing based upon
+a set of continuous variables that may or may not be semi-continuous.
+There were spikes that we were allowing and things like that but the
+point is is that's not how the biological system works.
+
++The best example that Bland ever gave me was the rabbit and the fox
+example.  In a physical system, if the fox moves toward the rabbit,
+the rabbit takes one step back.  If the fox takes one more step to the
+rabbit, the rabbit takes another step back.  That's what it would be
+in the physical system.  Some continuous function would describe the
+relationship between this fox moving and this guy moving, and it would
+be a continuous function.
+
+*And linear.
+
++Yeah, linear.  What normally happens is the fox goes tick, tick,
+tick.   The rabbit is seeing him but then there's this zone where the
+rabbit says I'm out of here.  Boom.  He doesn't run two steps.  He
+runs to Fresno. That example tells you that you're in an event-driven
+system.  You know the fox is not going doink, doink, doink, has
+anything happened?  No the fox is moving, but in terms of the
+interaction biology part of it there is no interaction at this
+particular point.
+
+*We're not modeling the interactions happening, cuz there's
+perceptions going on, but we're not modeling the perceptions, we're
+modeling the movement.
+
++No, but at that particular point where the fox gets to the point
+where the rabbit says OK, I'm out of here, we've had an event.  We
+have not had a continuous function.  We've had an event and from that
+particular point we have a new problem, so what we were looking at.
+
+Span and Resolution
+
+12.16
+
++The other thing that was really key, and I've used this the rest of
+my life because Bland and I have had some amazing discussions on this,
+was the concept of span and resolution.  Before you do the problem,
+you ought to know what problem you're doing.  If you plan on doing the
+problem from the ameba to the gorilla, you got a problem.  You have to
+limit the time and space that you're looking at.  In this third paper
+there when we basically started to take a look at the Blodgett data
+and the distribution of fees and draw --- functions.
+
++That was the first attempt to really defining a problem that was
+amenable.  You had stochastic events coming in at one end, because
+your resolution was not short enough, and you had constant problems
+coming in at the other end which changed the dynamics very, very
+slowly.  Like weather conditions, or maybe climate conditions,
+something like that.  Something that had a 20-30 year time frame, or
+300-year time frame.  If you take a look at most of the work that is
+currently being done in almost any field, the first thing they forget
+to define is this time, the resolution and span of the problem.  It's
+like the two words never got invented and we were looking at that 20
+years ago.
+
+*25 years ago.
+
+18.6
+
+Then the other thing is it's about that time you start looking at this
+thing a little more closely and I'll be damned all those things out
+there -- you're now finding -- systems -- on  bunch of truncated --.
+When you notch it down one thing and -- revolution.  So -- here pops
+out another kind of structure that's really important to deal with and
+if you just randomly assign things across the entire -- you have a
+mind-blowingly big -- there.
+
+Also I just very, very, very faintly remember.  I used to go -- model
+theory too from time to time, to go find out what made sense in terms
+of this or that or other things in mathematics, all kinds of things --
+doing in the world.  There was this one, what do you call this thing?
+-- problems -- pathways or all possible pathways, a set of all
+possible pathways over all possible events, or all possible ways to
+think --.  It's -- problems --.  What do you call them?  They're --
+fact of life.  You know you can do them for 2 or 3 or 4 and then you
+-- go to a hundred and the other part -- and the number is so large
+there's no way of ever presenting them.
+
+*Common torque problems?  NP hard problems? [Not solvable in
+polynomial time-they take exponential time in the number of terms.]
+
+Yeah, sort of like an NP problem, things like that.  That class of
+problem.  So, that's the other thing -- because -- immediately this
+would be -- into a problem that is so uncomputable it just blows your
+mind.
+
+Non-homogeneous Poisson Process
+
+And so part of this whole trip was to -- let's take a look --
+non-homogeneous Poisson processes.  Have I got the right thing?
+
+*Yeah.
+
+I can't believe it.  I really can't -- non-homogeneous Poisson process
+-- the woman that was head of the whole program under -- and said was
+invalid.  In spite of the fact.
+
+*Christine Shoemaker?
+
+Yeah.  In spite of the fact that we had all the detailed proof in the
+papers that we gave her.  So life goes.  But at any rate, the idea
+there being that you could have done -- intervening by taking a
+minimum -- find that the minimum -- in computationally pretty and then
+some of the heterogeneous algorithms --- graduate students to work out
+just on mind-bogglingly -- using priority cues.  So you have a very
+small group -- biology could make more sense to process it as --
+information, go at it from the direction -- you process without
+getting -- say in the thousand range or the two thousand range, you
+--.  Because it grew exponentially or something absurd like that one,
+or something close to that. Exponential plus some small factor.  
+
+So that was the idea but then you would simply -- linear math, with
+improved linear system -- because it was a non-homogeneous process it
+meant that you could feed into it -- data from other statistics, the
+other -- completely distribution free.  So all the time usually had
+enough of tying everything together that was -- sensitive, you could
+actually run on the system in terms of efficiency.  It was -- cost of
+all the intermediate events and even if you had a huge problem --
+rather than using --, use priority queues --.  So then you -- guess
+what you have to do?  -- of millimeters -- by using just --.
+
+18.7
+
+But it's an -- the consultation and -- but at the same time you've got
+to -- what things you got to, you're going to end up eventually being
+able to have to put it into the form of a linear system, what do you
+know, sooner or later -- generally.  So they would come back to linear
+systems.  And then you would have to -- is no longer a linear system.
+It's been -- reality.  So -- going to have so many young, it could
+have zero young, or one young, two young, probably won't have a
+hundred young.  -- it does that, -- a hundred young.  How many beetles
+will have a hundred young?  So you see how crucial it is to start
+factoring things into real biology, real reality at this point, to
+make things work right.
+
+This is the part where the order -- things to happen, this is the part
+when -- it was the only thing around with numerical --.
+
+Physics
+
+13.3
+
++You see that the problem is that Feynman had it easy.  Feynman really
+had it very, very easy. When he wrote down the Feynman path integral,
+as you know, he basically integrated over all possible paths that a
+particular particle could travel.  He essentially used the classical
+action and basically through interference processes everything sort of
+dropped out.  He got the classical paths in the extreme.
+
++We don't get that.  We got 10 individuals out there, all of whom are
+interacting, none linearly, in time-delayed systems.  We're screwed,
+so we can't use the standard techniques that even Feynman used.  We
+need to have essentially the event-driven system that we came up
+with.  The problem, and the cornerstone of the second paper, is the
+fact that we basically merged biological information with mathematical
+technique, showed the limits that the mathematical techniques could
+take us to, and said from this particular point it has to be
+calculational technique.
+
++If you take a look at the solution of the four-color problem, it's
+the exact same thing.  They took a look at the four-color problem
+which is a classic problem in mathematics, they found a mathematical
+solution which doesn't work but ultimately the problem was solved on a
+computer and what Bland was proposing was that biological problems are
+not amenable to analytic solutions.
+
+12.22
+
++Again, to go back to the only thing I really know and that's
+physics.  If you take a look at what's happened in physics, you see
+the same sort of thing about the time that Einstein was doing his
+stuff. You saw these various ideas of explanations of how to handle
+systems that essentially went relativistic on you, with the speed of
+light.  What you found was that everybody had a solution for it.  But
+in each case that they found a solution, they also found something
+that wasn't a solution.
+
++Then along comes essentially Lorentz.  He says ``OK, I don't know
+what the hell is going on here but I'm going to invent a thing called
+the Lorentz transformation,' which Bland is very, very familiar
+with.  And guess what?  All of a sudden everything that had to do with
+Maxwell worked and everything that had to do with classical mechanics
+worked, but he had no idea why.  All he knew is that it worked.  It
+took somebody like Einstein to come along and say this is what you
+did.  We are going to relate time and space together and everything
+falls out.
+
+Population Ethology
+
++Bland has said you cannot divorce the measurement technique from the
+answer that you get.  If you do, you get population biology which is
+by definition the wrong answer except in those wonderful cases where
+it just kind of happened to work out.  Or you get something where you
+can't do anything.  Basically what you're faced with then is doing the
+Charles Darwin routine of collecting a lot of data and hoping this
+thing works.
+
++Bland gave an intermediate point.  You can take a look at small
+populations.  This is what a biologist looks at, not 10 to the 23rd
+animals, but you can look at 20 animals, 100 animals.  You can put
+collars on things.  You now have a technique developed where you can
+basically start some sophisticated analysis, not just doing means and
+standard deviations.
+
+-What Bland puts in this paper is also individual, how the individual
+in the group relates to all of it and without that individual's own
+--- characteristics.
+
++We define the individual ---.
+
+--- applying this to like --- what is community and why people exist
+in a community by looking at this paper so that's pretty far out but I
+found it fascinating.
+
+*Interacting individuals and each individual has its own uniqueness.
+
+-Because I just studied this same.
+
++You remember?  You remember when we drew up the list of what an
+individual was?
+
+-Yeah ---.
+
+It's right there at the bottom.
+
++We spent something like 3 months over that stupid list of what an
+individual was.
+
+-But that is a really important list.  I wish I would have had that
+list just about 2 weeks ago, I'd put it in my paper.  Because what I
+was studying was the difference of law in China, China's law base and
+--- law base.  One's based on the individual, one's based on the
+group, it's two different basic concepts and it's right here in a
+whole different way.
+
++We're so cool.
+
+-I could have plugged all that stuff in.
+
+I'm totally cool.
+
+-Yeah, you're cool Bland.  That's right.  It's fascinating.
+
+We are a group, and yet we're four interacting individuals with a
+totally different mix of skills and personalities.
+
+-That's for sure.
+
+How well does that match your, the idea that --- the entire population
+ethology ---.  Ethology is the study of individual behavior at the
+individual level --- the uniqueness of animals interacting with people
+on a one-by-one basis --- each individual is unique in his own way.
+
+-And there's the dichotomy.
+
+*Yeah.
+
+--- that first --- how many --- out there --- deterministic --- so I
+--- the entire world but it's also very true --- with all living
+organisms, all with living systems.
+
+13.1
+
++A lot of what we have gone through has in some sense just been taking
+the fundamental ideas that we'd developed here and then sitting there
+doing the Dutch boy and the dyke routine.  We plug this hole here and
+then we plug this hole here because we didn't have the techniques
+available to do it.  The philosophical and theoretical stuff I think
+for the most part is reasonably complete here.
+
+It's from a biologist's perspective, Bland Ewing's perspective.  It is
+not from the perspective of the mathematician, though Bland is
+probably a better mathematician even now than most of the people that
+work in the field of mathematics.  I just think that we're getting to
+the point, probably within the next 5 to 10 years, that this kind of a
+technique is going to become one of the most valuable techniques out
+there.
+
+*See the explosion that's happening with Markov chain Monte Carlo
+that's moving around, which is a lot of the same aspects of what we
+were doing.
+
++Of course all of what I said has to meet with Bland's approval.
+
+No.
+
+Modeling on a Budget
+
+11.8
+
+Yeah, sounds great to me.  It was interesting to have talked with Jim
+about some of the issues. he's also -- from a conversational point of
+view, a computer point of view.  That's the other thing that
+eventually depends on --- at a very low level, probably --- assembly
+language or --- machine where somebody's going to be using ---.
+
+Because you just can't take much overhead, you can get debugged ---
+but you've already seen the problems, at very high level languages and
+trying to get any efficiency out of it.  And the thing is that it's
+not your job --- to do that --- and not really Jim's job either or
+anybody, or mine not even, it's, we're going to have to find places
+and pieces and things ---.  Actually the --- thing was laid up and all
+the pieces are there and.
+
+I could even use this machine right here --- have such a problem with
+trying to type or getting, like buying --- overtime.  There's a lot of
+work that I can't do ---.
+
+*Yeah, well you've got the ideas and that's the key at this point.  It
+sounds like Jim wants to take a crack at it, the computing. I assume
+he's got some support staff that he can use to help out.  I mentioned
+earlier that I have an ecologist friend who has a student who wants to
+work with me.  I've given him a copy of that document to look at.  I
+gave it to him about 2 weeks ago.  Actually I gave it to him just
+before I left on this trip and so I'm curious what his reaction will
+be about this stuff.
+
+Building a Model
+
+14.3
+
+-- how that could be implemented.  But the thing is that that, with
+Don Dahlsten's data, and also some of Bob Luck's data, you see they
+were both also involved with generating numbers of counts, where
+counts were really the basic data that you had to build everything
+else from.  It was a quantitative anchor into the world.
+
+*Yeah.  Well Bob Luck and Jim Barbieri have been talking and making
+some plans to do some modeling, particularly on the scale on the
+oranges.  Orange scale.
+
+It would certainly seem to me that would be another thing they would
+have probably would be, if you can do it for the bark beetle, then
+that should just be a small thing to --.  The bark beetle wouldn't
+work right for his system.  OK, so the other question I have is that
+OK, let me, trying to pull a number of things.  Things, what I want to
+pull out is -- but there's also.
+
+*Gamma?
+
+Gamma, thank you.  Gamma function, and there were also some other
+general kinds of -- that people go to -- over as I remember.
+Everybody has their own favorite linear distribution for numbers.
+There used to be a blood issue a long time ago.
+
+*Yeah, I think it still is for some people.  I think the computing
+power has.
+
+Made it totally silly.
+
+*Yeah.
+
+Running Model
+
+16.4
+
+I actually got it up and running later on, showed that to Jim.  It was
+also a time that the evolvement -- trained to do the first things,
+again plots of this stuff over things like both their own data and
+also things like the, what was that?  The moose wolf predation thing
+that we were using as an example in the first place.  But that part,
+yeah, part of it got out what needed to be done that never got done.
+Where the parts I did get done were some of the summary -- shaped
+curve and manipulating error and so that -- generating hand numbers
+for people like -- really wanted to work with.  People like my major
+professor Justice wanted to work with too.
+
+Dave Baasch 
+
+17.4
+
+Basically that's why I got started using the CDCs on campus, and
+that's really where I got started doing the modeling with Bland.  We
+started working on new models that weren't just regression analysis
+models, and really working on stochastic modeling.  I liked it because
+it made sense.  
+
+With this we can build a model that says this is how we think the
+system works.  Now let's see if the model works.  If the model doesn't
+work, that means we don't understand what's going on.  So we need to
+change the model to reflect our learning and our new understanding and
+see how it correlates to the real world.  The whole idea behind this,
+to me, was that the models were a test or a verification of our
+understanding of the system as opposed to well, I can measure 2200
+things and come up with a prediction based on who knows what.  This is
+the correlation.
+
+There was some interesting stuff going on with taxonomy at the time.
+Numerical taxonomy was the big thing where you don't weight
+characteristics.  You just measure as many characteristics as you
+can.  Give them all an equal weight and then compare them to get a
+measure of differences.  Well, in one sense, if you can measure enough
+things it probably matters.  But people were measuring 20 things, such
+as has feathers or doesn't have feathers, and that's a significant
+characteristic.  It's probably more significant than has red feather
+shafts or has yellow feather shafts.  People would just choose the
+things they could measure.
+
+I had a problem with this kind of correlative modeling, I guess.  The
+stuff Bland was doing and the stuff he was looking at with stochastic
+modeling and stochastic processes made more sense.  Everything I know
+about stochastic statistics and modeling was driven by Bland and the
+modeling he was doing.  I liked it because it made intellectual sense
+in terms of trying to describe the system.
+
+He was only using it for small populations and he wasn't trying to use
+it to model the Pacific Ocean.  He was using it in a relevant manner
+that intellectually appealed to me.  The idea behind the models and
+the reason for using them, and the reason for doing them that way,
+felt intellectually clean to me.  It made sense and it was really
+different than what everyone else was doing.
+
+Now he went off on a lot of tangents.  He did in terms of data
+representation.  I mean he was always amazing me with what he was
+trying to do.  I had never seen stereo photography before.  He used
+stereo glasses to look at aerial imaging and played with that.
+
+Small World Networks
+
+20.5
+
+So all these things going in parallel(?).  But also at the same time,
+this thing of fractal stuff, not only that but -- as though the theory
+of nearest neighbor and other things like that.  -- run a lot of
+things but there's the type of theory that -- like to do model theory
+and things like that.  Some of the far out mathematicians -- proof for
+lunch.
+
+And for people like -- I guess the whole thing where you -- nearest
+neighbor thing and it turns out that the thing about the fact, that
+all you needed is one strange linkage into a system and it will
+totally shortcut distances, interconnecting ports.  So -- all these
+strange linkage, compared to the rest of the world out there.  Or it's
+the old hairdresser type thing where the hairdresser seems to be the
+center of gossip and -- cross-connects stuff.
+
+*Small world networks.
+
+Yeah, small networks.  Beautiful.  And it turns out that if you have a
+totally random system, it doesn't do zip if you have a totally, even
+-- not do that, but if you have a system that had all the -- and bits
+and pieces, and -- connection, it makes it a very small world.  So
+it's going to be interesting to see how some of the -- kick this stuff
+around in the future too.
+
+*Well, that's being used for comparison of protein sequences, DNA.
+
+Oh, I didn't realize that.  So you have a practical application, I'll
+be damned --.
+
+*Yeah.  Also with fractals, I've heard a couple thoughts of using
+fractals to model internet traffic.
+
+Yeah, and I bet it's going to do an incredibly better job.
+
+*Yeah.
+
+Especially if you're go -- any type of selecting process --one in
+human brain, where people have tried to emulate that and it's been a
+total disaster in terms of any real quality of the work, you know,
+even Jim Barbieri -- some stuff.  I looked at the number of
+mathematicians.  Boy they like to throw a lot of curves at --.
+
+On the other hand, he showed me a book by the guy down there at
+Caltech.
+
+*Carver Mead.
+
+Carver Mead, thank you, Carver Mead.  Sometimes I can grab his name,
+sometimes I can't.
+
+*Yeah, it's funny.  That's one name you have a lot of trouble with.
+
+Yeah, Carver Mead.  Anyway.  So the theory -- his work and some of the
+things that that was -- and so they, I guess they found some
+interrelation of stuff, but the main thing -- what the system really
+needed was a completely nonlinear -- stochastic for some problem, and
+certainly deterministic -- nonlinear systems to chaos.  Chaos, build a
+system on -- selection, then based on, then my guess was that they --
+systems that actually worked -- so that was when I pretty much lost
+Jim on that kind of stuff. -- I'll be damned -- chaos again --.  Chaos
+and practice --.
+
+*Yeah, well sometimes, yeah, chaos and complexity.  I'd like to go
+down to the Santa Fe Institute some time.  That would be, you've heard
+about the Santa Fe Institute?
+
+No, I haven't.
+
+*Uri Gelman set that up and he got a bunch of people together,
+including Metropolis who was one of the original Monte Carlo people,
+and they studied, Holland, a guy named Holland.  Anyway a bunch of
+people who, he brought them together to study chaos and complexity and
+they got together I think it was about ten years ago or less than
+that.  I don't, maybe about ten years ago, and they have been meeting
+ever since and they have conferences and it continues to be an
+interesting hot bed of ideas in this area.
+
+This is interesting also because Monte Carlo was one of the key pieces
+of making his modeling technique work.
+
+*Right.
+
+There were about a dozen -- and he keeps -- Jim Barbieri.  There was a
+stack of at least a dozen fundamental pieces, any one of them was
+reasonably simple and standard within its own field and -- something a
+little off the wall, where the second -- type thing.  Like -- using
+the simple Monte Carlo, I mean simplest thing we are using the
+generalize -- processing center --.
+
+*Right.
+
+-- rather than just a simple -- generalized integral type form of it.
+Is that correct?
+
+*Yeah.  Sounds right.
+
+-- that wasn't just in the first form but still it was something very
+straightforward.  It wasn't very off the wall either.  But then it
+took a -- all put together at the same time to make a modeling system
+work.  Of course, you were one of the first people that took some of
+the -- math and then of course Jim Barbieri was the first person to
+try to program some -- and also -- writing disability.  He -- if I had
+that -- writing disability -- and no matter which technique or any, I
+had a writing dyslexia that just, I've always had to find somebody
+else to help me do the writing because I never could.  At any rate, so
+it based these on Jim.  He takes after -- going after that meeting,
+where was it?
+
+Follow Up
+
+20.9
+
+*Yeah, I think that concept of modeling to the precision of your
+system is really, I don't think that's well understood.  I don't
+think, you know, if you have, if you can't measure things very well or
+if it doesn't even matter, I mean if there's enough.
+
+One or the other or both.
+
+*Right, if there's slop in the system, you know, so that, I mean the
+environmental system or animals or plants can adapt to it a 10\% or a
+50\% slop, then maybe that's the way it should be modeled to.
+
+Otherwise you end up with a -- that has no relationship to the system
+you should be modeling.
+
+*Yeah, right.
+
+To say nothing, it may be a little harder problem than you really need
+to have.  The problem many of the existence -- logarithmic -- of an
+order of magnitude --.  And a high precision system might, you might
+have some that can say you really could measure, it's a heavy duty,
+whether -- system but 10\% or something like that.  But I just couldn't
+make it go much beyond that.
+
+20.10
+
+I'm rather curious though about one thing I would like to -- the
+question.  Have you seen any glitches in the system?  Any problems
+with the system -- into and so forth?  Or does it all seem to hang
+together still after all these years and decades?
+
+*It all seems to hang together and I think there are people doing
+something approaching aspects but I'm not aware that anyone has really
+picked up the depth and the subtleties of what you developed 25 years
+ago.  I haven't seen that and I don't.
+
+## Predator-Prey Models
+
+We now examine why classical differential equation models do not work
+well for biological systems. The global properties and dynamics of
+biological systems are typically described by a system of coupled,
+first order nonlinear differential equations (Nicholson and Bailey
+1935; Holling 1961; Watt 1962; Leslie et al. 1970).  However, they
+impose unacceptable restrictions such as piecewise continuity that are
+problematic with small populations. Further, they cannot readily
+incorporate individual behavior.
+
+Consider a predator-prey relationship (Nicholson and Bailey 1935)
+between two interacting species, which can be written as a pair of
+coupled ordinary differential equations,
+$$
+\frac{dH(t)}{dt}=H(t)[a+\alpha P(t)]
+\mbox{ and }
+\frac{dP(t)}{dt}=P(t)[-b+\beta H(t)]
+~,
+$$
+with $H(t)$ and $P(t)$ the prey and predator populations,
+respectively, at time $t$. The prey birth ($a$) and predator death
+($b$) rates and coupling parameters $(\alpha,\beta)$ may be constants
+or complicated functions of time and/or environmental
+factors. Recasting time trajectories into phase space (Strang 1986),
+$$
+\frac{dP}{dH}=\frac{dP/dt}{dH/dt}
+=\frac{\beta HP-bP}{aH-\alpha HP}
+\mbox{ or }
+dP\left(\frac{a}{P}-\alpha\right)=dH\left(\beta-\frac{b}{H}\right)
+~,
+$$
+shows how these predator-prey equations describe elliptical orbits in
+the $H-P$ phase plane. Avoiding degenerate cases,
+$H = b/\beta$  or $P = a/\alpha$,
+and integrating gives 
+$a\log(P)-\alpha P = bH-\beta \log(H)$,
+a family of ellipses (Figure 1) that are cyclic, stable, closed
+curves, depending strongly on initial conditions. These equations lack
+spatial heterogeneity, and temporal changes must be explicitly
+modeled. The rate parameters can seldom be directly measured but
+instead are indirectly based on summaries from disparate field data,
+perhaps from several studies. The continuity requirement restricts use
+to large population sizes. 
+
+<<Figure 1 about here>>
+
+Quadratic terms in predator-prey equations model internal competition,
+or density dependence,
+$$
+\frac{dH(t)}{dt}=H(t)[a(1-H(t))+\alpha P(t)]
+\mbox{ and }
+\frac{dP(t)}{dt}=P(t)[-b(1-P(t))+\beta H(t)]
+~,
+$$
+which can lead to chaotic behavior or stable limit cycles, depending
+on the rate parameters (Strang 1986). That is, a modest change in
+parameters could have profound effects, which would be appropriate
+only in a biological system pushed to its extreme. Other trajectories
+are possible with more complicated equations or parameters, including
+strange attractors with multiple attractor points and inherently
+complex phase space trajectories (Ruelle 1987).
+
+No deterministic mathematical model can hope to describe the
+population dynamics in terms of individuals exhibiting the properties
+described in the previous section. It is intractable to describe all
+important variables and interactions that determine dynamics in a
+biological system. It is only in the limit of populations of extremely
+high numbers that the deterministic approximation is suitable. May
+(1971, 1973ab) investigated the mathematical structure of such models,
+in particular the stability conditions for a set of coupled, nonlinear
+differential equations that simulate the properties of interacting
+populations. In general, any model that tries to handle many
+interacting species is unlikely to be stable (May 1973a). Henson et
+al. (2001) extended this argument to discrete population counts of
+hosts and predators, showing chaotic behavior that blends continuous
+and discrete state models. 
+
+## Classical Differential Equation Models
+
+Consider a community comprised of a number of interacting species. The
+global properties and dynamics of this community can be described by a
+system of coupled, first order nonlinear differential equations. The
+dynamics of this multi-species community is given by $m$ equations
+(May, 1973a)
+$$
+\frac{dN_i(t)}{dt} = f_i(N_1(t),N_2(t),\cdots,N_M(t))
+$$
+where $F_i$ is the growth rate of the $i$th species at time $t$. $F_i$
+is usually nonlinear and represents all of the relevant interactions
+that affect the population $N_i(t)$. The assertion that this
+adequately describes the dynamics of a given community forces certain
+restriction onto the biological system. For instance, this describes a
+system that changes piecewise continuously, which is problematic at
+low population numbers.
+
+Other trajectories are possible with more complicate equations or
+parameters. Ruelle (1987) details four general types: (1) stable
+equilibrium solutions, (2) stable limit cycles, (3) strange attractors
+and (4) chaotic or unstable solutions. Strange attractor solutions
+have multiple attractor points, and the phase space trajectories are
+inherently complex. Classic strange attractors include the Henon and
+Lorenz attractors. Simply allowing a quadratic term can be potentially
+chaotic. Consider for a moment the quadratic system given by Strang
+(1986),
+$$
+u_{n+1}=\gamma u_n(1+u_n)~.
+$$
+That is, the solution for $u_{n+1}$ is dependent on previous values of
+both $u$ and $u^2$ and the coefficient $\gamma$. When $\gamma$ = 3.45,
+the 2-cycle becomes unstable, but it is otherwise stable between 0 and
+5. In the context of describing interacting populations, this is a
+desperate situation since any seemingly modest change in the
+parameters would force the solution into chaos.
+
+In addition, there is also an implicit assertion that these rates have
+at least quasi-global properties, that is, they represent processes
+defined over the entire population. From the perspective of a field
+biologist however, individuals drive the dynamics of a population and
+predation, for example, is not realistically represented as a global
+property. This does not mean that global properties are not applicable
+or necessary. Global meteorological conditions might affect a
+population's ability to function, and can be imbedded throughout the
+model in any number of different layers. 
+
+### Early Work: The Holling Predation Studies
+
+Holling (1966) analyzed the functional response of the praying mantis
+(Hierodula crossa, Giglio-Tos.) to a population of houseflies, Musca
+domestica, finding that hunting behavior is intrinsically
+probabilistic in nature. Holling decomposed the mantid predation
+process into three basic components:
+
+1.	Rate of successful search, depending on (a) reactive distance
+  of the predator for prey, movement speed of the (b) predator and (c)
+  prey, and (d) capture success (proportion of prey successfully
+  attacked).
+
+2.	Time prey are exposed to predator, depending on activities (a)
+  not related and (b) related to prey feeding.
+
+3.	Time spent in handling each prey, including (a) pursuing and
+  subduing, (b) eating, and (c) digesting afterward.
+
+From Holling's analysis, it is apparent that the predator-prey
+interaction is a sequence of events involving individuals, not
+densities. Secondly, for the interactions to occur, certain conditions
+must be satisfied which are dependent on the morphological and
+ethological characteristics of both the predator and the prey. The
+rate functions described by Holling should properly be interpreted as
+probabilities; e.g. the probability of a successful search is
+dependent on a given prey's availability, the predator's state,
+etc. From the standpoint of an individual, the predator-prey
+interaction is an event whose occurrence is dependent on a large
+number of conditional probabilities that are in turn dependent upon
+the states of both a given predator and a given prey.
+
+Holling's work implies that interaction is an event that is inherently
+probabilistic and uniquely dependent upon the individuals
+involved. How can one develop a method of transforming inherently
+discontinuous, heterogeneous, probabilistic data into piecewise
+continuous rate functions for the predator-prey equations? The
+biological information available appears to be incompatible with this
+brand of mathematical formalism for analyzing structure in population
+biology. 
+
+How can we find a more suitable mathematical formalism in which to
+express the structure of a biological community? Ewing (Ewing et
+al. 1974; Ewing et al. 2001) defined a system that is inherently
+probabilistic in which the structure of the biological system
+determines a suitable mathematical framework for research. In the
+development of this approach certain properties of the biological
+system became apparent when viewed at the level of resolution of the
+individual. We illustrate this in the next section.
+
+### Lotka-Volterra, Leslie matrices
+
+### Time and phase space
+
+### Stable cycles and chaos
+
+### Quadratic and Linear Equations in Optimization Research
+
+When using a MR/C (multiple regression/multiple regression) approach
+to optimization research, we prefer linear equations rather than
+quadratic equations. This does not exclude use of quadratic equations
+in the MR/C approach; however, we view a linear equation that provides
+a satisfactory solution (i.e., very high predictive value and
+compliance with norms for several residual diagnostics tests) to be
+more useful and reliable than a comparable quadratic equation. The
+primary rationale for our preference for linear solutions follows:
+
+\begin{itemize}
+\item	The MR/C approach to optimization can be characterized as
+  `post hoc' compared to the planned product differences of the
+  typical DOE (e.g., response surface designs) where quadratic
+  equations are the norm. Products in the MR/C optimization usually
+  represent what is commercially available and proven to be
+  technologically feasible, whereas products having extreme levels of
+  the independent variables are typically eliminated, or kept to a
+  minimum in the product screening process.  In contrast, the typical
+  DOE optimization consists of experimental product and it is
+  preferable to include extreme levels of the independent
+  variables. Consequently, the independent variables in DOE
+  optimization are purposely selected to achieve a quadratic solution,
+  whereas the independent variables in the MR/C are more likely to
+  occur as linear. Therefore, when conducting the analysis, the
+  products selected for the research have an influence on our
+  expectations, preferences and priorities.
+
+\item	Various authors of statistical textbooks state categorically
+  that `quadratic equations are notoriously unstable.' We do not
+  interpret this to mean quadratic equations are useless, only that
+  linear equations are more stable. As such, a linear equation that
+  provides a satisfactory solution is preferred to a comparable
+  quadratic equation.
+
+\item	In the final analysis, we seek equations that are stable,
+  provide as good predictive value as is possible, and are useful to
+  the product development process. Although including one or more
+  quadratic terms may enhance an R2 value, this alone is not
+  compelling evidence to include them. Often our approach has been to
+  include such attributes as `guideline variables' so they are not
+  overlooked in the development process. We are confident with the
+  approach we have taken over the years. It may be more conservative;
+  however, it has proven to have low risk without sacrificing product
+  opportunities. 
+\end{itemize}
+
+### Limitations
+
+## Life tables and competing risks
+
+## Synchronized generations
+
+## Time Driven Simulation Models
+
+Faster and faster computers have driven efforts to model populations
+of interacting species using global population characteristics such as
+birth, death and migration rates. Stochastic dynamical systems have
+incorporated individual-based behavior (Mangel and Clark 1988; Wolff
+1994; Ruxton 1996; Broom and Ruxton 1998; Ruxton and Saravia 1998;
+Wilson 1998; Wiegand et al. 1998; Gronenwold and Sonnenschein 1998;
+Hutchinson and McNamara 2000).
+
+These simulations are built with equilibrium in mind. There is,
+however, reason to believe that biological systems resolved to
+individuals are far from equilbrium (Prignogine 19xx), capable of
+self-organizing into unexpected new states. Kauffman (1993) suggests
+that a basic condition for an organism to be considered living is its
+existence as a continual non-equilibrium process. Only
+non-equilibrium, self-organizing systems have a real possibility of
+extinction (Paczuski and Bak 1999; Paczuski et al. 1995). 
+
+Unfortunately, these simulations typically divide time and space into
+discrete `quanta' of equal size. Even recent successful simulations
+have been severely limited in population size and in temporal and
+spatial resolution relative to the span to compensate for the vast
+number of computations. Discrete time introduces probabilistic
+artifacts such as periodicity and synchronicity that do not disappear
+as time steps get smaller. Similarly, discrete spatial patterns
+artificially constrict the type of interactions that can be modeled.
+
+Suppose it were possible to define a finite biological system at the
+individual level. Even for a small population, the number of possible
+solutions becomes operationally intractable rather rapidly. Standard
+analytical techniques that do not exploit system structure have many
+states to investigate, with most of them empty. The system is sparse,
+and na?ve simulations based on space and time grids are quite
+inefficient. The magnitude of this problem is illustrated below. This
+discussion ignores unequal time increments between successive events
+for individuals, which introduce asynchrony into the system. It
+further ignores environmental factors that might affect some or all
+individuals in a community.
+
+Suppose a reduced and aggregated state description of an organism has
+n variables and that each variable has m states for mn possible
+individual states. Since this state-specific description has limited
+resolution, the organism can alter slightly without changing
+state. Thus at each time step it can move to mn distinct states,
+including no change. Any particular organism might associate with any
+other organisms in the population. Thus the complete state-space
+representation for a population of r organisms is an array of
+dimension N=nxr with M=mN=mnr possible states. Thus for the population
+there are Mk=mnrk possible k-step trajectories, but only r
+trajectories actually selected, one per organism. Organisms with
+complete memory could select the kth state transition, based on their
+previous (k-1)-step trajectories, requiring a full Mk matrix of
+probabilities. At the other extreme, organisms with no memory would
+require only M2 probabilities at each step. In practice, organisms
+have partial memory, falling between these extremes. Time-driven
+models typically use memoryless calculations, thus have kM2=km2nr
+computations in k steps. While some economies are possible using
+sparse matrix techniques, calculations are still done for all r
+individuals at every step.
+
+Rather than stepping through time, checking every individual at each
+point, event-driven quantitative population ethology steps through
+events. We only follow a few events per individual, depending on their
+memory capabilities. Calculations are reduced
+dramatically. Identifying the individual with the next future event is
+a log(r) calculation using priority queues (Knuth 19xx). That
+individual has an n-dimensional state description with up to mn-1
+possible future events, although typically only a few are relevant
+given the current state. Thus the number of calculations need for k
+events per individual in a memoryless system is kmn(mn-1)rlog(r). Note
+in particular that our computational complexity is almost linear in
+the numbers of individuals and events. Partial memory can be added
+selectively to individuals or to types of events without dramatically
+increasing this number.
+
+As a modest example of the high dimensionality, consider a simulation
+in which r=1,000 individuals are followed, say 200 per generation over
+5 generations. Suppose each individual has an average of n=10
+attributes. The dimensionality of the system is
+N=n?r=10?(5?200)=10,000. If on average each variable has m=10 states,
+then a time-driven simulation must handle a state space of
+M=mN=1010,000. If the model is run over k=1,000 time steps, the number
+of computations is kM2=1020,003. Taking advantage of sparse possible
+trajectories, mn=1010 might be reduced to m=10, yielding 102,003. For
+time-driven models, which is obviously far beyond the capacity of any
+computer system, now or in the foreseeable future. For event-driven
+models, the number of computations 1026log(10), or 108log(10) taking
+advantage of sparse trajectories, which is computationally
+feasible. Even so, this is unfairly weighted toward time-step models,
+since not every time step is likely to yield an event for any
+individual. Time-driven computations can be simplified further, of
+course, by clever updating schemes. However, time-driven computations
+are still exponential in the number of individuals.
+
+## Population size: continuous or discrete
+
+### Time almost always one unit
+
+### Stochastic dynamic systems
+
+### Discrete time stochastic Petri nets
+
+2.	We were not previously aware of Petri nets and appreciate
+learning about them. We have carefully read extensive literature on
+Petri nets, finding only two articles with biological applications:
+Gronewold and Sonnenschein (1998) and Genrich, K|ffner and Voss
+(2000). Both use discrete-time Petri nets, analogous to stochastic
+dynamic programming. We believe our approach has close connections to
+continuous-time stochastic Petri nets (see references in paper), but
+our emphasis is different. Three distinctions are important: (a) the
+goal in many Petri nets applications to date is to model a system that
+requires some synchronization (e.g. network packets to be
+reconstructed as a coherent message), while biological systems are
+inherently asynchronous, albeit driven in part by diurnal and seasonal
+cycles; (b) path choices are viewed as problematic conflicts to be
+resolved rather than fundamental competing risks central to the
+modelling effort; (c) Petri net analysis tools aimed at global
+properties do not appear capable of uncovering simulation properties
+when mean value functions M are nonlinear. Distinction (a) is crucial,
+leading for instance to unhelpful complexity in the Petri net
+implementation of Gronewold and Sonnenschein (1998) for movement of
+larva among trees. Our approach would lead to a more natural migration
+process, with probabilities based on distances between trees. 
+
+## Event-driven Petri nets
+
+Our approach has close connections to continuous time stochastic Petri
+nets (Ajmone Marsan et al. 1995; Lindemann 1998) that are event
+driven. However, we believe our perspective offers a much simpler way
+to develop ecological models, focusing on the next scheduled event and
+the local structure of competing risks for event transitions.
+It is helpful to draw connections to Petri nets (cf. Ajmone Marsan et
+al. 1995; Lindemann 1998), which put equal emphasis on states (places)
+and events (transitions) connected by arcs.

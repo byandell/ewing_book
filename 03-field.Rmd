@@ -1,0 +1,20 @@
+# Field Biologists and the Collection of Data {#field}}
+
+One definition of a stochastic process is the description of how data
+are gathered. We briefly describe the monumental effort of Yu and Luck
+(1988) to collect and analyze data on the structure and dynamics of
+California red scale (Aonidiella aurantii (Maskell) Homoptera:
+Diaspididae), its related parasites-Aphytis, Comperiella, Encarsia-and
+associated predators. Data collected reflect their understanding at
+that time, and the type of data change over the three-year period as
+their understanding evolved. Data focused on individuals found at
+sampling are by necessity sparse, representing limited snapshots of a
+dynamic biological system.
+
+The study of populations involves knowledge of how abundance and
+distribution of individuals change over time. We can count individuals
+by state as a continuous function of time using quantitative
+population ethology. This gives life-table and interaction data that
+does not require synchronous generations. We illustrate this with an
+on-going study of a host-parasite system involving the California red
+scale and Aphytis species.

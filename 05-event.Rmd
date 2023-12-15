@@ -1,0 +1,655 @@
+# Event-Driven Competing Risks Structure {#event}
+
+\newcommand{\mytable}[3]{
+\begin{table}
+\begin{center}
+#3
+THIS DOES NOT WORK
+\caption{#2\label{tbl:#1}}
+\end{center}
+\end{table}
+}
+
+\newcommand{\cumhaz}{M}
+\newcommand{\cuminv}{\cumhaz^{-1}}
+\newcommand{\etime}{t}
+\newcommand{\Etime}{T}
+\newcommand{\haz}{m}
+\newcommand{\invhaz}{G}
+\newcommand{\natt}{n}
+\newcommand{\ndim}{N}
+\newcommand{\nind}{r}
+\newcommand{\nstate}{m}
+\newcommand{\nstates}{M}
+\newcommand{\ntime}{k}
+\newcommand{\prob}{\mbox{pr}}
+\newcommand{\stoch}{X}
+\newcommand{\state}{s}
+\newcommand{\unie}{v}
+\newcommand{\Unie}{V}
+\newcommand{\unif}{u}
+\newcommand{\Unif}{U}
+
+The California red scale {\em Aonidiella aurantii} (Maskell)
+(Homoptera: Diaspididae), is a major pest of California citrus, with
+infestations causing growers significant financial losses. It has
+recently developed resistance to traditional insecticide sprays. An
+alternative suppression tactic is the release of a biological control
+agent, {\em Aphytis melinus} DeBach (Aphelinidae: Hymenoptera) that
+feeds on red scale. Although many aspects of the red scale-{\em
+Aphytis} interaction are now understood, it is difficult to
+differentiate the effects of temperature and population fluctuations
+in the field. To investigate such complex interactions, we propose a
+new stochastic modelling technique, based on event-driven competing
+risks, that incorporates details of life histories as well as the
+host-parasitoid interaction. Our continuous-time, individual-oriented
+modelling approach quantifies relationships among individuals and
+describes the resulting coupling between the interacting
+populations. The event-structured simulation drives time in contrast
+to the usual time-driven stochastic dynamic programming. Our system,
+developed in the public domain using the R statistical package, allows
+for different biological clocks, since both red scale and {\em
+Aphytis} development respond to temperature (degree-days) while
+searching female {\em Aphytis} follow a diurnal time schedule,
+contingent upon temperature-dependent egg maturation.
+
+We build a mathematical structure for a biological community based on
+probabilistic choices for events that affect individuals, singly or
+through interaction with other individuals (Ewing et al. 1974,
+2001). Events drive the simulation, and hence time is a function of
+those events. An event is defined as a significant biological change
+that can be marked and counted, resulting in an instantaneous state
+change, such as birth, death, or finding food. Thus our simulation has
+discrete events that imply a time ordering of future events. This
+ordering may be rearranged depending on the outcome of any current
+event. Each individual has its own state description and scheduled
+next future event, which may involve other individuals. There is no
+need to write down all possible events and interactions. Instead we
+keep track of the current state and let the biological system
+simulation evolve its own structure.
+
+We reduce model dimensionality in three ways. First, simulation runs
+are event driven, with action only at future events times. Second,
+simplify the state space by focusing on events of consequence within
+the span and resolution dictated by the scientific questions asked of
+the biological system. Events at finer resolution are instantaneous,
+while events that stretch beyond the span of study are constant or
+slowly varying. Third, schedule spatio-temporal interactions of
+individuals using distance-based probabilities rather than by stepping
+across a spatial grid. For a more detailed presentation of these
+concepts, see Ewing et al. (2001) and simulation tools at
+http://www.stat.wisc.edu/~yandell/ewing.
+
+In our view, a biological system consists of a collection of
+individuals subject to stimuli over time based on life histories and
+interactions with other individuals and the environment. Each
+individual's life is a sequence of events. After each event, an
+individual may schedule one of several possible future events,
+implicitly setting a future event time, and possibly disrupting other
+individuals if the current event involves some type of interaction. A
+clear example of interaction is predation, in which a predator finds
+and kills a prey, canceling future events for that unfortunate
+individual. The simulation proceeds from event to event, processing
+future events in time order across all individuals in the biological
+system.
+
+Since we only follow a few events per individual, depending on their
+memory capabilities, calculations are reduced dramatically from
+time-driven models. Identifying the individual with the next future
+event is a log(r) calculation using priority queues (Knuth 19xx). That
+individual has an n-dimensional state description with up to mn-1
+possible future events, although typically only a few are relevant
+given the current state. Thus the number of calculations need for k
+events per individual in a memoryless system is kmn(mn-1)rlog(r). Note
+in particular that our computational complexity is almost linear in
+the numbers of individuals and events. Partial memory can be added
+selectively to individuals or to types of events without dramatically
+increasing this number.
+
+As a modest example of the high dimensionality, consider a simulation
+in which $\nind=1,000$ individuals are followed, say 200 per
+generation over 5 generations. Suppose each individual has an average
+of $\natt=10$ attributes. The dimensionality of the system is
+$\ndim=\natt\times\nind=10\times(5\times200)=10,000$. If on average
+each variable has $\nstate=10$ states, then a time-driven simulation
+must handle a state space of $\nstates=\nstate\ndim=10^{10,000}$\,. If
+the model is run over $\ntime=1,000$ time steps, the number of
+computations is $\ntime\nstates^2=10^{20,003}$\,. Taking advantage of
+sparse possible trajectories, $\nstate^{\natt}=10^{10}$ might be reduced
+to $\nstate=10$, yielding $10^{2,003}$\,. For time-driven models,
+which is obviously far beyond the capacity of any computer system, now
+or in the foreseeable future. For event-driven models, the number of
+computations $10^{26}\log(10)$, or $10^8\log(10)$ taking advantage of
+sparse trajectories, which is computationally feasible. Even so, this
+is unfairly weighted toward time-step models, since not every time
+step is likely to yield an event for any individual. Time-driven
+computations can be simplified further, of course, by clever updating
+schemes. However, time-driven computations are still exponential in
+the number of individuals.
+
+Stochastic models in ecology attempt to incorporate key underlying
+processes of an ecological system, allowing the study of multiple
+realizations through simulation. We focus here on models of life
+history events for interacting populations. The life table
+approximation of dividing time into discrete "quanta" migrated early
+into stochastic models in ecology. Modern ecological simulation
+studies consider ever smaller time increments using this same fixed
+time step framework (Mangel and Clark 1988; Wolff 1994; Hutchinson and
+McNamara 2000). While finer scale increments can capture more
+intricate events, they require more time simulating null
+activity. Further, their discrete nature can introduce unintended
+artifacts that are difficult to unravel.
+
+Work in complexity (Langton 1986) suggests that higher level structure
+can emerge from self-organizing processes occurring at lower
+levels. However, such models to date suffer from the same quantization
+problem found with life-table derived methods. Recently Gronewold and
+Sonnenschein (1998) used cellular automata based on Petri nets to
+model a host-parasite interaction. Unfortunately, efforts to globally
+synchronize their model to reflect annual cycles introduced
+unacceptable network complexity. Such synchronized models cannot
+detect emergent patterns.
+
+Alternatively, we propose to base models on the actual time of
+events. The difficulty with this shift in perspective is that events
+for individuals are no longer synchronized, making life table and
+generation summaries problematic. The development below of a
+simulation structure for competing risks in a biological system is
+built upon the concept of potential lifetimes using the cumulative
+risks as a basic building block. This approach uses detailed knowledge
+of the biological system under study, providing a framework to
+incorporate known and suspected aspects of that system. Our approach
+has close connections to continuous time stochastic Petri nets (Ajmone
+Marsan et al. 1995; Lindemann 1998) that are event driven. However, we
+believe our perspective offers a much simpler way to develop
+ecological models, focusing on the next scheduled event and the local
+structure of competing risks for event transitions.
+
+The study of any biological system is intrinsically dependent
+on the choice of measurements and the manner of sampling. Typically, a
+sample of members of a population is observed with each individual
+viewed as an integral organism functioning as a single unit, albeit
+interconnected to others. Activities of these individuals are recorded
+in terms of life history events described at some resolution of time,
+space and detail depending on the purpose of the study. Observations
+measured over some span of time and space form the basis for
+understanding the biological system. We can develop a model framework
+directly driven by these measurements.
+
+We first consider a living system as a stochastic process, recasting
+concepts of events for an individual and a population of individuals
+in an biological system. We then detail the biology of the red
+scale/{\em Aphytis} host-parasitoid system to identify features of life
+histories and inter-species interactions important in simulation. We
+develop a competing risks framework with attention to modelling an
+individual's biological clock in a simple but effective
+manner. Finally, we show initial results of our red scale/{\em Aphytis}
+ecosystem simulation.  
+
+## Event-Driven Considerations for Living Systems
+
+Consider a living system as a complicated stochastic process $\stoch$
+that progresses through time from one event to the next. An {\bf
+event}\index{event|textit} is defined as a significant biological
+change that can be marked and counted, resulting in an instantaneous
+state change. That is, at time $\etime$ the process changes state to
+$\stoch(\etime)=\state$\,.
+The composite state $\state$ may be rather intricate, specifying the
+state of every individual in the system explicitly or
+implicitly. Stochastic processes are usually described as time
+driven. This has led to a whole simulation industry in stochastic
+dynamic programs (Hutchinson and McNamara 2000), stepping through
+finer and finer time increments to approach "reality".
+
+Imagine a living system as a sequence of events, beginning in state
+$\state_0$ at time $\etime_0=0$, with events, or state transitions,
+$\state_0 \rightarrow \state_1 \rightarrow s2 \rightarrow\cdots$
+and event times $\etime_1 < \etime_2 < \cdots$\,. If the structure of
+the system does not change, events can be scheduled as far forward as
+desired. However, a change in state may alter the entire state space
+for the future of the stochastic process. Thus $\stoch$ actually
+depends on both time $\etime$ and the current state $\state$. Imagine a
+progression of stochastic processes indexed by the current state,
+$\{\stoch(\etime, \state_k), \etime > \etime_k\}$\,,
+$k=0,1,\cdots$, with $\state_k$ the current state after the future
+event at time $\etime_k$\,. The realization of this stochastic process
+is equivalent to a sequence $(\etime_0,\state_0), (\etime_1,
+\state_1),\cdots, (\etime_k,\state_k), \cdots$\,. While this can
+theoretically be accommodated within the framework of semi-Markov
+processes by extending the sample space to be arbitrarily large, it
+provides little insight into how to implement a simulation in
+practice. Even for small simulations, this structure can become
+cumbersome and expensive, as the occurrence of each event requires
+rebuilding the entire event space.
+
+Think of a living process as moving from event to event, with time
+defined implicitly through the sequence of realized events, yielding a
+practical construction of simulations. That is, if the current state
+is $\state_1$ was realized at time $\etime_1$, then the future event
+$\state_1\rightarrow\state_2$ could happen at some random future time
+$\etime_2 = \etime(\state_1\rightarrow\state_2 \vert \etime_1,
+\state_1)$\,.
+This property allows a smooth transition between the time domain of
+the biological system and the event domain in modeling the biological
+system.
+
+The investigator decides up front the aspects of a biological system
+to be studied based on measurable events and the focus of scientific
+inquiry, implicitly setting the resolution and span of the
+model. {\bf Resolution}\index{resolution|textit} is the smallest
+increment of time and space that contributes useful biological
+information, with events over smaller scales assumed to occur
+instantaneously. A finer scale model would increase the cost of
+simulation while providing negligible insight. {\bf
+Span}\index{span|textit} is the largest amount of time and space the
+model can encompass, with aspects occurring over longer intervals
+considered as essentially constant or slowly varying in a smooth
+fashion. Changing the resolution and span of a model profoundly
+affects what features of a biological system can be studied, and vice
+versa. For example, an {\em Aphytis} parasite feeding on California
+red scale would appear to be instantaneous with a resolution of
+minutes, but would require detailed modelling with a resolution of
+seconds. A mature orange fruit could be considered static as a
+substrate for red scale over a span of six months. It may be
+appropriate to model at several different spatial and temporal spans
+and resolutions to address different facets of a biological system.
+
+We can schedule the next event for every individual in a
+population. However, individuals may interact, in some cases leading
+to births or deaths that can change the structure of the system. We
+define three special types of events to address these contingencies:
+\begin{enumerate}
+\item	Future events are events that are scheduled to occur at some
+  future time based on the competing risks system. Examples include
+  reproduction and developmental stage transitions. 
+
+\item	Immediate events handle multiple events that are not resolved
+  individually at the resolution of the simulation. Such events--the
+  birth of multiple offspring--appear to be coincident.
+
+\item	Pending events are events whose occurrence depend
+  conditionally on other events or particular states of the
+  model. This is especially designed to deal with predators and prey,
+  or parasitoids and their hosts. It can also address events that
+  depend on environmental changes such as rainfall and fire.
+\end{enumerate}
+
+It is helpful to draw connections to Petri nets (cf. Ajmone Marsan et
+al. 1995; Lindemann 1998), which put equal emphasis on states (places)
+and events (transitions) connected by arcs. Future events are
+instantaneous transitions from places that have continuous, stochastic
+delay times. Individuals (tokens) are reserved for an instantaneous
+transition by the scheduling of a future event, for instance, an
+insect scheduled to molt between instar stages. Future events may
+involve a stochastic choice among several competing risks, such as
+whether to feed or lay eggs, whether to search for food or
+move. Competing risks are analogous to race policies for conflicts in
+Petri nets, although our emphasis is on modelling the stochastic
+decision process itself.
+
+Developmental stage transitions are clearly defined future events,
+while reproduction can be viewed as a future event when mates are
+abundant. Reproduction yielding new offspring triggers multiple
+immediate events. These immediate birth events, represented
+graphically as multiple arcs emerging from the reproduction event,
+correspond to deterministic events in Petri net literature. Typically
+immediate events result in scheduling of several future events. For
+instance, birth brings new individuals into the simulation, each
+having scheduled future developmental transitions.
+
+Death is often a pending event, since it may hinge on locating and
+consuming an adequate amount of resources while avoiding predation. We
+focus on "finding food" rather than "food availability", modelling the
+process of obtaining a resource as well as its presence. Pending
+events depend conditionally on other events and on the model state,
+such as cooperation among individuals for group hunting or germination
+of fire-sensitive seeds. Pending events are not scheduled in advance,
+avoiding the need for a complicated competing risks structure
+involving groups of individuals. Instead, pending events are
+interruptions to individual life histories arising from environmental
+changes or events involving other individuals. We represent pending
+events by dashed arcs to distinguish them from future events. If an
+individual is interrupted by parasitism, the pending event of being
+parasitized is realized. The individual may be killed or hurt in some
+way, depending on the nature of parasitism, canceling or altering its
+previously schedule future event.
+
+Pending and future events depend on context and the detail of
+modelling of a biological system. For instance, reproduction could
+involve a pending event: a female realizes a future event of being
+fertile, and then searches for a mate, which has a pending event of
+reproduction. Conversely, death could be a future event of dying due
+to natural causes or a slow illness.
+
+## Minimization structure within, across individuals
+
+## Modelling event to event
+
+## Non-homogeneous Poisson process rebuilt at every event
+
+## Event, span, resolution
+
+## Future/immediate/pending events
+
+## Competing Risks for Life Events
+
+Competing risks arose initially in mortality studies of risks that
+"compete" for an individual's life (Chiang 1968, 1972). Competing
+risks and related life table methods have been used regularly in
+ecological modelling (Caswell 1989), usually with discrete,
+synchronized generations. Here we adapt the building blocks of
+competing risks to study life history events for asynchronous,
+interacting individuals in an ecological community. We show how the
+linear structure of competing risks over continuous time allows a
+simple modelling approach, as we only need to examine the next
+scheduled event in an ecological community. In addition, we introduce
+a parameterization of the cumulative risk, or mean value function,
+that allows quick adjustment of individual biological clocks.
+
+The theory of competing risks arose initially in the study of
+mortality, with risks of death `competing' for an individual's
+life. The theory applies equally to reliability of machines and the
+study of illness processes, and is intimately connected with the study
+of life tables (Chiang 1968). It provides a mechanistic way to model
+how critical events evolve moment to moment, influenced by the
+surrounding environment. Competing risks and life table methods have
+been used regularly in ecological modeling [ref?]. We reconsider the
+implications of theoretical developments in competing risks on the
+future of ecological modeling.
+
+One can model the effect of the environment and an individual's life
+stage on these competing risks in a variety of ways. Keyfitz (1966,
+1968) and others developed complicated methods to incorporate birth
+and death processes into life tables indexed by age and gender. Chiang
+(1968, 1972) provided a simple unifying probability framework for life
+tables and competing risks, which tacitly assumes that events of
+interest occur at particular ages (e.g. every 5 years for humans) in
+order to make the process identifiable. The proportional hazards model
+(Cox 1972) and accelerated lifetimes model () have allowed researchers
+to consider smoothly varying competing risks. Recent efforts allow
+interdependence among risks (Fine 1999). This literature has been
+largely focused on inference for competing risks.
+
+While the competing risks literature has largely focused on inference
+(cf. Fine 1999), we concentrate on simulation models grounded in
+measurable events. Fix and Neyman (1951) introduced an illness-death
+process, generalized by Chiang (1968), with individuals moving between
+healthy and sick states, continually exposed to competing risks of
+death. Clifford (1977) proved the non-identifiability of competing
+risks with a single measurement per individual even if an illness is
+progressive. Yandell (1982) showed that independent competing risks
+can only be identified with measurements at the actual times of
+transition between states. Thus it is crucial to select events whose
+time of occurrence can be estimated. Simulation models should reflect
+this constraint.
+
+The ethologist tries to define probabilities for each event to reflect
+the observed data. Since events contain all the measured dynamics for
+the population, there is an added advantage in modelling simulations
+from the event domain. Future events change time in the model and
+control the competing risk sequencing. When a future event occurs, the
+simulation stops. Action is taken on any immediate events induced by
+the future event, and any pending events are modified as
+necessary. Immediate or pending events can change the underlying
+structure of the model, requiring the rebuilding of the stochastic
+process. In most situations, only a few competing risks are altered by
+immediate or pending events, requiring only modest changes to other
+scheduled future events. Finally, the stochastic process is
+reconstructed to contain only future events from the current time
+onward.
+
+Thus a biological system can be simulated by alternating between
+future events and immediate events, and addressing pending events as
+they arise. However, the competing risks structure for future events
+now depends on the past history of events. Risks may be altered by
+discrete state changes of other individuals or by discrete or gradual
+changes in environmental conditions. Nevertheless the stochastic
+process is still predictable and hence is still well defined.
+
+### Competing risk structure
+
+An individual in an ecological community has several "choices" about
+future events, such as dying from one of several competing reasons,
+eating, reproducing, or migrating to another locale. The chance of the
+$j$th type of event occurring during the time "instant" $\etime$ is
+proportional to its competing risk, or hazard, $\haz_j(\etime)$, which
+may change over time but is assumed to be fairly well-behaved. We
+assume the probability of two or more events occurring simultaneously
+is negligible. Thus the risks add up to the chance of any event in an
+instant as $\haz(\etime) = \sum\haz_j(\etime)$. The cumulative
+competing risks, or mean value functions
+$\cumhaz_j(\etime) = \int\haz_j(\etime)d\etime$
+with $\cumhaz_j(0) = 0$,
+count the expected number of events of type $j$ up to time
+$\etime$. These are assumed to be right-continuous and non-decreasing
+with derivative $\haz_j(\etime)$ at all but a countable number of time
+points. The random count of the number of events over time is a
+non-homogeneous Poisson process with time-varying risks and
+independent increments between distinct time intervals.
+
+An alternative approach models potential life (or event) times
+$\Etime_j$ for each type of risk $j$ ({\em cf}. David 1974). The
+observed time to next event would be the minimum of these potential
+event times, $\Etime = \min\{\Etime_j\}$\,. Hence, the chance that no
+event occurs before time $\etime$ is
+$$
+\prob\{\Etime > \etime\} = \prob\{\min(\Etime_j) > \etime\}
+= \prod\prob\{\Etime_j > \etime\} = \prod\exp(-\cumhaz_j(\etime))
+= exp\{-\sum\cumhaz_j(\etime)\}~.
+$$
+The product $\prod$ is justified if the potential event times, or
+equivalently the competing risks, are independent. The linearization
+property reduces a potentially complicated probability to a summation
+over the competing risk structure. Tsiatis (1975) showed that without
+independence $\Etime_j$, and hence $\cumhaz_j(\etime)$ and the
+sub-probabilities $\prob\{\Etime_j > \etime\}$\,, cannot be uniquely
+determined from data. Further, it is impossible to investigate this
+assumption of independence with these data; as a result, these
+potential lifetimes have fallen out of favor. While we agree that
+inference cannot be based on these potential event times, they can be
+extremely useful for simulation models of complex living systems.
+
+Each individual i has a set of potential times
+$\{\Etime_{ij}, j = 1, 2, \cdots\}$
+for its future events. These may depend on the history and current
+state of the biological system. Its next future event is at the
+minimum $\Etime_i = \min\{\Etime_{ij}\}$\,. The next event in a
+community of $\nind$ individuals occurs at the minimum over all
+individuals, 
+$\Etime = \min\{\Etime_i, i = 1, \cdots,\nind\}$\,.
+In a simulation with a high degree of structure and many levels of
+events, this minimization property provides an efficient method to
+find the next event for the community. Note that the mean number of
+events for a community is the sum $\cumhaz(\etime) =
+\sum\cumhaz_i(\etime)$, with the mean number for individual $i$ being
+$\cumhaz_i(\etime) = \sum\cumhaz_{ij}(\etime)$\,. That is, the
+competing risk structure until the next future event decomposes in
+this linear fashion as if the individuals were independent.
+
+### Time depends on events
+
+Control over the shape of the mean value functions $\cumhaz$ allows
+considerable flexibility to incorporate relevant knowledge of
+biological processes into the distribution of the scheduling time
+$\Etime$. The mean value function $\cumhaz$ could be "guestimated"
+from prior experimental data, partial knowledge and hunches. We show
+in this section how to schedule future events by drawing uniform or
+exponential random numbers and using $\cumhaz$ to transform to future
+event times.
+
+Consider a single individual and a single competing risk, dropping
+subscripts for now. We can schedule the time $\Etime$ for its next
+future event by picking a random probability $\Unif$, uniform between
+0 and 1, and defining time $\Etime$ in terms of $\Unif$ as
+$\cuminv(\invhaz(\Unif)) = \Etime$
+with
+$\invhaz(\unif) = -\log(1-\unif)$
+and $\cuminv$ the (generalized) inverse of $\cumhaz$. Thus
+$$
+\prob\{\Unif = \unif\} = \unif = 1 - \exp(-\cumhaz(\etime)) = \prob\{\Etime = \etime\}
+$$
+with some adjustment necessary for the chance 
+$\prob\{\Etime = \infty\} \geq 0$
+that no event occurs. Hence, time $\Etime$ becomes an implicit,
+dependent variable, driven by the event structure embodied in
+$\cumhaz$. Figure 4 shows this mapping for a distribution that has a
+plateau in the middle.
+
+<<Figure 4 about here>>
+
+The random variate $\unie = \cuminv(\Unif) = \cumhaz(\Etime)$ has a
+standard exponential distribution
+$\prob\{\Unie = \unie\} = 1 - \exp(-\unie)$\,.
+If the risk is constant,
+$\haz(\etime) = c$, then $\Etime = \Unie / c$\,.
+Sampling $\Unie$ instead of $\Unif$ involves only modest extra
+work (Ahrens and Dieter 1974, 1988) and avoids calculating logs, which
+are expensive computationally. Events may therefore be scheduled by
+sampling a standard exponential random variable \Unie and constructing the
+random time $\Etime$ as $\cuminv(\Unie) = \Etime$ using the fact that
+$\prob\{\Unie = \cumhaz(\etime)\} = \prob\{\Etime = \etime\}$\,.
+Thus the mean value function \cumhaz transforms the exponential waiting
+time $\Unie$ based on constant risks to a biological time that may encompass
+the ongoing processes of the simulated ecosystem (see Figure 4).
+
+### Event structure for individual
+
+This generic mean value function $\cumhaz$ must be fine-tuned to each
+individual in a species, and to different species in a
+community. Future event times may need to be adjusted based on
+individual histories and situations. In practice, many individuals may
+have similarly shaped mean value functions for a given competing
+risk. Changes during the simulation may slow or delay each biological
+clock, or increase the risk of certain types of events. Thus it is
+feasible to design a few such curves and then shift, stretch or
+otherwise modify them to suit multiple needs. This can enhance the
+biologist's control over model simulations while keeping the decisions
+simple. The development below shows how this generic biological time
+can be easily modified to adjust to individual biological clocks. It
+allows considerable flexibility with environmental effects and
+interactions among individuals.
+
+### Five-dimensional parameterization
+
+For each individual $i$ and possible future event $j$, there is a mean
+value function $\cumhaz_{ij}$ and a random potential times
+$\Etime_{ij}$ when that future event may be scheduled to occur. We
+characterize possible modifications to an underlying common mean value
+function $\cumhaz_j(\etime)$ in terms of five non-negative parameters
+that approximately transform clock time into individual biological
+time: $a$ = dispersion, $b$ = location, $c$ = intensity, $d$ =
+truncation and $e$ = rejection (Table 1). $\cumhaz_j(\etime)$ is
+developed using prior experimental knowledge, but the five parameters
+change during the simulation based on an individual's life
+history. The future event time is scheduled by sampling $\Unie$ and 
+setting
+$$
+\Etime_{ij} = \cumhaz_{ij}^{-1}(\Unie) = a\cumhaz_j^{-1}[(\invhaz(d) + \Unie) / c] + b
+$$
+unless $\Unie = \invhaz(e)$, in which case the event is rejected
+(censored) and hence never scheduled. Further, events before time
+$a\cumhaz_j^{-1}(\invhaz(d)/c) + b$
+are truncated and never observed. Dispersion $a$ is analogous to Cox's
+(1972) proportional hazards, while intensity $c$ corresponds to
+accelerated lifetime (Viertl 1988; Clarotti and Lindley 1988).
+
+\mytable{fivepar}{Effects of each of the five parameters that
+transform clock time into biological time based on exponential random
+variate $\Unie$. Mean value is expected number of events. Parameters
+are non-negative, with range constraints indicated.}
+{
+\begin{tabular}{lllll}
+description	& parameters	& time	& mean value	& range \\ \hline
+identity	& $[1,0,1,0,1]$ 	& $\Etime = \cuminv(\Unie)$
+& $\Unie = \cumhaz(\Etime)$	& \\
+dispersion	& $[a,0,1,0,1]$		& $\Etime = a\cuminv(\Unie)$
+& $\cumhaz(\Etime/a)$	& $a>0$ \\
+location	& $[1,b,1,0,1]$ 	& $\Etime = b +
+\cuminv(\Unie)$	& $\cumhaz(\Etime-b)$	& $b\geq0$ \\
+intensity	& $[1,0,c,0,1]$ 	& $\Etime = \cuminv(\Unie/c)$
+& $c\cumhaz(\Etime)$	& $c>0$ \\
+truncation	& $[1,0,1,d,1]$ 	& $\Etime =
+\cuminv(\Unie+\invhaz(d))$ 	& $\max(0, \cumhaz(\Etime)-\invhaz(d))$
+& $0=d<1$ \\
+rejection	& $[1,0,1,0,e]$ 	& $\Etime = \cuminv(\Unie)$
+& $\min(\cumhaz(\Etime), \invhaz(e))$	& $0<e=1$ \\
+	& 	& provided $\Unie < \invhaz(e)$ &&
+\end{tabular}
+}
+
+<<Figure 5 about here>>
+
+The flexibility of this family of curves is illustrated in Figure 5,
+where each parameter except rejection is varied individually. Figure 6
+shows how to achieve a modest reduction or extension in mean time to
+event by changing each of the five parameters, with markedly different
+results. These parameters adjust individual biological clocks with
+useful, intuitive biological interpretations. Dispersion can slow or
+speed the time to the next event. Location is often set to the time of
+the previous future event, or it can shift probabilities uniformly,
+postponing events in response to changing conditions. Intensity can
+raise or lower the mean number of future events, while keeping the
+same shape $\cumhaz$, corresponding to changes in the environment such
+as reduced food supply.
+
+<<Figure 6 about here>>
+
+Truncation and rejection ease simulation of immigration and
+emigration, respectively. Immigrants can move into an area and
+continue life processes based on imperfect information. An important
+future event for such a truncated individual may have happened at some
+unknown time before it entered the simulation. Emigrants can leave an
+area with future events unknown and irrelevant. Rejection allows
+removal of such individuals, eliminating scheduling of their future
+events. As an example, consider an adult {\em Aphytis} arriving at an orange
+to attack red scale. This individual may enter the simulation with
+very little knowledge of its previous life history except its age, egg
+load and direction of travel. The {\em Aphytis} is an immigrant, with a
+truncated life history. Eventually this invader may oviposit in red
+scale, laying eggs, and ultimately creating a new population of adult
+{\em Aphytis} that may either attack nearby red scale, or emigrate to
+another orange tree. Finally the original flying adult may leave the
+orange, never to return. While it, and its offspring, may attack other
+red scale, it is lost to the present simulation. Therefore at
+emigration its remaining life history is rejected, as its future is
+irrelevant.
+
+### Handling immediate events
+
+There are occasions when it may be appropriate to schedule an event
+without knowing its outcome. At the time of that future event, its
+specific outcome may be predicted based on the environment and current
+state of the simulation. Which of the n hosts is attacked by a
+parasite? The future event is scheduled based on the parasite, but its
+consequence disrupts a particular host, chosen when the parasitism
+event occurs as an immediate event. Hosts in the vicinity of the
+parasite are scored in terms of proximity, size, developmental stage
+and other factors that may affect the chance of being chosen. The
+parasite selects a host on which to oviposit with probability
+proportional to this score. Once a host is selected, there is a
+further chance mechanism as to whether a male or female egg would be
+oviposited. Either way, the red scale is immediately rescheduled for
+death (see Figure 3).
+
+In some situations, it may be more appropriate to schedule the future
+event of a prey dying, handling the predators with immediate
+events. For instance with a host death at time $\etime$, the
+probability that predator $i$ is the primary beneficiary may be
+proportional to its mean value function,
+
+$$
+p_i = \cumhaz_i(\etime) / \cumhaz(\etime), i = 1, \cdots, \nind~.
+$$
+The immediate event that predator $i$ has the kill is processed with
+probability $p_i$. This immediate event may cause scheduling of future
+feeding events for one or more other predators, based on how much the
+top predator consumes. Once these are scheduled, the process continues
+as before, but with a newly modified competing risk structure.
+
+An immediate event that spawns multiple future events may need a
+decision of how many events are to be created. The number of live
+births may be random, and hence can be drawn from an appropriate
+distribution, say a histogram based on experimental data suitably
+modified by environmental considerations (temperature), health of the
+individual, and actions of other individuals.
+
