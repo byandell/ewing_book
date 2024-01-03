@@ -1,15 +1,5 @@
 # Event-Driven Competing Risks Structure {#event}
 
-\newcommand{\mytable}[3]{
-\begin{table}
-\begin{center}
-#3
-THIS DOES NOT WORK
-\caption{#2\label{tbl:#1}}
-\end{center}
-\end{table}
-}
-
 \newcommand{\cumhaz}{M}
 \newcommand{\cuminv}{\cumhaz^{-1}}
 \newcommand{\etime}{t}
@@ -553,29 +543,32 @@ are truncated and never observed. Dispersion $a$ is analogous to Cox's
 (1972) proportional hazards, while intensity $c$ corresponds to
 accelerated lifetime (Viertl 1988; Clarotti and Lindley 1988).
 
-\mytable{fivepar}{Effects of each of the five parameters that
-transform clock time into biological time based on exponential random
-variate $\Unie$. Mean value is expected number of events. Parameters
-are non-negative, with range constraints indicated.}
-{
-\begin{tabular}{lllll}
-description	& parameters	& time	& mean value	& range \\ \hline
+\begin{table}[!h]
+\centering
+\caption{TABLE SKIPPED OVER. Effects of each of the five parameters that
+  transform clock time into biological time based on exponential random
+  variate $\Unie$. Mean value is expected number of events. Parameters
+  are non-negative, with range constraints indicated.}
+\begin{tabular}{ccccc}
+description	& parameters	& time	& mean value	& range\tabularnewline
+\hline
 identity	& $[1,0,1,0,1]$ 	& $\Etime = \cuminv(\Unie)$
-& $\Unie = \cumhaz(\Etime)$	& \\
+& $\Unie = \cumhaz(\Etime)$	& \tabularnewline
 dispersion	& $[a,0,1,0,1]$		& $\Etime = a\cuminv(\Unie)$
-& $\cumhaz(\Etime/a)$	& $a>0$ \\
+& $\cumhaz(\Etime/a)$	& $a>0$ \tabularnewline
 location	& $[1,b,1,0,1]$ 	& $\Etime = b +
-\cuminv(\Unie)$	& $\cumhaz(\Etime-b)$	& $b\geq0$ \\
+\cuminv(\Unie)$	& $\cumhaz(\Etime-b)$	& $b\geq0$ \tabularnewline
 intensity	& $[1,0,c,0,1]$ 	& $\Etime = \cuminv(\Unie/c)$
-& $c\cumhaz(\Etime)$	& $c>0$ \\
+& $c\cumhaz(\Etime)$	& $c>0$ \tabularnewline
 truncation	& $[1,0,1,d,1]$ 	& $\Etime =
 \cuminv(\Unie+\invhaz(d))$ 	& $\max(0, \cumhaz(\Etime)-\invhaz(d))$
-& $0=d<1$ \\
+& $0=d<1$ \tabularnewline
 rejection	& $[1,0,1,0,e]$ 	& $\Etime = \cuminv(\Unie)$
 & $\min(\cumhaz(\Etime), \invhaz(e))$	& $0<e=1$ \\
-	& 	& provided $\Unie < \invhaz(e)$ &&
+	& 	& provided $\Unie < \invhaz(e)$ && \tabularnewline
+\hline
 \end{tabular}
-}
+\end{table}
 
 <<Figure 5 about here>>
 
