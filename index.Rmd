@@ -1,6 +1,5 @@
 --- 
 title: "Quantitative Population Ethology"
-author: "Brian Yandell"
 date: "`r Sys.Date()`"
 site: bookdown::bookdown_site
 output: bookdown::gitbook
@@ -9,10 +8,11 @@ bibliography: [book.bib, packages.bib]
 biblio-style: apalike
 link-citations: yes
 github-repo: byandell/ewing_book
-description: "This is a bookdown version of Quantitative Population Ethology inspired by writing of Bland Ewing. The output format for this example is bookdown::gitbook."
+description: "This is a bookdown version of Quantitative Population Ethology inspired by writing of Bland Ewing. The output format is bookdown::gitbook."
+author: Bland Ewing^[Deceased], Brian S Yandell^[Professor Emeritus, Statistics Department, University of Wisconsin-Madison], James F Barbieri^[Retired, Advanced Systems Development, NAWC-WPNS], Robert F Luck^[Deceased, Entomology Department, University of California-Riverside], Lisa D Forster^[Entomology Department, University of California-Riverside]
 ---
 
-# Preface
+# Preface {-}
 
 The work contained in this monograph represents the contributions of
 Bland Ewing to a field he originally described as `population
@@ -81,28 +81,5 @@ National Science Foundation, the Environmental Protection Agency, the
 U. S. Forest Service, the Atomic Energy Commission or the Lawrence
 Livermore Laboratory. This paper contains part of the intended
 Doctoral Dissertation of Bland Ewing.
-
-```
-Bland Ewing, Paradise, CA
-Brian S.~ Yandell, University of Wisconsin--Madison, WI
-James F.~Barbieri, Advanced Systems Development, NAWC-WPNS, China
-Lake, CA
-Robert F. Luck, University of California, Riverside, CA
-Lisa D. Forster, University of California, Riverside, CA
-11 Dec 2001
-```
-
-
-Bland Ewing$^1$, Brian S. Yandell$^2$, James F. Barbieri$^{3,4}$, Robert
-F. Luck$^3$ and Lisa D. Forster$^3$
-
-$^1$Scientist, Paradise, CA
-
-$^2$Statistics Department,
-University of Wisconsin--Madison, Madison, WI
-
-$^3$Department of Entomology, University of California, Riverside, CA
-
-$^4$Advanced Systems Development, NAWC-WPNS, China Lake, CA
 
 Copyright 2001 BS Yandell
